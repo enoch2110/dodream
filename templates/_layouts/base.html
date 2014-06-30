@@ -166,82 +166,68 @@
 </div>
 
 <div id="cl-wrapper" class="fixed-menu">
-<div class="cl-sidebar" data-position="right" data-step="1" data-intro="<strong>Fixed Sidebar</strong> <br/> It adjust to your needs." >
-    <div class="cl-toggle"><i class="fa fa-bars"></i></div>
-    <div class="cl-navblock">
-        <div class="menu-space">
-            <div class="content">
-                <div class="side-user">
-                    <div class="avatar"><img src="/static/images/avatar1_50.jpg" alt="Avatar" /></div>
-                    <div class="info">
-                        <a href="#">Jeff Hanneman</a>
-                        <img src="/static/images/state_online.png" alt="Status" /> <span>Online</span>
+    <div class="cl-sidebar" data-position="right" data-step="1" data-intro="<strong>Fixed Sidebar</strong> <br/> It adjust to your needs." >
+        <div class="cl-toggle"><i class="fa fa-bars"></i></div>
+        <div class="cl-navblock">
+            <div class="menu-space">
+                <div class="content">
+                    <div class="side-user">
+                        <div class="avatar"><img src="/static/images/avatar1_50.jpg" alt="Avatar" /></div>
+                        <div class="info">
+                            <a href="#">Jeff Hanneman</a>
+                            <img src="/static/images/state_online.png" alt="Status" /> <span>Online</span>
+                        </div>
                     </div>
+                    <ul class="cl-vnavigation">
+                        <li><a href="/"><i class="fa fa-home"></i><span>메인화면</span></a>
+                        </li>
+                        <li><a href="#"><i class="fa fa-smile-o"></i><span>수강생관리</span></a>
+                            <ul class="sub-menu">
+                                <li><a href="/student-list">수강생 리스트</a></li>
+                                <li><a href="ui-buttons.html">수강생 추가</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#"><i class="fa fa-list-alt"></i><span>직원관리</span></a></li>
+                        <li><a href="#"><i class="fa fa-table"></i><span>출석관리</span></a></li>
+                        <li><a href="#"><i class="fa fa-map-marker nav-icon"></i><span>과목관리</span></a></li>
+                        <li><a href="#"><i class="fa fa-envelope nav-icon"></i><span>강의관리</span></a></li>
+                        <li><a href="#"><i class="fa fa-envelope nav-icon"></i><span>학원정보관리</span></a></li>
+                    </ul>
                 </div>
-                <ul class="cl-vnavigation">
-                    <li><a href="#"><i class="fa fa-home"></i><span>메인화면</span></a>
-                    </li>
-                    <li><a href="#"><i class="fa fa-smile-o"></i><span>수강생관리</span></a>
-                        <ul class="sub-menu">
-                            <li><a href="ui-elements.html">수강생 리스트</a></li>
-                            <li><a href="ui-buttons.html">수강생 추가</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="#"><i class="fa fa-list-alt"></i><span>직원관리</span></a></li>
-                    <li><a href="#"><i class="fa fa-table"></i><span>출석관리</span></a></li>
-                    <li><a href="#"><i class="fa fa-map-marker nav-icon"></i><span>과목관리</span></a></li>
-                    <li><a href="#"><i class="fa fa-envelope nav-icon"></i><span>강의관리</span></a></li>
-                    <li><a href="#"><i class="fa fa-envelope nav-icon"></i><span>학원정보관리</span></a></li>
-                </ul>
+            </div>
+            <div class="text-right collapse-button" style="padding:7px 9px;">
+                <button id="sidebar-collapse" class="btn btn-default" style=""><i style="color:#fff;" class="fa fa-angle-left"></i></button>
             </div>
         </div>
-        <div class="text-right collapse-button" style="padding:7px 9px;">
-            <button id="sidebar-collapse" class="btn btn-default" style=""><i style="color:#fff;" class="fa fa-angle-left"></i></button>
-        </div>
     </div>
-</div>
 
 
-<div class="container-fluid" id="pcont">
-<div class="cl-mcont">
-
-{% block content %}
-{% endblock %}
-
-</div>
-</div>
+    <div class="container-fluid" id="pcont">
+        {% block content %}
+        {% endblock %}
+]    </div>
 
 </div>
 
 <script type="text/javascript" src="{% static "js/jquery.js" %}"></script>
-<script type="text/javascript" src="{% static "js/jquery.gritter/js/jquery.gritter.js" %}"></script>
-<script type="text/javascript" src="{% static "js/jquery.nanoscroller/jquery.nanoscroller.js" %}"></script>
 <script type="text/javascript" src="{% static "js/behaviour/general.js" %}"></script>
+<script type="text/javascript" src="{% static "js/jquery.ui/jquery-ui.js" %}"></script>
+<script type="text/javascript" src="{% static "js/jquery.nanoscroller/jquery.nanoscroller.js" %}"></script>
+<script type="text/javascript" src="{% static "js/jquery.gritter/js/jquery.gritter.js" %}"></script>
 <script type="text/javascript" src="{% static "js/jquery.sparkline/jquery.sparkline.min.js" %}"></script>
 <script type="text/javascript" src="{% static "js/jquery.easypiechart/jquery.easy-pie-chart.js" %}"></script>
 <script type="text/javascript" src="{% static "js/jquery.nestable/jquery.nestable.js" %}"></script>
 <script type="text/javascript" src="{% static "js/bootstrap.switch/bootstrap-switch.min.js" %}"></script>
 <script type="text/javascript" src="{% static "js/bootstrap.datetimepicker/js/bootstrap-datetimepicker.min.js" %}"></script>
 <script type="text/javascript" src="{% static "js/jquery.select2/select2.min.js" %}"></script>
-<script type="text/javascript" src="{% static "js/skycons/skycons.js" %}"></script>
 <script type="text/javascript" src="{% static "js/bootstrap.slider/js/bootstrap-slider.js" %}"></script>
-<script type="text/javascript" src="{% static "js/intro.js/intro.js" %}"></script>
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;sensor=false"></script>
 
 
-<!-- Bootstrap core JavaScript
-  ================================================== -->
-<!-- Placed at the end of the document so the pages load faster -->
-<script type="text/javascript">
-    $(document).ready(function(){
-        //initialize the javascript
-        App.init();
-        App.dashBoard();
+{% block script %}
 
-        introJs().setOption('showBullets', false).start();
+{% endblock %}
 
-    });
-</script>
 <script src="{% static "js/behaviour/voice-commands.js" %}"></script>
 <script src="{% static "js/bootstrap/dist/js/bootstrap.min.js" %}"></script>
 <script type="text/javascript" src="{% static "js/jquery.flot/jquery.flot.js" %}"></script>
