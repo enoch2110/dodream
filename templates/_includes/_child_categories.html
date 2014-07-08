@@ -1,0 +1,15 @@
+{% load my_extras %}
+
+<ol class="dd-list">
+    {% for child in children %}
+        <li class="dd-item">
+        <div class="dd-handle">
+            {{ child.name }}
+        </div>
+        {% if child.children.count > 0 %}
+            {% child_categories child %}
+        {% endif %}
+        </li>
+
+    {% endfor %}
+</ol>

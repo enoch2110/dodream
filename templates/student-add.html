@@ -1,5 +1,5 @@
 {% extends "_layouts/base.html" %}
-{% load form_extras %}
+{% load my_extras %}
 
 {% block content %}
     <div class="page-head">
@@ -7,7 +7,7 @@
     </div>
     <div class="cl-mcont">
         <div class="row">
-            <form class="form-horizontal group-border-dashed" action="{% url "student-registration" %}" method="post">
+            <form class="form-horizontal group-border-dashed" action="{% url "student-registration" %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
                 <div class="col-md-12">
 
@@ -126,6 +126,7 @@
 
                                 </div>
                                 <div  class="content">
+                                {{ formset.management_form }}
                                     <table class="no-border">
                                         <thead>
                                         <tr>
@@ -137,15 +138,15 @@
                                         </tr>
                                         </thead>
                                         <tbody id="guardian-formset">
-                                        {{ formset.management_form }}
                                         {% for guardian_form in formset %}
                                         <tr class="guardian-form">
                                             {% for field in guardian_form %}
                                                 <td>
                                                     {{ field|addcss:"form-control" }}
+                                                    {% for error in field.errors %}<p class="color-danger">{{ error }}</p>{% endfor %}
                                                 </td>
                                             {% endfor %}
-                                            <td></td>
+                                            <td>{% if forloop.counter > 1 %}<button type='button' class='delete-guardian-button btn btn-danger'><i class='fa fa-times-circle'></i></button>{% endif %}</td>
                                         </tr>
                                         {% endfor %}
                                         </tbody>
@@ -172,15 +173,18 @@
     <script>
         $(function(){
             $("#add-guardian-button").click(function(){
-                var guardian_form = $(".guardian-form:first-child").clone(true);
-                guardian_form.find("td:last-child").append("<button type='button' class='delete-guardian-button btn btn-danger'><i class='fa fa-times-circle'></i></button>");
+                var guardian_form = $(".guardian-form:first").clone(true);
+                guardian_form.find("td:last").append("<button type='button' class='delete-guardian-button btn btn-danger'><i class='fa fa-times-circle'></i></button>");
                 guardian_form.appendTo("#guardian-formset");
-{#                setGuardianFormNum();#}
+                setGuardianFormNum();
                 $(".delete-guardian-button").click(function(){
                     $(this).parent().parent().remove();
-{#                    setGuardianFormNum();#}
+                    setGuardianFormNum();
                 });
             });
+        });
+        $(".delete-guardian-button").click(function(){
+            $(this).parent().parent().remove();
         });
         function setGuardianFormNum(){
             var num = $(".guardian-form").size();

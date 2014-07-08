@@ -24,19 +24,21 @@
                                 </tr>
                                 </thead>
                                 <tbody>
+                                {% for student in students %}
                                 <tr class="odd gradeX">
-                                    <td>Trident</td>
-                                    <td></td>
-                                    <td>Win 95+</td>
-                                    <td class="center"> 4</td>
-                                    <td class="center"></td>
-                                    <td class="center"></td>
+                                    <td>{{ student.name }}</td>
+                                    <td align="center"><img src="{% if student.image %}{{ student.image.url }}{% endif %}" alt="" class="img-circle" width="25" height="25"/></td>
+                                    <td>{{ student.contact }}</td>
+                                    <td class="center">{{ student.is_paid }}</td>
+                                    <td class="center">{{ student.get_courses }}</td>
+                                    <td class="center">{{ student.get_attend_method }}</td>
                                     <td class="center">
                                         <a class="btn btn-default btn-xs" href="#" data-original-title="Open" data-toggle="tooltip"><i class="fa fa-file"></i></a>
                                         <a class="btn btn-primary btn-xs" href="#" data-original-title="Edit" data-toggle="tooltip"><i class="fa fa-pencil"></i></a>
                                         <a class="btn btn-danger btn-xs" href="#" data-original-title="Remove" data-toggle="tooltip"><i class="fa fa-times"></i></a>
                                     </td>
                                 </tr>
+                                {% endfor %}
                                 </tbody>
                             </table>
                         </div>
@@ -53,7 +55,6 @@
     <script type="text/javascript">
         $(document).ready(function(){
             //initialize the javascript
-            App.init();
             App.dataTables();
 
             /* Formating function for row details */

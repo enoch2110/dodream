@@ -15,15 +15,32 @@
                     </li>
                     <li><a href="#"><i class="fa fa-smile-o"></i><span>수강생관리</span></a>
                         <ul class="sub-menu">
-                            <li><a href="/student-list">수강생 리스트</a></li>
+                            <li><a href="/student-list">수강생 조회</a></li>
                             <li><a href="{% url "student-registration" %}">수강생 추가</a></li>
                         </ul>
                     </li>
-                    <li><a href="#"><i class="fa fa-list-alt"></i><span>직원관리</span></a></li>
-                    <li><a href="#"><i class="fa fa-table"></i><span>출석관리</span></a></li>
-                    <li><a href="#"><i class="fa fa-map-marker nav-icon"></i><span>과목관리</span></a></li>
-                    <li><a href="#"><i class="fa fa-envelope nav-icon"></i><span>강의관리</span></a></li>
-                    <li><a href="#"><i class="fa fa-envelope nav-icon"></i><span>학원정보관리</span></a></li>
+                    <li><a href="#"><i class="fa fa-users"></i><span>직원관리</span></a>
+                        <ul class="sub-menu">
+                            <li><a href="">직원 조회</a></li>
+                            <li><a href="">직원 추가</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#"><i class="fa  fa-bullhorn"></i><span>출석관리</span></a></li>
+                    <li><a href="#"><i class="fa fa-sitemap nav-icon"></i><span>과목관리</span></a>
+                        <ul class="sub-menu">
+                            <li><a href="{% url "course-list" %}">과목 조회</a></li>
+                            <li><a href="{% url "course-add" %}">과목 추가</a></li>
+                            <li><a href="{% url "course-category" %}">과목 카테고리</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#"><i class="fa fa-book nav-icon"></i><span>강의관리</span></a>
+                        <ul class="sub-menu">
+                            <li><a href="{% url "course-list" %}">강의 조회</a></li>
+                            <li><a href="{% url "course-add" %}">강의 추가</a></li>
+                            <li><a href="{% url "course-category" %}">수강등록</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#"><i class="fa fa-cogs nav-icon"></i><span>학원정보관리</span></a></li>
                 </ul>
             </div>
         </div>

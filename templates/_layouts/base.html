@@ -172,7 +172,7 @@
     <div class="container-fluid" id="pcont">
         {% block content %}
         {% endblock %}
-]    </div>
+    </div>
 
 </div>
 
@@ -190,7 +190,11 @@
 <script type="text/javascript" src="{% static "js/bootstrap.slider/js/bootstrap-slider.js" %}"></script>
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;sensor=false"></script>
 
-
+<script type="text/javascript">
+$(document).ready(function(){
+    App.init();
+});
+</script>
 {% block script %}
 
 {% endblock %}
