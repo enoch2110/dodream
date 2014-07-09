@@ -1,5 +1,7 @@
 from django.contrib.auth import authenticate, login
 from rest_framework import generics
+from rest_framework.filters import SearchFilter
+from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from academy.models import Student
 from api.serializer import UserSerializer, StudentSerializer, LoginSerializer
@@ -57,3 +59,6 @@ class Login(generics.RetrieveAPIView):
 class StudentListAPI(generics.ListAPIView):
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
+    permission_classes = (IsAdminUser,)
+    filter_backends = (SearchFilter,)
+    search_fields = ('name', 'contact')
