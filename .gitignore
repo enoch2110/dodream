@@ -1,6 +1,5 @@
 #jetbrains project meta directory
 .idea/
 */migrations/
-resources/media/
 
 db.sqlite3
