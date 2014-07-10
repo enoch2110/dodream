@@ -111,3 +111,5 @@ REST_FRAMEWORK = {
         'rest_framework.renderers.BrowsableAPIRenderer',
     )
 }
+
+LOGIN_REDIRECT_URL = "/"
