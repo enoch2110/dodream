@@ -1,9 +1,6 @@
 from django.conf.urls import patterns, include, url
 from django.views.generic import TemplateView
-from academy.views import StudentRegistration, StudentList, CourseCreate, CourseCategoryCreate, CourseCategoryList, \
-    StudentUpdate
-from academy.views import StudentRegistration, StudentList, CourseCreate, CourseCategoryCreate, CourseCategoryList, \
-    StaffList, StaffDetail, StaffCreate, StaffUpdate, StaffDelete
+from academy.views import *
 
 urlpatterns = patterns('academy.views',
     url(r'^$', TemplateView.as_view(template_name="index.html")),

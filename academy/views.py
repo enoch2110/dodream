@@ -2,12 +2,9 @@ from django.core.urlresolvers import reverse, reverse_lazy
 from django.forms.models import modelformset_factory
 from django.forms.formsets import formset_factory
 from django.shortcuts import render, redirect
-from django.views.generic import View, CreateView, ListView, DetailView, UpdateView
-from academy.forms import StudentCreateForm, GuardianForm, CourseForm
-from academy.models import Student, Course, CourseCategory, Guardian
 from django.views.generic import View, CreateView, ListView, DetailView, UpdateView, DeleteView
-from academy.forms import StudentCreateForm, GuardianForm, CourseForm, StaffForm
-from academy.models import Student, Course, CourseCategory, Staff
+from academy.forms import *
+from academy.models import *
 
 
 class StudentRegistration(View):
