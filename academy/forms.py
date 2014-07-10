@@ -1,5 +1,9 @@
+# -*- coding: utf-8 -*-
+
 from django import forms
-from academy.models import Student, Guardian, CourseCategory, Course, Staff
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.models import User
+from academy.models import Student, Guardian, CourseCategory, Course, Staff, Profile
 
 
 class StudentCreateForm(forms.ModelForm):
@@ -23,11 +27,18 @@ class StaffForm(forms.ModelForm):
         return data.replace('-', "")
 
 
-class StaffAuthenticationForm(forms.Form):
-    username = forms.CharField()
-    password = forms.CharField(widget=forms.PasswordInput())
+class StaffAuthenticationForm(AuthenticationForm):
 
-    # def __
+    def clean(self):
+        cleaned_data = super(StaffAuthenticationForm, self).clean()
+        username = cleaned_data.get("username")
+        if User.objects.filter(username=username).exists():
+            user = User.objects.get(username=username)
+            profile, created = Profile.objects.get_or_create(user=user)
+            if not profile.can_use_admin():
+                msg = u"권한이 부족합니다."
+                self._errors["username"] = self.error_class([msg])
+        return cleaned_data
 
 
 class GuardianForm(forms.ModelForm):

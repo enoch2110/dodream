@@ -39,6 +39,3 @@ def decorated_includes(func, includes, *args, **kwargs):
             item._decorate_with = func
 
     return urlconf_module, app_name, namespace
-
-
-# User.add_to_class('')

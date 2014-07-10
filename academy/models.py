@@ -1,14 +1,26 @@
 # -*- coding: utf-8 -*-
 
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import User, Group, AbstractBaseUser
 from django.db import models
 import datetime
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 class Academy(models.Model):
     name = models.CharField(max_length=100)
     image = models.ImageField(upload_to="academy")
     address = models.CharField(max_length=200)
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(User)
+
+    def __unicode__(self):
+        return self.user.username + "'s profile"
+
+    def can_use_admin(self):
+        return self.user.is_staff and Staff.objects.filter(user=self).exists()
 
 
 class Student(models.Model):
@@ -104,6 +116,3 @@ class CourseCategory(models.Model):
 
     def get_courses(self):
         return Course.objects.filter(category__id__in=self.get_leaves())
-
-
-
