@@ -5,6 +5,9 @@ from django.shortcuts import render, redirect
 from django.views.generic import View, CreateView, ListView, DetailView, UpdateView
 from academy.forms import StudentCreateForm, GuardianForm, CourseForm
 from academy.models import Student, Course, CourseCategory, Guardian
+from django.views.generic import View, CreateView, ListView, DetailView, UpdateView, DeleteView
+from academy.forms import StudentCreateForm, GuardianForm, CourseForm, StaffForm
+from academy.models import Student, Course, CourseCategory, Staff
 
 
 class StudentRegistration(View):
@@ -35,6 +38,38 @@ class StudentList(ListView):
     template_name = "student-list.html"
     queryset = Student.objects.all()
     context_object_name = "students"
+
+
+class StaffList(ListView):
+    template_name = "staff-list.html"
+    queryset = Staff.objects.all()
+    context_object_name = "staffs"
+
+
+class StaffDetail(DetailView):
+    template_name = "staff-detail.html"
+    context_object_name = "staff"
+    model = Staff
+
+
+class StaffCreate(CreateView):
+    template_name = "staff-add.html"
+    model = Staff
+    form_class = StaffForm
+    success_url = "/staff-list"
+
+
+class StaffUpdate(UpdateView):
+    template_name = "staff-update.html"
+    model = Staff
+    form_class = StaffForm
+    success_url = "/staff-list"
+
+
+class StaffDelete(DeleteView):
+    template_name = "staff-delete.html"
+    model = Staff
+    success_url = "/staff-list"
 
 
 class StudentUpdate(View):

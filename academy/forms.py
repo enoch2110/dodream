@@ -1,5 +1,5 @@
 from django import forms
-from academy.models import Student, Guardian, CourseCategory, Course
+from academy.models import Student, Guardian, CourseCategory, Course, Staff
 
 
 class StudentCreateForm(forms.ModelForm):
@@ -7,12 +7,31 @@ class StudentCreateForm(forms.ModelForm):
         model = Student
         exclude = ['user']
 
+    def clean_contact(self):
+        data = self.cleaned_data['contact']
+        return data.replace('-', "")
+
+
+class StaffForm(forms.ModelForm):
+
+    class Meta:
+        model = Staff
+        exclude = ['user']
+
+    def clean_contact(self):
+        data = self.cleaned_data['contact']
+        return data.replace('-', "")
+
 
 class GuardianForm(forms.ModelForm):
 
     class Meta:
         model = Guardian
         exclude = ['student', 'user']
+
+    def clean_contact(self):
+        data = self.cleaned_data['contact']
+        return data.replace('-', "")
 
 
 class CourseForm(forms.ModelForm):
