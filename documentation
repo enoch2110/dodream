@@ -1,0 +1,4 @@
+REQUIRED PACKAGES
+
+1. south (sudo pip install south)
+2. django rest framework (sudo pip install djangorestframework)

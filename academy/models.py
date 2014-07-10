@@ -74,3 +74,9 @@ class CourseCategory(models.Model):
 
     def get_courses(self):
         return Course.objects.filter(category__id__in=self.get_leaves())
+
+
+class Academy(models.Model):
+    name = models.CharField()
+    image = models.ImageField(upload_to="academy")
+    address = models.CharField()
