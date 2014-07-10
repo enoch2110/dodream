@@ -1,20 +1,16 @@
 from django.core.urlresolvers import reverse, reverse_lazy
+from django.forms.models import modelformset_factory
 from django.forms.formsets import formset_factory
 from django.shortcuts import render, redirect
-from django.views.generic import View, CreateView, ListView
+from django.views.generic import View, CreateView, ListView, DetailView, UpdateView
 from academy.forms import StudentCreateForm, GuardianForm, CourseForm
-from academy.models import Student, Course, CourseCategory
+from academy.models import Student, Course, CourseCategory, Guardian
 
 
 class StudentRegistration(View):
     template_name = "student-add.html"
     formset_class = formset_factory(GuardianForm)
     form_class = StudentCreateForm
-
-    def get_context_data(self, **kwargs):
-        context = super(StudentRegistration, self).get_context_data(**kwargs)
-        context.update({'formset': self.formset})
-        return context
 
     def get(self, request, *args, **kwargs):
         form = self.form_class()
@@ -32,13 +28,39 @@ class StudentRegistration(View):
                     guardian.student = student
                     guardian.save()
             return redirect("student-list")
-        return render(request, self.template_name, {'form': form, 'formset': formset})
+        return render(request, self.template_name, {'form': form, 'formset': formset},)
 
 
 class StudentList(ListView):
     template_name = "student-list.html"
     queryset = Student.objects.all()
     context_object_name = "students"
+
+
+class StudentUpdate(View):
+    template_name = 'student-update.html'
+    formset_class = modelformset_factory(Guardian, form=GuardianForm)
+    form_class = StudentCreateForm
+
+    def get(self, request, *args, **kwargs):
+        student = Student.objects.get(id=kwargs['pk'])
+        form = self.form_class(instance=student)
+        formset = self.formset_class(queryset=student.guardian_set.all())
+        return render(request, self.template_name, {'form': form, 'formset': formset})
+
+    def post(self, request, *args, **kwargs):
+        student = Student.objects.get(id=kwargs['pk'])
+        form = self.form_class(request.POST, request.FILES, instance=student)
+        formset = self.formset_class(request.POST, queryset=student.guardian_set.all())
+        if form.is_valid() and formset.is_valid():
+            student = form.save()
+            for form in formset:
+                if form.has_changed():
+                    guardian = form.save(commit=False)
+                    guardian.student = student
+                    guardian.save()
+            return redirect("student-list")
+        return render(request, self.template_name, {'form': form, 'formset': formset},)
 
 
 class CourseCategoryList(ListView):

@@ -20,24 +20,30 @@
                                     <th>납부여부</th>
                                     <th>수강과목</th>
                                     <th>등원방법</th>
+                                    <th>보호자</th>
                                     <th></th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 {% for student in students %}
-                                <tr class="odd gradeX">
-                                    <td>{{ student.name }}</td>
-                                    <td align="center"><img src="{% if student.image %}{{ student.image.url }}{% endif %}" alt="" class="img-circle" width="25" height="25"/></td>
-                                    <td>{{ student.contact }}</td>
-                                    <td class="center">{{ student.is_paid }}</td>
-                                    <td class="center">{{ student.get_courses }}</td>
-                                    <td class="center">{{ student.get_attend_method }}</td>
-                                    <td class="center">
-                                        <a class="btn btn-default btn-xs" href="#" data-original-title="Open" data-toggle="tooltip"><i class="fa fa-file"></i></a>
-                                        <a class="btn btn-primary btn-xs" href="#" data-original-title="Edit" data-toggle="tooltip"><i class="fa fa-pencil"></i></a>
-                                        <a class="btn btn-danger btn-xs" href="#" data-original-title="Remove" data-toggle="tooltip"><i class="fa fa-times"></i></a>
-                                    </td>
-                                </tr>
+                                    <tr class="odd gradeX">
+                                        <td>{{ student.name }}</td>
+                                        <td align="center"><img src="{% if student.image %}{{ student.image.url }}{% endif %}" alt="" class="img-circle" width="25" height="25"/></td>
+                                        <td>{{ student.contact }}</td>
+                                        <td class="center">{{ student.is_paid }}</td>
+                                        <td class="center">{{ student.get_courses }}</td>
+                                        <td class="center">{{ student.get_attend_method }}</td>
+                                        <td class="center">
+                                            {% for guardian in student.guardian_set.all %}
+                                                {{ guardian.name }}<br>
+                                            {% endfor %}
+                                        </td>
+                                        <td class="center">
+                                            <a class="btn btn-default btn-xs" href="#" data-original-title="Open" data-toggle="tooltip"><i class="fa fa-file"></i></a>
+                                            <a class="btn btn-primary btn-xs" href="{% url "student-update" student.id %}" data-original-title="Edit" data-toggle="tooltip"><i class="fa fa-pencil"></i></a>
+                                            <a class="btn btn-danger btn-xs" href="#" data-original-title="Remove" data-toggle="tooltip"><i class="fa fa-times"></i></a>
+                                        </td>
+                                    </tr>
                                 {% endfor %}
                                 </tbody>
                             </table>
