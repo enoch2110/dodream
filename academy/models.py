@@ -22,10 +22,11 @@ class Student(models.Model):
     registered_date = models.DateField(default=datetime.date.today())
     information = models.TextField(blank=True, null=True)
     user = models.OneToOneField(User, blank=True, null=True)
+    academy = models.ForeignKey("Academy")
 
 
 class Staff(models.Model):
-    #academy = models.CharField(max_length=100)
+
     name = models.CharField(max_length=100)
     image = models.ImageField(upload_to="academy/staff", blank=True, null=True)
     email = models.EmailField()
@@ -36,6 +37,7 @@ class Staff(models.Model):
     specs = models.TextField(max_length=100)
     registered_date = models.DateField(default=datetime.date.today())
     user = models.OneToOneField(User, blank=True, null=True)
+    academy = models.ForeignKey("Academy")
 
     def __unicode__(self):
         return self.position+" "+self.name
