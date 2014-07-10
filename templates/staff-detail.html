@@ -16,7 +16,6 @@
                         <div class="personal">
                             <h1 class="name">{{ staff.name }}</h1>
                             <p class="description">{{ staff.group }}<p>
-{#                            <button class="btn btn-primary btn-flat btn-rad" href="{% url "staff-update" staff.id %}" data-modal="reply-ticket"><i class="fa fa-edit"></i> Edit</button>#}
                             <a class="btn btn-primary btn-xs" href="{% url "staff-update" staff.id %}" data-toggle="tooltip"><i class="fa fa-pencil"></i> Edit</a>
                             <a class="btn btn-danger btn-xs" href="{% url "staff-delete" staff.id %}" data-toggle="tooltip"><i class="fa fa-times"></i> Delete</a>
                         </div>
