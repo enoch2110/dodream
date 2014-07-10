@@ -19,6 +19,9 @@ class Profile(models.Model):
     def __unicode__(self):
         return self.user.username + "'s profile"
 
+    def get_name(self):
+        return self.user.last_name+" "+self.user.first_name
+
     def can_use_admin(self):
         return Staff.objects.filter(user=self.user).exists()
 
