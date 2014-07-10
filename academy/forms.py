@@ -23,6 +23,13 @@ class StaffForm(forms.ModelForm):
         return data.replace('-', "")
 
 
+class StaffAuthenticationForm(forms.Form):
+    username = forms.CharField()
+    password = forms.CharField(widget=forms.PasswordInput())
+
+    # def __
+
+
 class GuardianForm(forms.ModelForm):
 
     class Meta:
