@@ -66,7 +66,7 @@ class AttendanceCreateAPI(generics.CreateAPIView):
     def create(self, request, *args, **kwargs):
         if not (request.user.is_authenticated() and request.user.is_superuser):
             result = {"code": 0, "message": "not authorized"}
-            return Response(result, status=status.HTTP_400_BAD_REQUEST)
+            return Response(result)
 
         serializer = self.get_serializer(data=request.DATA, files=request.FILES)
         if serializer.is_valid():
