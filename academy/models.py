@@ -30,6 +30,9 @@ class Student(models.Model):
     user = models.OneToOneField(User, blank=True, null=True)
     academy = models.ForeignKey(Academy)
 
+    def __unicode__(self):
+        return self.name
+
 
 class Staff(models.Model):
     name = models.CharField(max_length=100)
