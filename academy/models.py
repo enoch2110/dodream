@@ -20,7 +20,7 @@ class Profile(models.Model):
         return self.user.username + "'s profile"
 
     def can_use_admin(self):
-        return self.user.is_staff and Staff.objects.filter(user=self).exists()
+        return Staff.objects.filter(user=self.user).exists()
 
 
 class Student(models.Model):
