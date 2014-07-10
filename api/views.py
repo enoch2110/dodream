@@ -1,8 +1,9 @@
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.models import User
 from rest_framework import generics
 from rest_framework.response import Response
 from academy.models import Student
-from api.serializer import UserSerializer, StudentSerializer, LoginSerializer
+from api.serializer import UserSerializer, StudentSerializer, LoginSerializer, AttendanceSerializer
 
 
 class Login(generics.RetrieveAPIView):
@@ -57,3 +58,30 @@ class Login(generics.RetrieveAPIView):
 class StudentListAPI(generics.ListAPIView):
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
+
+
+class AttendanceCreateAPI(generics.CreateAPIView):
+    serializer_class = AttendanceSerializer
+
+    def create(self, request, *args, **kwargs):
+        if not (request.user.is_authenticated() and request.user.is_superuser):
+            result = {"code": 0, "message": "not authorized"}
+            return Response(result, status=status.HTTP_400_BAD_REQUEST)
+
+        serializer = self.get_serializer(data=request.DATA, files=request.FILES)
+        if serializer.is_valid():
+            nfc_id = serializer.data['nfc_id']
+            #TODO find user_id with nfc_id
+            user_id = AttendanceSerializer.get_stu_id(nfc_id)
+            serializer.object.user = User.objects.get(id=user_id)
+            self.pre_save(serializer.object)
+            self.object = serializer.save(force_insert=True)
+            self.post_save(self.object, created=True)
+            headers = self.get_success_headers(serializer.data)
+            result = self.object.get_status()
+            result.update({"data": serializer.data})
+            return Response(result, headers=headers)
+
+        return Response(serializer.errors)
+
+
