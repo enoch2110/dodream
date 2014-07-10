@@ -20,3 +20,10 @@ def children_tag(parent):
 def child_categories(parent):
     children = parent.children()
     return {'children': children}
+
+@register.filter(name='addattr')
+def addattr(field, attr_string):
+    attrs = {}
+    for attr in attr_string.split(" "):
+        attrs.update({attr.split("=")[0]: attr.split("=")[1]})
+    return field.as_widget(attrs=attrs)

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.db import models
 import datetime
 
@@ -24,6 +24,23 @@ class Student(models.Model):
     user = models.OneToOneField(User, blank=True, null=True)
 
 
+class Staff(models.Model):
+    #academy = models.CharField(max_length=100)
+    name = models.CharField(max_length=100)
+    image = models.ImageField(upload_to="academy/staff", blank=True, null=True)
+    email = models.EmailField()
+    address = models.CharField(max_length=200, blank=True, null=True)
+    contact = models.CharField(max_length=20, blank=True, null=True)
+    group = models.ForeignKey(Group)
+    main_course = models.ForeignKey("Course")
+    specs = models.TextField(max_length=100)
+    registered_date = models.DateField(default=datetime.date.today())
+    user = models.OneToOneField(User, blank=True, null=True)
+
+    def __unicode__(self):
+        return self.position+" "+self.name
+
+
 class Guardian(models.Model):
     name = models.CharField(max_length=100)
     email = models.EmailField()
@@ -40,6 +57,9 @@ class Course(models.Model):
     price_info = models.TextField(blank=True, null=True)
     syllabus = models.TextField(blank=True, null=True)
     is_active = models.BooleanField(default=True)
+
+    def __unicode__(self):
+        return self.name
 
 
 class CourseCategory(models.Model):
