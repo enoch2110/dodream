@@ -16,10 +16,33 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal(u'attendance', ['Attendance'])
 
+        # Adding model 'AttendanceManager'
+        db.create_table(u'attendance_attendancemanager', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('user', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['auth.User'], unique=True)),
+            ('group', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['auth.Group'], unique=True)),
+            ('policy', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['attendance.AttendancePolicy'])),
+        ))
+        db.send_create_signal(u'attendance', ['AttendanceManager'])
+
+        # Adding model 'AttendancePolicy'
+        db.create_table(u'attendance_attendancepolicy', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('attend_time', self.gf('django.db.models.fields.TimeField')()),
+            ('leave_time', self.gf('django.db.models.fields.TimeField')()),
+        ))
+        db.send_create_signal(u'attendance', ['AttendancePolicy'])
+
 
     def backwards(self, orm):
         # Deleting model 'Attendance'
         db.delete_table(u'attendance_attendance')
+
+        # Deleting model 'AttendanceManager'
+        db.delete_table(u'attendance_attendancemanager')
+
+        # Deleting model 'AttendancePolicy'
+        db.delete_table(u'attendance_attendancepolicy')
 
 
     models = {
@@ -28,6 +51,19 @@ class Migration(SchemaMigration):
             'datetime': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"})
+        },
+        u'attendance.attendancemanager': {
+            'Meta': {'object_name': 'AttendanceManager'},
+            'group': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['auth.Group']", 'unique': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'policy': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['attendance.AttendancePolicy']"}),
+            'user': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['auth.User']", 'unique': 'True'})
+        },
+        u'attendance.attendancepolicy': {
+            'Meta': {'object_name': 'AttendancePolicy'},
+            'attend_time': ('django.db.models.fields.TimeField', [], {}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'leave_time': ('django.db.models.fields.TimeField', [], {})
         },
         u'auth.group': {
             'Meta': {'object_name': 'Group'},

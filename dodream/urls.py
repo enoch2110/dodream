@@ -3,7 +3,7 @@ from django.contrib import admin
 from django.contrib.auth.decorators import user_passes_test
 
 from dodream import settings
-from dodream.helper import decorated_includes
+from dodream.helpers import decorated_includes
 
 import academy
 
@@ -15,6 +15,9 @@ urlpatterns = patterns(
     (r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     (r'^api/', include('api.urls')),
     (r'^admin/', include(admin.site.urls)),
+
+    url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'login.html'}, name="login"),
+    url(r'^logout/$', 'django.contrib.auth.views.logout', {'template_name': 'logout.html'}, name="logout"),
 )
 if settings.DEBUG:
     urlpatterns += patterns('',
