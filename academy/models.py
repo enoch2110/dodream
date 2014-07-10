@@ -97,6 +97,6 @@ class CourseCategory(models.Model):
 
 
 class Academy(models.Model):
-    name = models.CharField()
+    name = models.CharField(max_length=100)
     image = models.ImageField(upload_to="academy")
-    address = models.CharField()
+    address = models.CharField(max_length=200)
