@@ -14,19 +14,22 @@ class Attendance(models.Model):
 
     def get_status(self):
         result = ""
-        attend_time = self.user.attendancemanager.get_attend_time()
-        leave_time = self.user.attendancemanager.get_leave_time()
+        try:
+            attend_time = self.user.attendancemanager.get_attend_time()
+            leave_time = self.user.attendancemanager.get_leave_time()
 
-        is_first = Attendance.objects.filter(user=self.user, datetime__date=self.datetime.date).aggregate(Min("datetime")).datetime == self.datetime
+            is_first = Attendance.objects.filter(user=self.user, datetime__date=self.datetime.date).aggregate(Min("datetime")).datetime == self.datetime
 
-        if is_first and self.datetime <= attend_time:
-            result = "attend"
-        elif is_first and self.datetime > attend_time:
-            result = "late"
-        elif not is_first and self.datetime < leave_time:
-            result = "early leave"
-        elif not is_first and self.datetime >= leave_time:
-            result = "leave"
+            if is_first and self.datetime <= attend_time:
+                result = "attend"
+            elif is_first and self.datetime > attend_time:
+                result = "late"
+            elif not is_first and self.datetime < leave_time:
+                result = "early leave"
+            elif not is_first and self.datetime >= leave_time:
+                result = "leave"
+        except:
+            result="none"
 
         return result
 
@@ -38,11 +41,18 @@ class AttendanceManager(models.Model):
     user = models.OneToOneField(User)
     group = models.OneToOneField(Group)
     policy = models.ForeignKey("AttendancePolicy")
+    nfc_id = models.CharField(max_length=50)
 
     def __unicode__(self):
-        user = str(self.user) if self.user else ""
-        group = str(self.group) if self.group else ""
-        return user + group +" policy"
+        return self.nfc_id
+
+    def get_stu_id(self, nfc):
+        user = self.user
+        while user:
+            if user.nfc == nfc:
+                return user.id
+            else:
+                return 0
 
     def get_attend_time(self):
         return self.policy.attend_time
