@@ -21,6 +21,34 @@ class StudentRegistration(View):
         form = self.form_class(request.POST, request.FILES)
         formset = self.formset_class(request.POST)
         if form.is_valid() and formset.is_valid():
+            student = form.save(commit=False)
+            student.academy = request.user.staff.academy
+            student.save()
+            for form in formset:
+                if form.has_changed():
+                    guardian = form.save(commit=False)
+                    guardian.student = student
+                    guardian.save()
+            return redirect("student-list")
+        return render(request, self.template_name, {'form': form, 'formset': formset},)
+
+
+class StudentUpdate(View):
+    template_name = 'student-update.html'
+    formset_class = modelformset_factory(Guardian, form=GuardianForm)
+    form_class = StudentCreateForm
+
+    def get(self, request, *args, **kwargs):
+        student = Student.objects.get(id=kwargs['pk'])
+        form = self.form_class(instance=student)
+        formset = self.formset_class(queryset=student.guardian_set.all())
+        return render(request, self.template_name, {'form': form, 'formset': formset})
+
+    def post(self, request, *args, **kwargs):
+        student = Student.objects.get(id=kwargs['pk'])
+        form = self.form_class(request.POST, request.FILES, instance=student)
+        formset = self.formset_class(request.POST, queryset=student.guardian_set.all())
+        if form.is_valid() and formset.is_valid():
             student = form.save()
             for form in formset:
                 if form.has_changed():
@@ -67,32 +95,6 @@ class StaffDelete(DeleteView):
     template_name = "staff-delete.html"
     model = Staff
     success_url = "/staff-list"
-
-
-class StudentUpdate(View):
-    template_name = 'student-update.html'
-    formset_class = modelformset_factory(Guardian, form=GuardianForm)
-    form_class = StudentCreateForm
-
-    def get(self, request, *args, **kwargs):
-        student = Student.objects.get(id=kwargs['pk'])
-        form = self.form_class(instance=student)
-        formset = self.formset_class(queryset=student.guardian_set.all())
-        return render(request, self.template_name, {'form': form, 'formset': formset})
-
-    def post(self, request, *args, **kwargs):
-        student = Student.objects.get(id=kwargs['pk'])
-        form = self.form_class(request.POST, request.FILES, instance=student)
-        formset = self.formset_class(request.POST, queryset=student.guardian_set.all())
-        if form.is_valid() and formset.is_valid():
-            student = form.save()
-            for form in formset:
-                if form.has_changed():
-                    guardian = form.save(commit=False)
-                    guardian.student = student
-                    guardian.save()
-            return redirect("student-list")
-        return render(request, self.template_name, {'form': form, 'formset': formset},)
 
 
 class CourseCategoryList(ListView):

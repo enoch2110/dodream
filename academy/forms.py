@@ -5,7 +5,7 @@ from academy.models import Student, Guardian, CourseCategory, Course, Staff
 class StudentCreateForm(forms.ModelForm):
     class Meta:
         model = Student
-        exclude = ['user']
+        exclude = ['user', 'academy']
 
     def clean_contact(self):
         data = self.cleaned_data['contact']
@@ -16,7 +16,7 @@ class StaffForm(forms.ModelForm):
 
     class Meta:
         model = Staff
-        exclude = ['user']
+        exclude = ['user', 'academy']
 
     def clean_contact(self):
         data = self.cleaned_data['contact']

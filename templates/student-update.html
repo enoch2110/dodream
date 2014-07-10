@@ -8,9 +8,18 @@
     <div class="cl-mcont">
         <div class="row">
             <form class="form-horizontal group-border-dashed" action="" method="post" enctype="multipart/form-data">
-            {% csrf_token %}
+                {% csrf_token %}
                 <div class="col-md-12">
+                    {% if form.errors %}
+                        <div class="block-flat">
+                            <div class="row">
+                                {% for error in form.errors %}
+                                    {{ error }}
+                                {% endfor %}
 
+                            </div>
+                        </div>
+                    {% endif %}
                     <div class="block-flat">
                         <div class="row">
                             <div class="col-sm-6">
@@ -126,7 +135,7 @@
 
                                 </div>
                                 <div  class="content">
-                                {{ formset.management_form }}
+                                    {{ formset.management_form }}
                                     <table class="no-border">
                                         <thead>
                                         <tr>
@@ -139,15 +148,19 @@
                                         </thead>
                                         <tbody id="guardian-formset">
                                         {% for guardian_form in formset %}
-                                        <tr class="guardian-form">
-                                            {% for field in guardian_form %}
-                                                <td>
-                                                    {{ field|addcss:"form-control" }}
-                                                    {% for error in field.errors %}<p class="color-danger">{{ error }}</p>{% endfor %}
-                                                </td>
-                                            {% endfor %}
-                                            <td>{% if forloop.counter > 1 %}<button type='button' class='delete-guardian-button btn btn-danger'><i class='fa fa-times-circle'></i></button>{% endif %}</td>
-                                        </tr>
+                                            <tr class="guardian-form">
+                                                {% for field in guardian_form %}
+                                                    {% if not field.name == "id" %}
+                                                        <td>
+                                                            {{ field|addcss:"form-control" }}
+                                                            {% for error in field.errors %}<p class="color-danger">{{ error }}</p>{% endfor %}
+                                                        </td>
+                                                    {% else %}
+                                                        {{ field }}
+                                                    {% endif %}
+                                                {% endfor %}
+                                                <td>{% if forloop.counter > 1 %}<button type='button' class='delete-guardian-button btn btn-danger'><i class='fa fa-times-circle'></i></button>{% endif %}</td>
+                                            </tr>
                                         {% endfor %}
                                         </tbody>
                                     </table>

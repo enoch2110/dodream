@@ -5,6 +5,12 @@ from django.db import models
 import datetime
 
 
+class Academy(models.Model):
+    name = models.CharField(max_length=100)
+    image = models.ImageField(upload_to="academy")
+    address = models.CharField(max_length=200)
+
+
 class Student(models.Model):
     GENDER_CHOICES = [(True, "남"), (False, "여")]
     ATTEND_METHOD_CHOICES = [(1, "도보"), (2, "통학버스")]
@@ -22,11 +28,10 @@ class Student(models.Model):
     registered_date = models.DateField(default=datetime.date.today())
     information = models.TextField(blank=True, null=True)
     user = models.OneToOneField(User, blank=True, null=True)
-    academy = models.ForeignKey("Academy")
+    academy = models.ForeignKey(Academy)
 
 
 class Staff(models.Model):
-
     name = models.CharField(max_length=100)
     image = models.ImageField(upload_to="academy/staff", blank=True, null=True)
     email = models.EmailField()
@@ -37,10 +42,10 @@ class Staff(models.Model):
     specs = models.TextField(max_length=100)
     registered_date = models.DateField(default=datetime.date.today())
     user = models.OneToOneField(User, blank=True, null=True)
-    academy = models.ForeignKey("Academy")
+    academy = models.ForeignKey(Academy)
 
     def __unicode__(self):
-        return self.position+" "+self.name
+        return self.group.name+" "+self.name
 
 
 class Guardian(models.Model):
@@ -98,7 +103,4 @@ class CourseCategory(models.Model):
         return Course.objects.filter(category__id__in=self.get_leaves())
 
 
-class Academy(models.Model):
-    name = models.CharField(max_length=100)
-    image = models.ImageField(upload_to="academy")
-    address = models.CharField(max_length=200)
+

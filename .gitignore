@@ -1,4 +1,2 @@
 #jetbrains project meta directory
 .idea/
-
-db.sqlite3
