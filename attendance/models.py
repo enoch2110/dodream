@@ -1,40 +1,48 @@
 # -*- coding: utf-8 -*-
+from dateutil import tz
 
 from django.contrib.auth.models import User, Group
 from django.db import models
 from django.db.models import Min
+from django.utils.timezone import utc
 
 
 class Attendance(models.Model):
     user = models.ForeignKey(User)
-    datetime = models.DateTimeField(auto_now=True)
+    datetime = models.DateTimeField()
 
     def __unicode__(self):
-        return str(self.datetime)+ " " +self.user.username
+        datetime = self.datetime.astimezone(tz.tzlocal())
+        return str(datetime.date().isoformat()) + " " + str(datetime.time().isoformat()) + " " +self.user.username + " (" + self.get_status() + ")"
 
     def get_status(self):
+        import datetime
         result = ""
+        first_attendance = Attendance.objects.filter(user=self.user).earliest('datetime')
+        current_datetime = self.datetime.astimezone(tz.tzlocal())
+        first_datetime = first_attendance.datetime.astimezone(tz.tzlocal())
+        is_first = first_attendance == self
+
         try:
             attend_time = self.user.attendancemanager.get_attend_time()
-            leave_time = self.user.attendancemanager.get_leave_time()
-
-            is_first = Attendance.objects.filter(user=self.user, datetime__date=self.datetime.date).aggregate(Min("datetime")).datetime == self.datetime
-
-            if is_first and self.datetime <= attend_time:
-                result = "attend"
-            elif is_first and self.datetime > attend_time:
-                result = "late"
-            elif not is_first and self.datetime < leave_time:
-                result = "early leave"
-            elif not is_first and self.datetime >= leave_time:
-                result = "leave"
+            leave_time = self.user.attendancemanager.get_attend_time()
         except:
-            result="none"
+            attend_time = first_datetime.time()
+            leave_time = (datetime.datetime(2000, 1, 1, attend_time.hour, attend_time.minute, attend_time.second) + datetime.timedelta(hours=1)).time()
+
+        print attend_time
+        print leave_time
+
+        if is_first and current_datetime.time() <= attend_time:
+            result = "attend"
+        elif is_first and current_datetime.time() > attend_time:
+            result = "late"
+        elif not is_first and current_datetime.time() < leave_time:
+            result = "early leave"
+        elif not is_first and current_datetime.time() >= leave_time:
+            result = "leave"
 
         return result
-
-#실수로 여러 번 찍을 경우 첫번째와 마지막을 attend와 leave로 하는 게 좋지 않을까(찍지 않고 나가는 경우가 없다고 가정하면)
-#그렇게 한다면 is_last도 필요
 
 
 class AttendanceManager(models.Model):
@@ -67,13 +75,3 @@ class AttendancePolicy(models.Model):
 
     def __unicode__(self):
         return str(self.attend_time) + "/" + str(self.leave_time)
-    # def __unicode__(self):
-    #     user = str(self.user) if self.user else ""
-    #     group = str(self.group) if self.group else ""
-    #     return user + group +" policy"
-    #
-    # def get_attend_time(self):
-    #     return self.attend_time
-    #
-    # def get_leave_time(self):
-    #     return self.leave_time
