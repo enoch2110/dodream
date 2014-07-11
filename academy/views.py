@@ -67,7 +67,7 @@ class StudentList(ListView):
     context_object_name = "students"
 
     def get_queryset(self):
-        return StudentModelAdmin(Student, None).get_search_results(self.request, self.queryset, self.request.GET['q'])[0]
+        return StudentModelAdmin(Student, None).get_search_results(self.request, self.queryset, self.request.GET.get('q'))[0]
 
 
 class StaffList(ListView):
