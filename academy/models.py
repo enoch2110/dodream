@@ -12,6 +12,9 @@ class Academy(models.Model):
     image = models.ImageField(upload_to="academy")
     address = models.CharField(max_length=200)
 
+    def __unicode__(self):
+        return self.name
+
 
 class Profile(models.Model):
     user = models.OneToOneField(User)

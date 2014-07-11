@@ -6,6 +6,7 @@ from dodream.helpers import decorated_includes
 
 urlpatterns = patterns('academy.views',
     url(r'^$', TemplateView.as_view(template_name="index.html")),
+    url(r'^setting$', AcademySetting.as_view(), name="academy-setting"),
     url(r'^student-list$', StudentList.as_view(), name="student-list"),
     url(r'^student-registration', StudentRegistration.as_view(), name="student-registration"),
     url(r'^student-update/(?P<pk>[0-9]+)$', StudentUpdate.as_view(), name="student-update"),

@@ -2,11 +2,20 @@ from django.core.urlresolvers import reverse, reverse_lazy
 from django.forms.models import modelformset_factory
 from django.forms.formsets import formset_factory
 from django.shortcuts import render, redirect
-from django.views.generic import View, CreateView, ListView, DetailView, UpdateView, DeleteView
+from django.views.generic import View, CreateView, ListView, DetailView, UpdateView, DeleteView, FormView
 from rest_framework.filters import SearchFilter
 from academy.admin import StudentModelAdmin
 from academy.forms import *
 from academy.models import *
+
+
+class AcademySetting(UpdateView):
+    template_name = "academy-setting.html"
+    form_class = AcademyForm
+    success_url = "/setting"
+
+    def get_object(self, queryset=None):
+        return Academy.objects.get(id=self.request.user.staff.academy.id)
 
 
 class StudentRegistration(View):
