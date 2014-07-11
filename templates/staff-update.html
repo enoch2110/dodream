@@ -7,21 +7,21 @@
     </div>
     <div class="cl-mcont">
         <div class="row">
-            <form class="form-horizontal group-border-dashed" action="{% url "staff-update" object.id %}" method="post">
+            <form class="form-horizontal group-border-dashed" action="{% url "staff-update" object.id %}" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="col-md-12">
 
                     <div class="block-flat">
                         <div class="row">
-                            <div class="col-sm-12">
+                            <div class="col-sm-6">
                                 <div class="header">
-                                    <h3>staff Detail</h3>
+                                    <h3>Staff Profile</h3>
                                 </div>
                                 <div class="content">
                                     {% for field in form %}
                                         <div class="form-group">
-                                            <label class="col-sm-2">{{ field.label }}</label>
-                                            <div class="col-sm-5">
+                                            <label class="col-sm-3 control-label">{{ field.label }}</label>
+                                            <div class="col-sm-6">
                                                 {{ field|addattr:"class=form-control" }}
                                                 {% for error in field.errors %}
                                                     <span class="label label-danger">{{ error }}</span>
@@ -31,12 +31,20 @@
                                     {% endfor %}
                                 </div>
                             </div>
+                            <div class="col-sm-6">
+                                <div class="header">
+                                    <h3>Staff Account</h3>
+                                </div>
+                                <div class="content">
+
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-sm-12" style="text-align: center;">
                             <button type="submit" class="btn btn-primary">등록</button>
-                            <button type="reset" class="btn btn-default">취소</button>
+                            <a href="{% url "staff-list" %}" class="btn btn-default">취소</a>
                         </div>
                     </div>
                 </div>

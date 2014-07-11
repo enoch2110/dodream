@@ -7,7 +7,7 @@
     </div>
     <div class="cl-mcont">
         <div class="row">
-            <form class="form-horizontal group-border-dashed" action="{% url "staff-add" %}" method="post">
+            <form class="form-horizontal group-border-dashed" action="{% url "staff-add" %}" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="col-md-12">
 
@@ -20,8 +20,8 @@
                                 <div class="content">
                                     {% for field in form %}
                                         <div class="form-group">
-                                            <label class="col-sm-2">{{ field.label }}</label>
-                                            <div class="col-sm-5">
+                                            <label class="col-sm-3 control-label">{{ field.label }}</label>
+                                            <div class="col-sm-6">
                                                 {{ field|addattr:"class=form-control" }}
                                                 {% for error in field.errors %}
                                                     <span class="label label-danger">{{ error }}</span>
