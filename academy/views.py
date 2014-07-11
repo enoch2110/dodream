@@ -3,6 +3,8 @@ from django.forms.models import modelformset_factory
 from django.forms.formsets import formset_factory
 from django.shortcuts import render, redirect
 from django.views.generic import View, CreateView, ListView, DetailView, UpdateView, DeleteView
+from rest_framework.filters import SearchFilter
+from academy.admin import StudentModelAdmin
 from academy.forms import *
 from academy.models import *
 
@@ -63,6 +65,9 @@ class StudentList(ListView):
     template_name = "student-list.html"
     queryset = Student.objects.all()
     context_object_name = "students"
+
+    def get_queryset(self):
+        return StudentModelAdmin(Student, None).get_search_results(self.request, self.queryset, self.request.GET['q'])[0]
 
 
 class StaffList(ListView):
