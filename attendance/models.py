@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from dateutil import tz
-
 from django.contrib.auth.models import User, Group
 from django.db import models
 from django.db.models import Min
@@ -9,7 +8,7 @@ from django.utils.timezone import utc
 
 class Attendance(models.Model):
     user = models.ForeignKey(User)
-    datetime = models.DateTimeField()
+    datetime = models.DateTimeField(auto_now=True)
 
     def __unicode__(self):
         datetime = self.datetime.astimezone(tz.tzlocal())
@@ -46,13 +45,13 @@ class Attendance(models.Model):
 
 
 class AttendanceManager(models.Model):
-    user = models.OneToOneField(User)
-    group = models.OneToOneField(Group)
-    policy = models.ForeignKey("AttendancePolicy")
-    nfc_id = models.CharField(max_length=50)
+    user = models.OneToOneField(User, blank=True, null=True)
+    group = models.OneToOneField(Group, blank=True, null=True)
+    policy = models.ForeignKey("AttendancePolicy", blank=True, null=True)
+    nfc_id = models.CharField(max_length=50, blank=True, null=True)
 
     def __unicode__(self):
-        return self.nfc_id
+        return str(self.user.profile) + ": " + (self.nfc_id if self.nfc_id else "no nfc card")
 
     def get_stu_id(self, nfc):
         user = self.user
