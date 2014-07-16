@@ -9,12 +9,7 @@ from django.utils.timezone import utc
 
 class Attendance(models.Model):
     user = models.ForeignKey(User)
-<<<<<<< Updated upstream
     datetime = models.DateTimeField()
-=======
-    datetime = models.DateTimeField(auto_now=True)
-    image = models.ImageField(upload_to="image", null=True, blank=True)
->>>>>>> Stashed changes
 
     def __unicode__(self):
         datetime = self.datetime.astimezone(tz.tzlocal())
@@ -51,13 +46,21 @@ class Attendance(models.Model):
 
 
 class AttendanceManager(models.Model):
-    user = models.OneToOneField(User)
-    group = models.OneToOneField(Group)
-    policy = models.ForeignKey("AttendancePolicy")
-    nfc_id = models.CharField(max_length=50, unique=True)
+    user = models.OneToOneField(User, blank=True, null=True)
+    group = models.OneToOneField(Group, blank=True, null=True)
+    policy = models.ForeignKey("AttendancePolicy", blank=True, null=True)
+    nfc_id = models.CharField(max_length=50, blank=True, null=True)
 
     def __unicode__(self):
-        return self.nfc_id
+        return str(self.user.profile) + ": " + (self.nfc_id if self.nfc_id else "no nfc card")
+
+    def get_stu_id(self, nfc):
+        user = self.user
+        while user:
+            if user.nfc == nfc:
+                return user.id
+            else:
+                return 0
 
     def get_attend_time(self):
         return self.policy.attend_time
@@ -72,23 +75,3 @@ class AttendancePolicy(models.Model):
 
     def __unicode__(self):
         return str(self.attend_time) + "/" + str(self.leave_time)
-<<<<<<< Updated upstream
-=======
-    # def __unicode__(self):
-    #     user = str(self.user) if self.user else ""
-    #     group = str(self.group) if self.group else ""
-    #     return user + group +" policy"
-    #
-    # def get_attend_time(self):
-    #     return self.attend_time
-    #
-    # def get_leave_time(self):
-    #     return self.leave_time
-
-
-class Card(models.Model):
-    user_id = models.CharField(max_length=50)
-    nfc_id = models.CharField(max_length=50)
-
-
->>>>>>> Stashed changes

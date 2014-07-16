@@ -1,15 +1,14 @@
-import os
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "benchmarks.settings")
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework import generics
 from rest_framework.filters import SearchFilter
-from rest_framework.permissions import IsAdminUser
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 from academy.models import Student
 from api.serializer import UserSerializer, StudentSerializer, LoginSerializer, AttendanceSerializer
-from attendance.models import AttendanceManager
-
+from dodream import settings
 
 
 class Login(generics.RetrieveAPIView):
@@ -62,11 +61,13 @@ class Login(generics.RetrieveAPIView):
 
 
 class StudentListAPI(generics.ListAPIView):
-    queryset = Student.objects.all()
     serializer_class = StudentSerializer
-    permission_classes = (IsAdminUser,)
+    permission_classes = (IsAuthenticated,)
     filter_backends = (SearchFilter,)
     search_fields = ('name', 'contact')
+
+    def get_queryset(self):
+        return Student.objects.filter(academy=self.request.user.staff.academy)
 
 
 class AttendanceCreateAPI(generics.CreateAPIView):
@@ -79,35 +80,16 @@ class AttendanceCreateAPI(generics.CreateAPIView):
 
         serializer = self.get_serializer(data=request.DATA, files=request.FILES)
         if serializer.is_valid():
+            result = {}
             nfc_id = serializer.data['nfc_id']
-            #print User.objects.filter(attendancemanager__nfc_id=nfc_id).exists()
-            #if User.objects.filter(attendancemanager__nfc_id=nfc_id).exists():
-            serializer.object.user = User.objects.get(attendancemanager__nfc_id=nfc_id)
-            self.pre_save(serializer.object)
-            self.object = serializer.save(force_insert=True)
-            self.post_save(self.object, created=True)
-            headers = self.get_success_headers(serializer.data)
-            result = self.object.get_status()
-            result.update({"data": serializer.data})
-            return Response(result, headers=headers)
+            if User.objects.filter(attendancemanager__nfc_id=nfc_id).exists():
+                user = User.objects.get(attendancemanager__nfc_id=nfc_id)
+                serializer.object.user = user
+
+                self.pre_save(serializer.object)
+                self.object = serializer.save(force_insert=True)
+                self.post_save(self.object, created=True)
+                headers = self.get_success_headers(serializer.data)
+                result = {"data": serializer.data, "message": "success", "result": self.object.get_status()}
+                return Response(result, headers=headers)
         return Response(serializer.errors)
-
-
-# class CardRegisterAPI(generics.CreateAPIView):
-#     serializer_class = CardResisterSerializer
-#
-#     def create(self, request, *args, **kwargs):
-#         serializer = self.get_serializer(data=request.DATA, files=request.FILES)
-#
-#         if serializer.is_valid():
-#             nfc_id = serializer.data['nfc_id']
-#             if not User.objects.filter(attendancemanager__nfc_id=nfc_id).exists():
-#
-#                 self.pre_save(serializer.object)
-#                 self.object = serializer.save(force_insert=True)
-#                 self.post_save(self.object, created=True)
-#                 headers = self.get_success_headers(serializer.data)
-#                 return Response(serializer.data)
-#             #else
-#
-#         return Response(serializer.errors)
