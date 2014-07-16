@@ -68,6 +68,9 @@ class Staff(models.Model):
     def __unicode__(self):
         return self.group.name+" "+self.name
 
+    def get_name(self):
+        return self.name
+
 
 class Guardian(models.Model):
     name = models.CharField(max_length=100)
@@ -122,3 +125,20 @@ class CourseCategory(models.Model):
 
     def get_courses(self):
         return Course.objects.filter(category__id__in=self.get_leaves())
+
+
+class Lecture(models.Model):
+    number = models.CharField(max_length=50)
+    course = models.ForeignKey("Course")
+    staff = models.ForeignKey("Staff")
+    student = models.ManyToManyField("Student")
+    is_online = models.BooleanField()
+
+    def __unicode__(self):
+        return self.course.name
+
+    def get_lecture(self):
+        return Lecture.objects.filter(category__id__in=self.get_leaves())
+
+    def get_stu_num(self):
+        return Lecture.objects.filter(course=self.course, number=self.number).count()

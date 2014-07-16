@@ -133,3 +133,19 @@ class CourseCategoryCreate(CreateView):
         context = super(CourseCategoryCreate, self).get_context_data(**kwargs)
         context.update({'root_categories': CourseCategory.objects.filter(parent=None)})
         return context
+
+
+class LectureList(ListView):
+    template_name = "lecture-list.html"
+    model = Lecture
+    #queryset = Lecture.objects.filter(Lecture__course_parent=None)
+    #context_object_name = "root_categories"
+    queryset = Lecture.objects.all()
+    context_object_name = "lectures"
+
+
+class LectureCreate(CreateView):
+    template_name = "lecture-add.html"
+    model = Lecture
+    form_class = LectureForm
+    success_url = "/lecture-list"

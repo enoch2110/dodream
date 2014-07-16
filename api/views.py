@@ -1,3 +1,5 @@
+import os
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "benchmarks.settings")
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from rest_framework import generics
@@ -6,6 +8,8 @@ from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from academy.models import Student
 from api.serializer import UserSerializer, StudentSerializer, LoginSerializer, AttendanceSerializer
+from attendance.models import AttendanceManager
+
 
 
 class Login(generics.RetrieveAPIView):
@@ -76,9 +80,9 @@ class AttendanceCreateAPI(generics.CreateAPIView):
         serializer = self.get_serializer(data=request.DATA, files=request.FILES)
         if serializer.is_valid():
             nfc_id = serializer.data['nfc_id']
-            #TODO find user_id with nfc_id
-            user_id = AttendanceSerializer.get_stu_id(nfc_id)
-            serializer.object.user = User.objects.get(id=user_id)
+            #print User.objects.filter(attendancemanager__nfc_id=nfc_id).exists()
+            #if User.objects.filter(attendancemanager__nfc_id=nfc_id).exists():
+            serializer.object.user = User.objects.get(attendancemanager__nfc_id=nfc_id)
             self.pre_save(serializer.object)
             self.object = serializer.save(force_insert=True)
             self.post_save(self.object, created=True)
@@ -86,7 +90,24 @@ class AttendanceCreateAPI(generics.CreateAPIView):
             result = self.object.get_status()
             result.update({"data": serializer.data})
             return Response(result, headers=headers)
-
         return Response(serializer.errors)
 
 
+# class CardRegisterAPI(generics.CreateAPIView):
+#     serializer_class = CardResisterSerializer
+#
+#     def create(self, request, *args, **kwargs):
+#         serializer = self.get_serializer(data=request.DATA, files=request.FILES)
+#
+#         if serializer.is_valid():
+#             nfc_id = serializer.data['nfc_id']
+#             if not User.objects.filter(attendancemanager__nfc_id=nfc_id).exists():
+#
+#                 self.pre_save(serializer.object)
+#                 self.object = serializer.save(force_insert=True)
+#                 self.post_save(self.object, created=True)
+#                 headers = self.get_success_headers(serializer.data)
+#                 return Response(serializer.data)
+#             #else
+#
+#         return Response(serializer.errors)
