@@ -40,6 +40,13 @@
                             <li><a href="{% url "course-category" %}">수강등록</a></li>
                         </ul>
                     </li>
+                    <li><a href="#"><i class="fa fa-credit-card"></i><span>수강료 관리</span></a>
+                        <ul class="sub-menu">
+                            <li><a href="{% url "course-list" %}">미납 내역</a></li>
+                            <li><a href="{% url "payment-list" %}">지불 내역</a></li>
+                            <li><a href="{% url "payment-add" %}">지불 내역 추가</a></li>
+                        </ul>
+                    </li>
                     <li><a href="{% url "academy-setting" %}"><i class="fa fa-cogs nav-icon"></i><span>학원정보관리</span></a></li>
                 </ul>
             </div>

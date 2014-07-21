@@ -31,6 +31,7 @@
     <link rel="stylesheet" type="text/css" href="{% static "js/jquery.select2/select2.css" %}" />
     <link rel="stylesheet" type="text/css" href="{% static "js/bootstrap.slider/css/slider.css" %}" />
     <link rel="stylesheet" type="text/css" href="{% static "js/intro.js/introjs.css" %}" />
+    <link rel="stylesheet" href="{% static "js/jquery.icheck/skins/square/blue.css" %}" />
     <!-- Custom styles for this template -->
     <link rel="stylesheet"  href="{% static "css/style.css" %}" />
 
@@ -65,13 +66,13 @@
 
 <div id="cl-wrapper" class="fixed-menu">
     {% include "_includes/_sidebar.html" %}
-
-
+    {% block content_parent %}
     <div class="container-fluid" id="pcont">
         {% block content %}
+
         {% endblock %}
     </div>
-
+    {% endblock %}
 </div>
 
 <script type="text/javascript" src="{% static "js/jquery.js" %}"></script>
@@ -87,6 +88,7 @@
 <script type="text/javascript" src="{% static "js/jquery.select2/select2.min.js" %}"></script>
 <script type="text/javascript" src="{% static "js/bootstrap.slider/js/bootstrap-slider.js" %}"></script>
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;sensor=false"></script>
+<script type="text/javascript" src="{% static "js/jquery.icheck/icheck.min.js" %}"></script>
 <script type="text/javascript" src="{% static "js/main.js" %}"></script>
 <script type="text/javascript">
 $(document).ready(function(){
@@ -105,3 +107,30 @@ $(document).ready(function(){
 <script type="text/javascript" src="{% static "js/jquery.flot/jquery.flot.labels.js" %}"></script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

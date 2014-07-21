@@ -1,12 +1,16 @@
+# -*- coding: utf8 -*-
+
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.forms.models import modelformset_factory
 from django.forms.formsets import formset_factory
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.views.generic import View, CreateView, ListView, DetailView, UpdateView, DeleteView, FormView
 from rest_framework.filters import SearchFilter
 from academy.admin import StudentModelAdmin
 from academy.forms import *
 from academy.models import *
+from dodream.coolsms import send_sms
 
 
 class AcademySetting(UpdateView):
@@ -135,6 +139,19 @@ class CourseCategoryCreate(CreateView):
         return context
 
 
+class CourseUpdate(UpdateView):
+    template_name = "course-update.html"
+    model = Course
+    form_class = CourseForm
+    success_url = "/course-list"
+
+
+class CourseDelete(DeleteView):
+    template_name = "course-delete.html"
+    model = Course
+    success_url = "/course-list"
+
+
 class LectureList(ListView):
     template_name = "lecture-list.html"
     model = Lecture
@@ -149,3 +166,41 @@ class LectureCreate(CreateView):
     model = Lecture
     form_class = LectureForm
     success_url = "/lecture-list"
+
+
+class PaymentList(ListView):
+    template_name = "payment-list.html"
+    context_object_name = "payments"
+
+    def get_queryset(self):
+        import datetime
+        if self.request.GET.get('date'):
+            date = datetime.datetime.strptime(self.request.GET.get('date'), "%Y-%m-%d")
+            daterange = [datetime.datetime.combine(date, datetime.time.min), datetime.datetime.combine(date, datetime.time.max)]
+            queryset = Payment.objects.filter(datetime__range=daterange)
+        else:
+            queryset = Payment.objects.all()
+        return queryset
+
+
+class PaymentCreate(CreateView):
+    template_name = "payment-add.html"
+    model = Payment
+    form_class = PaymentForm
+    success_url = "/payment-list"
+
+
+class PaymentDelete(DeleteView):
+    template_name = "payment-delete.html"
+    model = Payment
+    success_url = "/payment-list"
+
+
+def sms(request):
+    message = "신대호는 바보"#request.GET.get('message').encode('utf-8', 'ignore')
+    to = request.GET.get('to').encode('ascii')
+    if message and to:
+        send_sms(message, to)
+        return HttpResponse('sms sent')
+    else:
+        return HttpResponse('sms could not be sent')

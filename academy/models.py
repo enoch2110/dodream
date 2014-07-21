@@ -71,7 +71,6 @@ class Staff(models.Model):
     def get_name(self):
         return self.name
 
-
 class Guardian(models.Model):
     name = models.CharField(max_length=100)
     email = models.EmailField()
@@ -142,3 +141,13 @@ class Lecture(models.Model):
 
     def get_stu_num(self):
         return Lecture.objects.filter(course=self.course, number=self.number).count()
+
+
+class Payment(models.Model):
+    student = models.ForeignKey(Student)
+    amount = models.IntegerField()
+    datetime = models.DateTimeField(default=datetime.datetime.today())
+    receipt_number = models.CharField(max_length=100, blank=True, null=True)
+
+    def __unicode__(self):
+        return str(self.datetime)+" "+self.student.name +" "+str(self.amount)

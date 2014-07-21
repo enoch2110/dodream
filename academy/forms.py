@@ -3,7 +3,7 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
-from academy.models import Student, Guardian, CourseCategory, Course, Staff, Profile, Academy, Lecture
+from academy.models import *
 
 
 class AcademyForm(forms.ModelForm):
@@ -71,7 +71,14 @@ class CourseForm(forms.ModelForm):
         model = Course
         exclude = ['is_active']
 
+
 class LectureForm(forms.ModelForm):
 
     class Meta:
         model = Lecture
+
+
+class PaymentForm(forms.ModelForm):
+
+    class Meta:
+        model = Payment
