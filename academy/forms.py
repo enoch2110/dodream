@@ -11,18 +11,28 @@ class AcademyForm(forms.ModelForm):
         model = Academy
 
 
-class UserAutoCreateMixin(object):
+class UserCreateMixin(object):
+    class Meta:
+        exclude = ['profile']
+
+    def clean_username(self):
+        data = self.cleaned_data['username']
+        if User.objects.filter(username=data).exists():
+            raise forms.ValidationError("Username exists already!")
+        return data
+
     def save(self, commit=True):
-        if not self.instance.pk or not self.instance.user:
-            password = str(self.instance.birthday).replace("-", "")[2:]
-            self.instance.user = User.objects.create_user(self.instance.email, self.instance.email, password)
-        return super(UserAutoCreateMixin, self).save(commit)
+        instance = super(UserCreateMixin, self).save(commit=commit)
+        if not instance.profile.user:
+            instance.profile.user = User.objects.create_user(self.cleaned_data['username'], "", self.cleaned_data['username'])
+            instance.profile.save()
+        return instance
 
 
-class StudentCreateForm(UserAutoCreateMixin, forms.ModelForm):
+class StudentCreateForm(forms.ModelForm):
     class Meta:
         model = Student
-        exclude = ['user', 'academy']
+        exclude = ['profile', 'academy']
 
     def clean_contact(self):
         data = self.cleaned_data['contact']
@@ -40,10 +50,10 @@ class StudentFilterForm(forms.Form):
     search = forms.CharField(label="검색", required=False)
 
 
-class StaffForm(UserAutoCreateMixin, forms.ModelForm):
+class StaffForm(forms.ModelForm):
     class Meta:
         model = Staff
-        exclude = ['user', 'academy']
+        exclude = ['profile', 'academy']
 
     def clean_contact(self):
         data = self.cleaned_data['contact']
@@ -68,7 +78,7 @@ class GuardianForm(forms.ModelForm):
 
     class Meta:
         model = Guardian
-        exclude = ['student', 'user']
+        exclude = ['student', 'profile']
 
     def clean_contact(self):
         data = self.cleaned_data['contact']

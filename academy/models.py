@@ -15,16 +15,26 @@ class Academy(models.Model):
 
 
 class Profile(models.Model):
-    user = models.OneToOneField(User)
+    user = models.OneToOneField(User, blank=True, null=True)
 
     def __unicode__(self):
-        return self.user.username + "'s profile"
+        username = self.user.username if self.user else "no user"
+        if Student.objects.filter(profile=self).exists():
+            name = "Student: "+self.student.name
+        elif Staff.objects.filter(profile=self).exists():
+            name = "Staff: "+self.staff.name
+        elif Guardian.objects.filter(profile=self).exists():
+            name = "Guardian: "+self.guardian.name
+        else:
+            name = "no name"
+
+        return name + "'s profile (" + username + ")"
 
     def get_name(self):
         return self.user.last_name+" "+self.user.first_name
 
     def can_use_admin(self):
-        return Staff.objects.filter(user=self.user).exists()
+        return Staff.objects.filter(profile__user=self.user).exists()
 
 
 class Student(models.Model):
@@ -32,7 +42,7 @@ class Student(models.Model):
     ATTEND_METHOD_CHOICES = [(1, "도보"), (2, "통학버스")]
 
     name = models.CharField(max_length=100)
-    email = models.EmailField(help_text="계정명으로 사용됩니다.")
+    email = models.EmailField(blank=True, null=True)
     image = models.ImageField(upload_to="academy/student")
     gender = models.BooleanField(choices=GENDER_CHOICES)
     birthday = models.DateField()
@@ -43,7 +53,7 @@ class Student(models.Model):
     use_sms = models.BooleanField()
     registered_date = models.DateField(default=datetime.date.today())
     information = models.TextField(blank=True, null=True)
-    user = models.OneToOneField(User)
+    profile = models.OneToOneField(Profile)
     academy = models.ForeignKey(Academy)
 
     def __unicode__(self):
@@ -54,7 +64,7 @@ class Student(models.Model):
 
 class Staff(models.Model):
     name = models.CharField(max_length=100)
-    email = models.EmailField(help_text="계정명으로 사용됩니다.")
+    email = models.EmailField(blank=True, null=True)
     image = models.ImageField(upload_to="academy/staff", blank=True, null=True)
     birthday = models.DateField()
     address = models.CharField(max_length=200, blank=True, null=True)
@@ -63,7 +73,7 @@ class Staff(models.Model):
     main_course = models.ForeignKey("Course", blank=True, null=True)
     specs = models.TextField(max_length=100, blank=True, null=True)
     registered_date = models.DateField(default=datetime.date.today())
-    user = models.OneToOneField(User)
+    profile = models.OneToOneField(Profile)
     academy = models.ForeignKey(Academy)
 
     def __unicode__(self):
@@ -79,7 +89,7 @@ class Guardian(models.Model):
     contact = models.CharField(max_length=20, blank=True, null=True)
     relation = models.CharField(max_length=100)
     student = models.ForeignKey(Student)
-    user = models.OneToOneField(User)
+    profile = models.OneToOneField(Profile)
 
 
 class Course(models.Model):

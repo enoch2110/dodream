@@ -1,5 +1,6 @@
 {% extends "_layouts/base.html" %}
 {% load static from staticfiles %}
+{% load i18n %}
 
 {% block content %}
     <div class="page-head">
@@ -28,6 +29,7 @@
                                     <th class="col-xs-1">등원방법</th>
                                     <th class="col-xs-2">보호자</th>
                                     <th class="col-xs-1">납부여부</th>
+                                    <th>계정</th>
                                     <th class="col-xs-2"></th>
                                 </tr>
                                 </thead>
@@ -45,6 +47,13 @@
                                             {% endfor %}
                                         </td>
                                         <td class="center">{{ student.is_paid }}</td>
+                                        <td>
+                                            {% if student.profile.user %}
+                                                {{student.profile.user}}
+                                            {% else %}
+                                                <a href="{% url "account-create" type=0 pk=student.id %}" class="btn btn-primary btn-xs">계정추가</a>
+                                            {% endif %}
+                                        </td>
                                         <td class="center">
                                             <a class="btn btn-default btn-xs" href="#" data-original-title="Open" data-toggle="tooltip"><i class="fa fa-file"></i></a>
                                             <a class="btn btn-primary btn-xs" href="{% url "student-update" student.id %}" data-original-title="Edit" data-toggle="tooltip"><i class="fa fa-pencil"></i></a>

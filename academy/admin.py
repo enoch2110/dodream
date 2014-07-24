@@ -17,8 +17,8 @@ class StudentModelAdmin(admin.ModelAdmin):
 
 
 class StaffAdmin(admin.ModelAdmin):
+    exclude = ['profile']
     form = StaffForm
-    exclude = ['user']
 
 
 class PaymentModelAdmin(admin.ModelAdmin):

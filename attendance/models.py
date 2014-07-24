@@ -9,7 +9,7 @@ from academy.models import Profile
 
 
 class Attendance(models.Model):
-    user = models.ForeignKey(User)
+    profile = models.OneToOneField(Profile)
     datetime = models.DateTimeField(auto_now=True)
 
     def __unicode__(self):

@@ -19,6 +19,7 @@
                                     <th>전화번호</th>
                                     <th>직위</th>
                                     <th>주과목</th>
+                                    <th>계정</th>
                                     <th></th>
                                 </tr>
                                 </thead>
@@ -30,12 +31,19 @@
                                         <td>{{ staff.contact }}</td>
                                         <td class="center">{{ staff.group }}</td>
                                         <td class="center">{{ staff.main_course }}</td>
-
+                                        <td>
+                                            {% if staff.profile.user %}
+                                                {{staff.profile.user}}
+                                            {% else %}
+                                                <a href="{% url "account-create" type=1 pk=staff.id %}" class="btn btn-primary btn-xs">계정추가</a>
+                                            {% endif %}
+                                        </td>
                                         <td class="center">
                                             <a class="btn btn-default btn-xs" href="{% url "staff-detail" staff.id %}" data-original-title="Open" data-toggle="tooltip"><i class="fa fa-file"></i></a>
                                             <a class="btn btn-primary btn-xs" href="{% url "staff-update" staff.id %}" data-original-title="Edit" data-toggle="tooltip"><i class="fa fa-pencil"></i></a>
                                             <a class="btn btn-danger btn-xs" href="{% url "staff-delete" staff.id %}" data-original-title="Remove" data-toggle="tooltip"><i class="fa fa-times"></i></a>
                                         </td>
+
                                     </tr>
                                 {% endfor %}
                                 </tbody>

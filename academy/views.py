@@ -1,6 +1,7 @@
 # -*- coding: utf8 -*-
 
 from django.contrib.auth.forms import UserCreationForm, SetPasswordForm
+from django.core.urlresolvers import reverse
 from django.forms.models import modelformset_factory
 from django.forms.formsets import formset_factory
 from django.http import HttpResponse
@@ -25,6 +26,43 @@ class AcademySetting(UpdateView):
         return Academy.objects.get(id=self.request.user.staff.academy.id)
 
 
+class AccountCreate(CreateView):
+    template_name = "account-add.html"
+    form_class = UserCreationForm
+
+    def get_success_url(self):
+        class_type = self.kwargs['type']
+        if class_type in ["0", "2"]:
+            return reverse("student-list")
+        if class_type == "1":
+            return reverse("staff-list")
+        else:
+            return "/"
+
+    def form_valid(self, form):
+        class_type = self.kwargs['type']
+        pk = self.kwargs['pk']
+
+        exists_1 = class_type == "0" and Student.objects.filter(id=pk).exists()
+        exists_2 = class_type == "1" and Staff.objects.filter(id=pk).exists()
+        exists_3 = class_type == "2" and Guardian.objects.filter(id=pk).exists()
+
+        if exists_1 or exists_2 or exists_3:
+            instance = form.save()
+            if class_type == "0":
+                profile = Student.objects.get(id=pk).profile
+            if class_type == "1":
+                profile = Staff.objects.get(id=pk).profile
+            if class_type == "2":
+                profile = Guardian.objects.get(id=pk).profile
+
+            profile.user = instance
+            profile.save()
+            return super(AccountCreate, self).form_valid(form)
+        else:
+            return super(AccountCreate, self).form_invalid(form)
+
+
 class StudentRegistration(View):
     template_name = "student-add.html"
     formset_class = formset_factory(GuardianForm)
@@ -40,7 +78,7 @@ class StudentRegistration(View):
         formset = self.formset_class(request.POST)
         if form.is_valid() and formset.is_valid():
             student = form.save(commit=False)
-            student.academy = request.user.staff.academy
+            student.academy = request.user.profile.staff.academy
             student.save()
             for form in formset:
                 if form.has_changed():
@@ -114,7 +152,6 @@ class StudentList(ListView):
         return render_to_response('student-list.html', {"students": students})
 
 
-
 class StaffList(ListView):
     template_name = "staff-list.html"
     queryset = Staff.objects.all()
@@ -132,6 +169,10 @@ class StaffCreate(CreateView):
     model = Staff
     form_class = StaffForm
     success_url = "/staff-list"
+
+    def form_valid(self, form):
+        form.instance.academy = self.request.user.profile.staff.academy
+        return super(StaffCreate, self).form_valid(form)
 
 
 class StaffUpdate(UpdateView):
@@ -215,7 +256,6 @@ class PaymentList(ListView):
             queryset = Payment.objects.filter(datetime__range=daterange)
         else:
             queryset = Payment.objects.all()
-
 
         return PaymentModelAdmin(Payment, None).get_search_results(self.request, queryset, self.request.GET.get('q'))[0]
 
