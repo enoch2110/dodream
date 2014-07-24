@@ -5,11 +5,12 @@ from django.contrib.auth.models import User, Group
 from django.db import models
 from django.db.models import Min
 from django.utils.timezone import utc
+from academy.models import Profile
 
 
 class Attendance(models.Model):
     user = models.ForeignKey(User)
-    datetime = models.DateTimeField()
+    datetime = models.DateTimeField(auto_now=True)
 
     def __unicode__(self):
         datetime = self.datetime.astimezone(tz.tzlocal())
@@ -46,7 +47,7 @@ class Attendance(models.Model):
 
 
 class AttendanceManager(models.Model):
-    user = models.OneToOneField(User, blank=True, null=True)
+    profile = models.OneToOneField(Profile, blank=True, null=True)
     group = models.OneToOneField(Group, blank=True, null=True)
     policy = models.ForeignKey("AttendancePolicy", blank=True, null=True)
     nfc_id = models.CharField(max_length=50, blank=True, null=True)

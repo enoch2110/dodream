@@ -21,7 +21,7 @@ class StudentSerializer(serializers.ModelSerializer):
 
 class AttendanceSerializer(serializers.ModelSerializer):
     nfc_id = serializers.CharField()
-    image = serializers.ImageField(blank=True)#upload_to="image")
+    #image = serializers.ImageField(blank=True)#upload_to="image")
 
     class Meta:
         model = Attendance
@@ -33,6 +33,7 @@ class AttendanceManagerSerializer(serializers.ModelSerializer):
         model = AttendanceManager
 
 
-#class CardResisterSerializer(serializers.ModelSerializer):
-#    class Meta:
-#        model = Card
+class CardSerializer(serializers.Serializer):
+    class Meta:
+        model = AttendanceManager
+        fields = ['nfc_id']

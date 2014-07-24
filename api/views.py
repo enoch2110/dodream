@@ -7,8 +7,9 @@ from rest_framework.filters import SearchFilter
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 from academy.models import Student
-from api.serializer import UserSerializer, StudentSerializer, LoginSerializer, AttendanceSerializer
+from api.serializer import UserSerializer, StudentSerializer, LoginSerializer, AttendanceSerializer, CardSerializer
 from dodream import settings
+from dodream.coolsms import send_sms
 
 
 class Login(generics.RetrieveAPIView):
@@ -71,13 +72,10 @@ class StudentListAPI(generics.ListAPIView):
 
 
 class AttendanceCreateAPI(generics.CreateAPIView):
+    permission_classes = (IsAuthenticated,)
     serializer_class = AttendanceSerializer
 
     def create(self, request, *args, **kwargs):
-        if not (request.user.is_authenticated() and request.user.is_superuser):
-            result = {"code": 0, "message": "not authorized"}
-            return Response(result)
-
         serializer = self.get_serializer(data=request.DATA, files=request.FILES)
         if serializer.is_valid():
             result = {}
@@ -85,11 +83,27 @@ class AttendanceCreateAPI(generics.CreateAPIView):
             if User.objects.filter(attendancemanager__nfc_id=nfc_id).exists():
                 user = User.objects.get(attendancemanager__nfc_id=nfc_id)
                 serializer.object.user = user
-
                 self.pre_save(serializer.object)
                 self.object = serializer.save(force_insert=True)
                 self.post_save(self.object, created=True)
                 headers = self.get_success_headers(serializer.data)
                 result = {"data": serializer.data, "message": "success", "result": self.object.get_status()}
+
+                # message = ""
+                # to = request.GET.get('to').encode('ascii')
+                # if message and to:
+                #     send_sms(message, to)
+                #     sms_result = 'sms sent'
+                # else:d
+                #     sms_result = 'sms could not be sent'
+                # result.update({"sms": sms_result})
+
                 return Response(result, headers=headers)
         return Response(serializer.errors)
+
+
+class CardRegisterAPI(generics.UpdateAPIView):
+    serializer_class = CardSerializer
+
+    def get_object(self, queryset=None):
+        return

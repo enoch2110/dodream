@@ -3,8 +3,6 @@
 from django.contrib.auth.models import User, Group, AbstractBaseUser
 from django.db import models
 import datetime
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 
 
 class Academy(models.Model):
@@ -34,10 +32,10 @@ class Student(models.Model):
     ATTEND_METHOD_CHOICES = [(1, "도보"), (2, "통학버스")]
 
     name = models.CharField(max_length=100)
+    email = models.EmailField(help_text="계정명으로 사용됩니다.")
     image = models.ImageField(upload_to="academy/student")
     gender = models.BooleanField(choices=GENDER_CHOICES)
     birthday = models.DateField()
-    email = models.EmailField()
     address = models.CharField(max_length=200, blank=True, null=True)
     contact = models.CharField(max_length=20, blank=True, null=True)
     school = models.CharField(max_length=50, blank=True, null=True)
@@ -45,26 +43,27 @@ class Student(models.Model):
     use_sms = models.BooleanField()
     registered_date = models.DateField(default=datetime.date.today())
     information = models.TextField(blank=True, null=True)
-    user = models.OneToOneField(User, blank=True, null=True)
+    user = models.OneToOneField(User)
     academy = models.ForeignKey(Academy)
 
     def __unicode__(self):
         return self.name
-    #
-    #def is_paid 구현
+    
+    #TODO: def is_paid 구현
 
 
 class Staff(models.Model):
     name = models.CharField(max_length=100)
+    email = models.EmailField(help_text="계정명으로 사용됩니다.")
     image = models.ImageField(upload_to="academy/staff", blank=True, null=True)
-    email = models.EmailField()
+    birthday = models.DateField()
     address = models.CharField(max_length=200, blank=True, null=True)
     contact = models.CharField(max_length=20, blank=True, null=True)
     group = models.ForeignKey(Group)
     main_course = models.ForeignKey("Course", blank=True, null=True)
     specs = models.TextField(max_length=100, blank=True, null=True)
     registered_date = models.DateField(default=datetime.date.today())
-    user = models.OneToOneField(User, blank=True, null=True)
+    user = models.OneToOneField(User)
     academy = models.ForeignKey(Academy)
 
     def __unicode__(self):
@@ -73,13 +72,14 @@ class Staff(models.Model):
     def get_name(self):
         return self.name
 
+
 class Guardian(models.Model):
     name = models.CharField(max_length=100)
     email = models.EmailField()
     contact = models.CharField(max_length=20, blank=True, null=True)
     relation = models.CharField(max_length=100)
     student = models.ForeignKey(Student)
-    user = models.OneToOneField(User, blank=True, null=True)
+    user = models.OneToOneField(User)
 
 
 class Course(models.Model):
@@ -131,7 +131,7 @@ class CourseCategory(models.Model):
 class Lecture(models.Model):
     number = models.CharField(max_length=50)
     course = models.ForeignKey("Course")
-    staff = models.ForeignKey("Staff")
+    staff = models.ManyToManyField("Staff")
     student = models.ManyToManyField("Student")
     is_online = models.BooleanField()
 
@@ -152,4 +152,4 @@ class Payment(models.Model):
     receipt_number = models.CharField(max_length=100, blank=True, null=True)
 
     def __unicode__(self):
-        return str(self.datetime)+" "+self.student.name +" "+str(self.amount)
+        return str(self.datetime)+" "+self.student.name+" "+str(self.amount)

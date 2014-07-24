@@ -1,4 +1,4 @@
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
@@ -11,7 +11,15 @@ class AcademyForm(forms.ModelForm):
         model = Academy
 
 
-class StudentCreateForm(forms.ModelForm):
+class UserAutoCreateMixin(object):
+    def save(self, commit=True):
+        if not self.instance.pk or not self.instance.user:
+            password = str(self.instance.birthday).replace("-", "")[2:]
+            self.instance.user = User.objects.create_user(self.instance.email, self.instance.email, password)
+        return super(UserAutoCreateMixin, self).save(commit)
+
+
+class StudentCreateForm(UserAutoCreateMixin, forms.ModelForm):
     class Meta:
         model = Student
         exclude = ['user', 'academy']
@@ -32,8 +40,7 @@ class StudentFilterForm(forms.Form):
     search = forms.CharField(label="검색", required=False)
 
 
-class StaffForm(forms.ModelForm):
-
+class StaffForm(UserAutoCreateMixin, forms.ModelForm):
     class Meta:
         model = Staff
         exclude = ['user', 'academy']
