@@ -21,6 +21,10 @@ class StaffAdmin(admin.ModelAdmin):
     exclude = ['user']
 
 
+class PaymentModelAdmin(admin.ModelAdmin):
+    search_fields = ['student__name']
+
+
 admin.site.register(Academy)
 admin.site.register(Student, StudentModelAdmin)
 admin.site.register(Staff, StaffAdmin)
