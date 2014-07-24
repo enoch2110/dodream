@@ -23,7 +23,7 @@ class AcademySetting(UpdateView):
     success_url = "/setting"
 
     def get_object(self, queryset=None):
-        return Academy.objects.get(id=self.request.user.staff.academy.id)
+        return Academy.objects.get(id=self.request.user.profile.staff.academy.id)
 
 
 class AccountCreate(CreateView):
