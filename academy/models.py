@@ -47,6 +47,8 @@ class Student(models.Model):
 
     def __unicode__(self):
         return self.name
+    #
+    #def is_paid 구현
 
 
 class Staff(models.Model):

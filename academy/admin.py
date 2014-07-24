@@ -5,7 +5,7 @@ from academy.models import *
 
 
 class StudentModelAdmin(admin.ModelAdmin):
-    search_fields = ('name',)
+    search_fields = ('name', 'contact')
 
 
 admin.site.register(Academy)

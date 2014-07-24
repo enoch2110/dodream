@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+#-*- coding: utf-8 -*-
 
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
@@ -14,6 +14,17 @@ class StudentCreateForm(forms.ModelForm):
     def clean_contact(self):
         data = self.cleaned_data['contact']
         return data.replace('-', "")
+
+
+class StudentFilterForm(forms.Form):
+    ATTEND_METHOD_CHOICES = [('', "필터안함"), (1, "도보"), (2, "통학버스")]
+    IS_PAID_CHOICES = [('', "필터안함"), (True, "지불"), (False, "미지불")]
+    COURSE_CHOICES = [('', "필터안함")]
+
+    attend_method = forms.ChoiceField(label="등원수단", choices=ATTEND_METHOD_CHOICES, required=False)
+    is_paid = forms.ChoiceField(label="지불여부", choices=IS_PAID_CHOICES, required=False)
+    course = forms.ChoiceField(label="수강과목", choices=COURSE_CHOICES, required=False)
+    search = forms.CharField(label="검색", required=False)
 
 
 class StaffForm(forms.ModelForm):

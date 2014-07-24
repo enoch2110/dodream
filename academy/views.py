@@ -1,10 +1,12 @@
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.forms.models import modelformset_factory
 from django.forms.formsets import formset_factory
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, render_to_response
 from django.views.generic import View, CreateView, ListView, DetailView, UpdateView, DeleteView
 from rest_framework.filters import SearchFilter
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from academy.admin import StudentModelAdmin
+from academy.filters import StudentFilter
 from academy.forms import *
 from academy.models import *
 
@@ -63,11 +65,39 @@ class StudentUpdate(View):
 
 class StudentList(ListView):
     template_name = "student-list.html"
-    queryset = Student.objects.all()
     context_object_name = "students"
+    paginate_by = 10
+
+    def get_context_data(self, **kwargs):
+        context = super(StudentList, self).get_context_data(**kwargs)
+        context.update({"filter_form": StudentFilterForm(self.request.GET)})
+        return context
 
     def get_queryset(self):
-        return StudentModelAdmin(Student, None).get_search_results(self.request, self.queryset, self.request.GET.get('q'))[0]
+        search_param = self.request.GET.get('search')
+        attend_method_param = self.request.GET.get('attend_method')
+        is_paid_param = self.request.GET.get('is_paid')
+        course_param = self.request.GET.get('course')
+
+        students = StudentModelAdmin(Student, None).get_search_results(self.request, self.queryset, search_param)[0]
+        students = StudentFilter(self.request.GET, queryset=students)
+
+        return students
+
+    def listing(request):
+        student_list = Student.objects.all();
+        paginator = Paginator(student_list, 10)
+
+        page = request.GET.get('page')
+        try:
+            students = paginator.page(page)
+        except PageNotAnInteger:
+            students = paginator.page(1)
+        except EmptyPage:
+            students = paginator.page(paginator.num_page)
+
+        return render_to_response('student-list.html', {"students": students})
+
 
 
 class StaffList(ListView):
