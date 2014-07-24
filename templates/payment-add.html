@@ -3,19 +3,20 @@
 
 {% block content %}
     <div class="page-head">
-        <h2>직원 수정</h2>
+        <h2>지불 내역 추가</h2>
     </div>
     <div class="cl-mcont">
         <div class="row">
-            <form class="form-horizontal group-border-dashed" action="{% url "staff-update" object.id %}" method="post" enctype="multipart/form-data">
+            <form class="form-horizontal group-border-dashed" action="{% url "payment-add" %}" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
+                <div class="col-md-12">
                 <div class="col-md-12">
 
                     <div class="block-flat">
                         <div class="row">
-                            <div class="col-sm-6">
+                            <div class="col-sm-12">
                                 <div class="header">
-                                    <h3>Staff Profile</h3>
+                                    <h3>Payment Detail</h3>
                                 </div>
                                 <div class="content">
                                     {% for field in form %}
@@ -31,20 +32,12 @@
                                     {% endfor %}
                                 </div>
                             </div>
-                            <div class="col-sm-6">
-                                <div class="header">
-                                    <h3>Staff Account</h3>
-                                </div>
-                                <div class="content">
-
-                                </div>
-                            </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-sm-12" style="text-align: center;">
                             <button type="submit" class="btn btn-primary">등록</button>
-                            <a href="{% url "staff-list" %}" class="btn btn-default">취소</a>
+                            <button type="reset" class="btn btn-default">취소</button>
                         </div>
                     </div>
                 </div>

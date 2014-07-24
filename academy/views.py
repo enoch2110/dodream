@@ -1,9 +1,13 @@
+# -*- coding: utf8 -*-
+
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.forms.models import modelformset_factory
 from django.forms.formsets import formset_factory
-from django.shortcuts import render, redirect, render_to_response
-from django.views.generic import View, CreateView, ListView, DetailView, UpdateView, DeleteView
+from django.http import HttpResponse
+from django.shortcuts import render, redirect
+from django.views.generic import View, CreateView, ListView, DetailView, UpdateView, DeleteView, FormView
 from rest_framework.filters import SearchFilter
+from academy.admin import StudentModelAdmin, PaymentModelAdmin
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from academy.admin import StudentModelAdmin
 from academy.filters import StudentFilter
@@ -65,6 +69,7 @@ class StudentUpdate(View):
 
 class StudentList(ListView):
     template_name = "student-list.html"
+    queryset = Student.objects.all()
     context_object_name = "students"
     paginate_by = 10
 
@@ -154,3 +159,75 @@ class CourseCategoryCreate(CreateView):
         context = super(CourseCategoryCreate, self).get_context_data(**kwargs)
         context.update({'root_categories': CourseCategory.objects.filter(parent=None)})
         return context
+
+
+class CourseUpdate(UpdateView):
+    template_name = "course-update.html"
+    model = Course
+    form_class = CourseForm
+    success_url = "/course-list"
+
+
+class CourseDelete(DeleteView):
+    template_name = "course-delete.html"
+    model = Course
+    success_url = "/course-list"
+
+
+class LectureList(ListView):
+    template_name = "lecture-list.html"
+    model = Lecture
+    #queryset = Lecture.objects.filter(Lecture__course_parent=None)
+    #context_object_name = "root_categories"
+    queryset = Lecture.objects.all()
+    context_object_name = "lectures"
+
+
+class LectureCreate(CreateView):
+    template_name = "lecture-add.html"
+    model = Lecture
+    form_class = LectureForm
+    success_url = "/lecture-list"
+
+
+class PaymentList(ListView):
+    template_name = "payment-list.html"
+    context_object_name = "payments"
+
+    def get_queryset(self):
+        import datetime
+        if self.request.GET.get('date'):
+            date_begin = datetime.datetime.strptime(self.request.GET.get('date').split(" - ")[0], "%Y-%m-%d")
+            date_end = datetime.datetime.strptime(self.request.GET.get('date').split(" - ")[1], "%Y-%m-%d")
+            print date_begin
+            print date_end
+            daterange = [datetime.datetime.combine(date_begin, datetime.time.min), datetime.datetime.combine(date_end, datetime.time.max)]
+            queryset = Payment.objects.filter(datetime__range=daterange)
+        else:
+            queryset = Payment.objects.all()
+
+
+        return PaymentModelAdmin(Payment, None).get_search_results(self.request, queryset, self.request.GET.get('q'))[0]
+
+
+class PaymentCreate(CreateView):
+    template_name = "payment-add.html"
+    model = Payment
+    form_class = PaymentForm
+    success_url = "/payment-list"
+
+
+class PaymentDelete(DeleteView):
+    template_name = "payment-delete.html"
+    model = Payment
+    success_url = "/payment-list"
+
+
+def sms(request):
+    message = "신대호는 바보"#request.GET.get('message').encode('utf-8', 'ignore')
+    to = request.GET.get('to').encode('ascii')
+    if message and to:
+        send_sms(message, to)
+        return HttpResponse('sms sent')
+    else:
+        return HttpResponse('sms could not be sent')

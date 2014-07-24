@@ -1,0 +1,22 @@
+{% extends "_layouts/base.html" %}
+
+{% block content %}
+
+
+{% for lecture in lectures %}
+    <table class="table">
+            <tr>
+            <td>{{ lecture }}</td>
+            <td>{{ lecture.staff.name }}</td>
+            <td>{{ lecture.get_stu_num}}</td>
+            <td>{{ lecture.is_online}}</td>
+            <td></td>
+
+            </tr>
+
+    </table>
+{% empty %}
+            <h5>과목 없음</h5>
+        {% endfor %}
+
+{% endblock %}

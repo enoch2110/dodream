@@ -12,6 +12,9 @@ class Academy(models.Model):
     image = models.ImageField(upload_to="academy")
     address = models.CharField(max_length=200)
 
+    def __unicode__(self):
+        return self.name
+
 
 class Profile(models.Model):
     user = models.OneToOneField(User)
@@ -67,6 +70,8 @@ class Staff(models.Model):
     def __unicode__(self):
         return self.group.name+" "+self.name
 
+    def get_name(self):
+        return self.name
 
 class Guardian(models.Model):
     name = models.CharField(max_length=100)
@@ -121,3 +126,30 @@ class CourseCategory(models.Model):
 
     def get_courses(self):
         return Course.objects.filter(category__id__in=self.get_leaves())
+
+
+class Lecture(models.Model):
+    number = models.CharField(max_length=50)
+    course = models.ForeignKey("Course")
+    staff = models.ForeignKey("Staff")
+    student = models.ManyToManyField("Student")
+    is_online = models.BooleanField()
+
+    def __unicode__(self):
+        return self.course.name
+
+    def get_lecture(self):
+        return Lecture.objects.filter(category__id__in=self.get_leaves())
+
+    def get_stu_num(self):
+        return Lecture.objects.filter(course=self.course, number=self.number).count()
+
+
+class Payment(models.Model):
+    student = models.ForeignKey(Student)
+    amount = models.IntegerField()
+    datetime = models.DateTimeField(default=datetime.datetime.today())
+    receipt_number = models.CharField(max_length=100, blank=True, null=True)
+
+    def __unicode__(self):
+        return str(self.datetime)+" "+self.student.name +" "+str(self.amount)
