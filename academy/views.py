@@ -1,6 +1,6 @@
 # -*- coding: utf8 -*-
 
-from django.core.urlresolvers import reverse, reverse_lazy
+from django.contrib.auth.forms import UserCreationForm, SetPasswordForm
 from django.forms.models import modelformset_factory
 from django.forms.formsets import formset_factory
 from django.http import HttpResponse
@@ -10,7 +10,6 @@ from rest_framework.filters import SearchFilter
 from academy.admin import StudentModelAdmin
 from academy.forms import *
 from academy.models import *
-from dodream.coolsms import send_sms
 
 
 class AcademySetting(UpdateView):
@@ -37,7 +36,7 @@ class StudentRegistration(View):
         formset = self.formset_class(request.POST)
         if form.is_valid() and formset.is_valid():
             student = form.save(commit=False)
-            student.academy = request.user.staff.academy
+            student.academy = request.user.profile.staff.academy
             student.save()
             for form in formset:
                 if form.has_changed():
@@ -79,8 +78,8 @@ class StudentList(ListView):
     queryset = Student.objects.all()
     context_object_name = "students"
 
-    def get_queryset(self):
-        return StudentModelAdmin(Student, None).get_search_results(self.request, self.queryset, self.request.GET.get('q'))[0]
+    # def get_queryset(self):
+    #     return StudentModelAdmin(Student, None).get_search_results(self.request, self.queryset, self.request.GET.get('q'))[0]
 
 
 class StaffList(ListView):
@@ -196,11 +195,20 @@ class PaymentDelete(DeleteView):
     success_url = "/payment-list"
 
 
-def sms(request):
-    message = "신대호는 바보"#request.GET.get('message').encode('utf-8', 'ignore')
-    to = request.GET.get('to').encode('ascii')
-    if message and to:
-        send_sms(message, to)
-        return HttpResponse('sms sent')
-    else:
-        return HttpResponse('sms could not be sent')
+class AccountCreate(CreateView):
+    template_name = "account-create.html"
+    model = User
+    form_class = UserCreationForm
+
+    def form_valid(self, form):
+        staff_id = self.request.POST.get("staff_id")
+        student_id = self.request.POST.get("student_id")
+
+        if staff_id and Staff.objects.filter(id=staff_id).exists():
+            form.instance.staff = Staff.objects.get(id=staff_id)
+        elif student_id and Student.objects.filter(id=student_id).exists():
+            form.instance.student = Staff.objects.get(id=student_id)
+        else:
+            return self.form_invalid(form)
+
+        return super(AccountCreate, self).form_valid(form)
