@@ -1,17 +1,13 @@
 # -*- coding: utf8 -*-
 
-from django.contrib.auth.forms import UserCreationForm, SetPasswordForm
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse, reverse_lazy
 from django.forms.models import modelformset_factory
 from django.forms.formsets import formset_factory
 from django.http import HttpResponse
-from django.shortcuts import render, redirect, render_to_response
+from django.shortcuts import render, redirect
 from django.views.generic import View, CreateView, ListView, DetailView, UpdateView, DeleteView, FormView
 from rest_framework.filters import SearchFilter
 from academy.admin import StudentModelAdmin, PaymentModelAdmin
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from academy.admin import StudentModelAdmin, PaymentModelAdmin
-from academy.filters import StudentFilter
 from academy.forms import *
 from academy.models import *
 from dodream.coolsms import send_sms
@@ -23,44 +19,7 @@ class AcademySetting(UpdateView):
     success_url = "/setting"
 
     def get_object(self, queryset=None):
-        return Academy.objects.get(id=self.request.user.profile.staff.academy.id)
-
-
-class AccountCreate(CreateView):
-    template_name = "account-add.html"
-    form_class = UserCreationForm
-
-    def get_success_url(self):
-        class_type = self.kwargs['type']
-        if class_type in ["0", "2"]:
-            return reverse("student-list")
-        if class_type == "1":
-            return reverse("staff-list")
-        else:
-            return "/"
-
-    def form_valid(self, form):
-        class_type = self.kwargs['type']
-        pk = self.kwargs['pk']
-
-        exists_1 = class_type == "0" and Student.objects.filter(id=pk).exists()
-        exists_2 = class_type == "1" and Staff.objects.filter(id=pk).exists()
-        exists_3 = class_type == "2" and Guardian.objects.filter(id=pk).exists()
-
-        if exists_1 or exists_2 or exists_3:
-            instance = form.save()
-            if class_type == "0":
-                profile = Student.objects.get(id=pk).profile
-            if class_type == "1":
-                profile = Staff.objects.get(id=pk).profile
-            if class_type == "2":
-                profile = Guardian.objects.get(id=pk).profile
-
-            profile.user = instance
-            profile.save()
-            return super(AccountCreate, self).form_valid(form)
-        else:
-            return super(AccountCreate, self).form_invalid(form)
+        return Academy.objects.get(id=self.request.user.staff.academy.id)
 
 
 class StudentRegistration(View):
@@ -78,7 +37,7 @@ class StudentRegistration(View):
         formset = self.formset_class(request.POST)
         if form.is_valid() and formset.is_valid():
             student = form.save(commit=False)
-            student.academy = request.user.profile.staff.academy
+            student.academy = request.user.staff.academy
             student.save()
             for form in formset:
                 if form.has_changed():
@@ -119,37 +78,9 @@ class StudentList(ListView):
     template_name = "student-list.html"
     queryset = Student.objects.all()
     context_object_name = "students"
-    paginate_by = 10
-
-    def get_context_data(self, **kwargs):
-        context = super(StudentList, self).get_context_data(**kwargs)
-        context.update({"filter_form": StudentFilterForm(self.request.GET)})
-        return context
 
     def get_queryset(self):
-        search_param = self.request.GET.get('search')
-        attend_method_param = self.request.GET.get('attend_method')
-        is_paid_param = self.request.GET.get('is_paid')
-        course_param = self.request.GET.get('course')
-
-        students = StudentModelAdmin(Student, None).get_search_results(self.request, self.queryset, search_param)[0]
-        students = StudentFilter(self.request.GET, queryset=students)
-
-        return students
-
-    def listing(request):
-        student_list = Student.objects.all();
-        paginator = Paginator(student_list, 10)
-
-        page = request.GET.get('page')
-        try:
-            students = paginator.page(page)
-        except PageNotAnInteger:
-            students = paginator.page(1)
-        except EmptyPage:
-            students = paginator.page(paginator.num_page)
-
-        return render_to_response('student-list.html', {"students": students})
+        return StudentModelAdmin(Student, None).get_search_results(self.request, self.queryset, self.request.GET.get('q'))[0]
 
 
 class StaffList(ListView):
@@ -169,10 +100,6 @@ class StaffCreate(CreateView):
     model = Staff
     form_class = StaffForm
     success_url = "/staff-list"
-
-    def form_valid(self, form):
-        form.instance.academy = self.request.user.profile.staff.academy
-        return super(StaffCreate, self).form_valid(form)
 
 
 class StaffUpdate(UpdateView):
@@ -256,6 +183,13 @@ class PaymentList(ListView):
             queryset = Payment.objects.filter(datetime__range=daterange)
         else:
             queryset = Payment.objects.all()
+        if self.request.GET.get('order'):
+            if self.request.GET.get('order') == "Date":
+                queryset = queryset.order_by('datetime')
+            if self.request.GET.get('order') == "Name":
+                queryset = queryset.order_by('student__name')
+            if self.request.GET.get('order') == "Amount":
+                queryset = queryset.order_by('amount')
 
         return PaymentModelAdmin(Payment, None).get_search_results(self.request, queryset, self.request.GET.get('q'))[0]
 
@@ -267,7 +201,49 @@ class PaymentCreate(CreateView):
     success_url = "/payment-list"
 
 
+class PaymentUpdate(UpdateView):
+    template_name = "payment-update.html"
+    model = Payment
+    form_class = PaymentForm
+    success_url = "/payment-list"
+
+
 class PaymentDelete(DeleteView):
     template_name = "payment-delete.html"
     model = Payment
     success_url = "/payment-list"
+
+
+class UnpaidList(ListView):
+    template_name = "unpaid-list.html"
+    context_object_name = "unpaid_students"
+
+    def get_queryset(self):
+        students = Student.objects.all()
+        queryset = []
+        for student in students:
+            if student.is_paid() == 'false':
+                queryset.append(student)
+
+        return queryset
+
+
+class UnpaidDetail(DetailView):
+    template_name = "unpaid-detail.html"
+    context_object_name = "unpaid-entries"
+    model = Student
+
+    def get_queryset(self):
+        queryset = self.get_total_unpaid_entries()
+
+        return queryset
+
+
+def sms(request):
+    message = "신대호는 바보"#request.GET.get('message').encode('utf-8', 'ignore')
+    to = request.GET.get('to').encode('ascii')
+    if message and to:
+        send_sms(message, to)
+        return HttpResponse('sms sent')
+    else:
+        return HttpResponse('sms could not be sent')

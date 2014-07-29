@@ -3,6 +3,9 @@
 from django.contrib.auth.models import User, Group, AbstractBaseUser
 from django.db import models
 import datetime
+from django.db.models import Sum
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 class Academy(models.Model):
@@ -53,7 +56,7 @@ class Profile(models.Model):
         else:
             academy = None
         return academy
-
+    
 
 class Student(models.Model):
     GENDER_CHOICES = [(True, "남"), (False, "여")]
@@ -76,8 +79,40 @@ class Student(models.Model):
 
     def __unicode__(self):
         return self.name
-    
-    #TODO: def is_paid 구현
+
+    def get_total_fees(self):
+        total_fees = 0
+        if self.lecture_set.all() == 'true':
+            for lecture in self.lecture_set.all():
+                total_fees += lecture.get_price()
+        return total_fees
+
+    def get_total_payments(self):
+        return self.payment_set.aggregate(total_payments=Sum('amount'))['total_payments']
+
+    def is_paid(self):
+        return self.get_total_fees() - self.get_total_payments() <= 0
+
+    def get_total_unpaid_amount(self):
+        return self.get_total_fee() - self.get_total_payments()
+
+    def get_total_unpaid_entries(self):
+        if not self.is_paid():
+            total_unpaid_amount = self.get_total_unpaid_amount()
+            lectures = self.lecture_set.all().order_by('-datetime', '-course__price')     #descending(최신순), descending(큰금액순)    #datetime!!!
+            total_unpaid_entries = []
+            for lecture in lectures:
+                lecture_price = lecture.get_price()
+                if total_unpaid_amount > 0:
+                    total_unpaid_amount -= lecture_price
+                    status = 'unpaid' if total_unpaid_amount >= 0 else 'partially paid'
+                    unpaid_amount = lecture_price if total_unpaid_amount >= 0 else lecture_price + total_unpaid_amount
+                    total_unpaid_entries.append({'lecture': lecture, 'status': status, 'amount': unpaid_amount})
+        return total_unpaid_entries
+
+    def get_last_unpaid_lecture(self):
+        total_unpaid_entries = self.get_total_unpaid_entries()
+        return total_unpaid_entries[total_unpaid_entries.count()-1]
 
 
 class Staff(models.Model):
@@ -172,6 +207,9 @@ class Lecture(models.Model):
     def get_stu_num(self):
         return Lecture.objects.filter(course=self.course, number=self.number).count()
 
+    def get_price(self): #TODO course_price 계산법 수정 (할인률, lecture에 따로 할당된 금액 등등)
+        return self.course.price
+
 
 class Payment(models.Model):
     student = models.ForeignKey(Student)
@@ -180,4 +218,4 @@ class Payment(models.Model):
     receipt_number = models.CharField(max_length=100, blank=True, null=True)
 
     def __unicode__(self):
-        return str(self.datetime)+" "+self.student.name+" "+str(self.amount)
+        return str(self.datetime)+" "+self.student.name +" "+str(self.amount)
