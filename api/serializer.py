@@ -25,7 +25,7 @@ class AttendanceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Attendance
-        exclude = ['user', 'group', 'policy']
+        exclude = ['profile']
 
 
 class AttendanceManagerSerializer(serializers.ModelSerializer):

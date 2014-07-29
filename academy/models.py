@@ -18,15 +18,9 @@ class Profile(models.Model):
     user = models.OneToOneField(User, blank=True, null=True)
 
     def __unicode__(self):
+        instance = self.get_instance()
         username = self.user.username if self.user else "no user"
-        if Student.objects.filter(profile=self).exists():
-            name = "Student: "+self.student.name
-        elif Staff.objects.filter(profile=self).exists():
-            name = "Staff: "+self.staff.name
-        elif Guardian.objects.filter(profile=self).exists():
-            name = "Guardian: "+self.guardian.name
-        else:
-            name = "no name"
+        name = instance.__class__.__name__ +": "+instance.name if instance else "No name"
 
         return name + "'s profile (" + username + ")"
 
@@ -35,6 +29,30 @@ class Profile(models.Model):
 
     def can_use_admin(self):
         return Staff.objects.filter(profile__user=self.user).exists()
+
+    def get_instance(self):
+        if Student.objects.filter(profile=self).exists():
+            instance = self.student
+        elif Staff.objects.filter(profile=self).exists():
+            instance = self.staff
+        elif Guardian.objects.filter(profile=self).exists():
+            instance = self.guardian
+        else:
+            instance = None
+        return instance
+
+    def get_type(self):
+        instance = self.get_instance()
+        return instance.__class__.__name__.lower() if instance else ""
+
+    def get_academy(self):
+        if self.get_type() in ["student", "staff"]:
+            academy = self.get_instance().academy
+        elif self.get_type() in ["guardian"]:
+            academy = self.get_instance().student.academy
+        else:
+            academy = None
+        return academy
 
 
 class Student(models.Model):
