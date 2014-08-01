@@ -243,7 +243,7 @@ class LectureCreate(CreateView):
     template_name = "lecture-add.html"
     model = Lecture
     form_class = LectureForm
-        success_url = "/lecture-list"
+    success_url = "/lecture-list"
 
     def form_valid(self, form):
         lecture = form.save()
