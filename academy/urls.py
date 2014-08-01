@@ -21,13 +21,14 @@ urlpatterns = patterns('academy.views',
     url(r'^course-category', CourseCategoryCreate.as_view(), name="course-category"),
     url(r'^lecture-list', LectureList.as_view(), name="lecture-list"),
     url(r'^lecture-add', LectureCreate.as_view(), name="lecture-add"),
+    url(r'^lecture-apply/(?P<pk>\d+)$', LectureUpdate.as_view(), name="lecture-apply"),
     url(r'^calendar', TemplateView.as_view(template_name="calendar.html")),
 
 )
-#
-# urlpatterns = patterns('',
-#     (r'', decorated_includes(
-#         user_passes_test(lambda u: u.is_authenticated() and u.profile.can_use_admin(), login_url='/login'),
-#         include(urlpatterns))
-#     ),
-# )
+
+urlpatterns = patterns('',
+    (r'', decorated_includes(
+        user_passes_test(lambda u: u.is_authenticated() and u.profile.can_use_admin(), login_url='/login'),
+        include(urlpatterns))
+    ),
+)

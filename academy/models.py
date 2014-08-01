@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from django.contrib.auth.models import User, Group, AbstractBaseUser
+from django.contrib.auth.models import User, Group
 from django.db import models
 import datetime
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 
 
 class Academy(models.Model):
@@ -81,6 +79,36 @@ class Guardian(models.Model):
     user = models.OneToOneField(User, blank=True, null=True)
 
 
+class Lecture(models.Model):
+    code = models.CharField(max_length=40, blank=True, null=True)
+    course = models.ForeignKey("Course")
+    staff = models.ForeignKey("Staff")
+    students = models.ManyToManyField("Student", through="StudentLecture")
+    is_online = models.BooleanField()
+    is_active = models.BooleanField(default=False)
+
+    def __unicode__(self):
+        code = self.code if self.code else "No Code"
+        return code
+
+
+class LectureDateTime(models.Model):
+    """
+    type
+    1: begin
+    2: end
+    0: exceptional
+    """
+    type = models.IntegerField()
+    value = models.CharField(max_length=20)
+    date = models.DateField()
+    time = models.TimeField()
+    lecture = models.ForeignKey(Lecture)
+
+    def __unicode__(self):
+        return self.lecture.__unicode__()+self.lecture.staff.__unicode__()
+
+
 class Course(models.Model):
     name = models.CharField(max_length=100)
     category = models.ForeignKey("CourseCategory")
@@ -88,9 +116,13 @@ class Course(models.Model):
     price_info = models.TextField(blank=True, null=True)
     syllabus = models.TextField(blank=True, null=True)
     is_active = models.BooleanField(default=True)
+    academy = models.ForeignKey(Academy)
 
     def __unicode__(self):
         return self.name
+
+    def get_lectures(self):
+        return Lecture.objects.filter(course=self)
 
 
 class CourseCategory(models.Model):
@@ -127,18 +159,11 @@ class CourseCategory(models.Model):
         return Course.objects.filter(category__id__in=self.get_leaves())
 
 
-class Lecture(models.Model):
-    number = models.CharField(max_length=50)
-    course = models.ForeignKey("Course")
-    staff = models.ForeignKey("Staff")
-    student = models.ManyToManyField("Student")
-    is_online = models.BooleanField()
+class StudentLecture(models.Model):
+    lecture = models.ForeignKey("Lecture")
+    student = models.ForeignKey("Student")
+    date = models.DateField(null=True, blank=True)
+    fee = models.IntegerField(null=True, blank=True)
 
     def __unicode__(self):
-        return self.course.name
-
-    def get_lecture(self):
-        return Lecture.objects.filter(category__id__in=self.get_leaves())
-
-    def get_stu_num(self):
-        return Lecture.objects.filter(course=self.course, number=self.number).count()
+        return self.lecture.__unicode__()+" "+self.student.__unicode__()

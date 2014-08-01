@@ -1,5 +1,6 @@
 {% extends "_layouts/base.html" %}
 {% load my_extras %}
+{% load static from staticfiles %}
 
 {% block content %}
 
@@ -30,22 +31,34 @@
                                             </div>
                                         </div>
                                     {% endfor %}
-                                    <div class="input-prepend input-group">
-                                        <span class="add-on input-group-addon primary"><i class="glyphicon glyphicon-th"></i></span>
-                                        <input type="text" style="width: 300px" name="reservation" id="reservationtime" class="form-control" value="02/01/2014 1:00 PM - 02/05/2014 2:30 PM"  class="span4"/>
+
+                                    <div class="control-group">
+                                        <div class="controls">
+                                            <div class="col-sm-6">
+                                                <div class="input-prepend input-group">
+                                                    <span class="add-on input-group-addon primary"><i class="glyphicon glyphicon-th"></i></span>
+{#                                                    <label class="checkbox-inline"> <input type="checkbox" checked="" name="active" class="icheck">active</label>#}
+                                                    <input type="text" style="width: 300px" name="datetime" id="reservationtime" class="form-control" value="02/01/2014 1:00 PM - 02/05/2014 2:30 PM"  class="span4"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </fieldset>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-sm-12" style="text-align: center;">
-                            <button type="submit" class="btn btn-primary">등록</button>
-                            <button type="reset" class="btn btn-default">취소</button>
-                        </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12" style="text-align: center;">
+                        <button type="submit" class="btn btn-primary">등록</button>
+                        <button type="reset" class="btn btn-default">취소</button>
                     </div>
                 </div>
             </form>
         </div>
     </div>
+{% endblock %}
+{% block script %}
+
 {% endblock %}

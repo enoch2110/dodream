@@ -3,6 +3,7 @@ from django.forms.models import modelformset_factory
 from django.forms.formsets import formset_factory
 from django.shortcuts import render, redirect
 from django.views.generic import View, CreateView, ListView, DetailView, UpdateView, DeleteView, FormView
+from django.views.generic.edit import ModelFormMixin
 from rest_framework.filters import SearchFilter
 from academy.admin import StudentModelAdmin
 from academy.forms import *
@@ -123,6 +124,10 @@ class CourseCreate(CreateView):
     form_class = CourseForm
     success_url = "/course-list"
 
+    def form_valid(self, form):
+        form.instance.academy = self.request.user.profile.staff.academy
+        return super(CourseCreate, self).form_valid(form)
+
 
 class CourseCategoryCreate(CreateView):
     template_name = "course-category.html"
@@ -137,11 +142,11 @@ class CourseCategoryCreate(CreateView):
 
 class LectureList(ListView):
     template_name = "lecture-list.html"
-    model = Lecture
+    model = Course
     #queryset = Lecture.objects.filter(Lecture__course_parent=None)
     #context_object_name = "root_categories"
-    queryset = Lecture.objects.all()
-    context_object_name = "lectures"
+    queryset = Course.objects.all()
+    context_object_name = "courses"
 
 
 class LectureCreate(CreateView):
@@ -149,3 +154,53 @@ class LectureCreate(CreateView):
     model = Lecture
     form_class = LectureForm
     success_url = "/lecture-list"
+
+    def form_valid(self, form):
+        lecture = form.save()
+        datetime_string = self.request.POST.get('datetime')
+        datetimes = datetime_string.split(" - ")
+
+        for (counter, datetime) in enumerate(datetimes):
+            date_string = datetime.split(" ")[0]
+            hour_string = datetime.split(" ")[1].split(":")[0]
+            minute_string = datetime.split(" ")[1].split(":")[1]
+
+            new_date_string = date_string.split("/")[2]+"-"+date_string.split("/")[0]+"-"+date_string.split("/")[1]
+            new_time_string = hour_string if datetime.split(" ")[2] == "AM" else str((int(hour_string)+12%24)) + ":" + minute_string
+
+            type = 0 if counter == 0 else 1
+
+            lecture_datetime = LectureDateTime(date=new_date_string, time=new_time_string, lecture=lecture, type=type)
+            lecture_datetime.save()
+
+        return super(LectureCreate, self).form_valid(form)
+
+
+class LectureUpdate(UpdateView):
+    template_name = "lecture-apply.html"
+    model = Lecture
+    form_class = LectureRegistrationForm
+    success_url = "/lecture-list"
+
+    def form_valid(self, form):
+        lecture = form.instance
+        students = form.cleaned_data['students']
+        price = self.request.POST.get('lecture-price')
+        datetime_string = self.request.POST.get('datetime')
+        datetimes = datetime_string.split(" - ")
+        for student in students:
+            student_lecture, created = StudentLecture.objects.get_or_create(lecture=lecture, student=student)
+            print "why"
+            student_lecture.fee = price
+            for (counter, datetime) in enumerate(datetimes):
+                date_string = datetime.split(" ")[0]
+                hour_string = datetime.split(" ")[1].split(":")[0]
+                minute_string = datetime.split(" ")[1].split(":")[1]
+
+                new_date_string = date_string.split("/")[2]+"-"+date_string.split("/")[0]+"-"+date_string.split("/")[1]
+                new_time_string = hour_string if datetime.split(" ")[2] == "AM" else str((int(hour_string)+12%24)) + ":" + minute_string
+
+                student_lecture.date = new_date_string
+                student_lecture.save()
+
+        return super(ModelFormMixin, self).form_valid(form)

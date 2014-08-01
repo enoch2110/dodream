@@ -22,6 +22,15 @@ class StaffAdmin(admin.ModelAdmin):
         return super(StudentModelAdmin, self).formfield_for_foreignkey(db_field, request=None, **kwargs)
 
 
+class LectureDateTimeInline(admin.TabularInline):
+    model = LectureDateTime
+    extra = 0
+
+
+class LectureAdmin(admin.ModelAdmin):
+    inlines = [LectureDateTimeInline]
+
+
 admin.site.register(Academy)
 admin.site.register(Student, StudentModelAdmin)
 admin.site.register(Staff)
@@ -29,4 +38,6 @@ admin.site.register(Guardian)
 admin.site.register(Course)
 admin.site.register(CourseCategory)
 admin.site.register(Profile)
-admin.site.register(Lecture)
+admin.site.register(Lecture, LectureAdmin)
+admin.site.register(StudentLecture)
+admin.site.register(LectureDateTime)

@@ -2,21 +2,34 @@
 
 {% block content %}
 
-
-{% for lecture in lectures %}
-    <table class="table">
-            <tr>
-            <td>{{ lecture }}</td>
-            <td>{{ lecture.staff.name }}</td>
-            <td>{{ lecture.get_stu_num}}</td>
-            <td>{{ lecture.is_online}}</td>
-            <td></td>
-
-            </tr>
-
-    </table>
-{% empty %}
-            <h5>과목 없음</h5>
-        {% endfor %}
+    <div class="tab-content">
+        <table class="table">
+                <th>강의명</th>
+                <th>강사</th>
+                <th>온라인</th>
+                <th>학생</th>
+                <th>학생수</th>
+            {% for course in courses %}
+                <tr>>
+                    <td>{{ course.name }}</td>
+                    <td>{{ course.staff }}</td>
+                </tr
+                {% for lecture in course.get_lectures %}<tr>
+                    <td>{{ lecture }}</td>
+                    <td>{{ lecture.staff }}</td>
+                    <td>{{ lecture.is_online }}</td>
+                    <td>
+                        {% for student in lecture.students.all %}
+                            {{ student }}
+                        {% endfor %}
+                    </td>
+                    <td>
+                        {{ lecture.students.count }}
+                    </td>
+                    <td><a href="{% url "lecture-apply" lecture.id %}">학생 추가</a></td>
+                </tr>{% endfor %}
+            {% endfor %}
+        </table>
+    </div>
 
 {% endblock %}

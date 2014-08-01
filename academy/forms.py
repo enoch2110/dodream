@@ -3,6 +3,8 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
+from django.db.models import Q
+from django.forms import CheckboxSelectMultiple
 from academy.models import Student, Guardian, CourseCategory, Course, Staff, Profile, Academy, Lecture
 
 
@@ -69,9 +71,27 @@ class CourseForm(forms.ModelForm):
 
     class Meta:
         model = Course
-        exclude = ['is_active']
+        exclude = ['is_active', 'academy']
+
 
 class LectureForm(forms.ModelForm):
 
     class Meta:
         model = Lecture
+        widgets = {
+            'weekday': CheckboxSelectMultiple,
+        }
+        exclude = ['students','is_active']
+
+
+class LectureRegistrationForm(forms.ModelForm):
+    students = forms.ModelMultipleChoiceField(queryset=Student.objects.none())
+
+    class Meta:
+        model = Lecture
+        exclude = ['code', 'course', 'staff', 'is_online', 'weekday', 'is_active']
+
+    def __init__(self, *args, **kwargs):
+        super(LectureRegistrationForm, self).__init__(*args, **kwargs)
+        #TODO academy specific
+        self.fields['students'].queryset = Student.objects.filter(~Q(id__in=self.instance.students.all()))
