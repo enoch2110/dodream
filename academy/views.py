@@ -1,13 +1,17 @@
 # -*- coding: utf8 -*-
 
-from django.core.urlresolvers import reverse, reverse_lazy
+from django.contrib.auth.forms import UserCreationForm, SetPasswordForm
+from django.core.urlresolvers import reverse
 from django.forms.models import modelformset_factory
 from django.forms.formsets import formset_factory
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, render_to_response
 from django.views.generic import View, CreateView, ListView, DetailView, UpdateView, DeleteView, FormView
 from rest_framework.filters import SearchFilter
 from academy.admin import StudentModelAdmin, PaymentModelAdmin
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from academy.admin import StudentModelAdmin, PaymentModelAdmin
+from academy.filters import StudentFilter
 from academy.forms import *
 from academy.models import *
 from dodream.coolsms import send_sms
@@ -19,7 +23,44 @@ class AcademySetting(UpdateView):
     success_url = "/setting"
 
     def get_object(self, queryset=None):
-        return Academy.objects.get(id=self.request.user.staff.academy.id)
+        return Academy.objects.get(id=self.request.user.profile.staff.academy.id)
+
+
+class AccountCreate(CreateView):
+    template_name = "account-add.html"
+    form_class = UserCreationForm
+
+    def get_success_url(self):
+        class_type = self.kwargs['type']
+        if class_type in ["0", "2"]:
+            return reverse("student-list")
+        if class_type == "1":
+            return reverse("staff-list")
+        else:
+            return "/"
+
+    def form_valid(self, form):
+        class_type = self.kwargs['type']
+        pk = self.kwargs['pk']
+
+        exists_1 = class_type == "0" and Student.objects.filter(id=pk).exists()
+        exists_2 = class_type == "1" and Staff.objects.filter(id=pk).exists()
+        exists_3 = class_type == "2" and Guardian.objects.filter(id=pk).exists()
+
+        if exists_1 or exists_2 or exists_3:
+            instance = form.save()
+            if class_type == "0":
+                profile = Student.objects.get(id=pk).profile
+            if class_type == "1":
+                profile = Staff.objects.get(id=pk).profile
+            if class_type == "2":
+                profile = Guardian.objects.get(id=pk).profile
+
+            profile.user = instance
+            profile.save()
+            return super(AccountCreate, self).form_valid(form)
+        else:
+            return super(AccountCreate, self).form_invalid(form)
 
 
 class StudentRegistration(View):
@@ -78,9 +119,37 @@ class StudentList(ListView):
     template_name = "student-list.html"
     queryset = Student.objects.all()
     context_object_name = "students"
+    paginate_by = 10
+
+    def get_context_data(self, **kwargs):
+        context = super(StudentList, self).get_context_data(**kwargs)
+        context.update({"filter_form": StudentFilterForm(self.request.GET)})
+        return context
 
     def get_queryset(self):
-        return StudentModelAdmin(Student, None).get_search_results(self.request, self.queryset, self.request.GET.get('q'))[0]
+        search_param = self.request.GET.get('search')
+        attend_method_param = self.request.GET.get('attend_method')
+        is_paid_param = self.request.GET.get('is_paid')
+        course_param = self.request.GET.get('course')
+
+        students = StudentModelAdmin(Student, None).get_search_results(self.request, self.queryset, search_param)[0]
+        students = StudentFilter(self.request.GET, queryset=students)
+
+        return students
+
+    def listing(request):
+        student_list = Student.objects.all();
+        paginator = Paginator(student_list, 10)
+
+        page = request.GET.get('page')
+        try:
+            students = paginator.page(page)
+        except PageNotAnInteger:
+            students = paginator.page(1)
+        except EmptyPage:
+            students = paginator.page(paginator.num_page)
+
+        return render_to_response('student-list.html', {"students": students})
 
 
 class StaffList(ListView):
@@ -100,6 +169,10 @@ class StaffCreate(CreateView):
     model = Staff
     form_class = StaffForm
     success_url = "/staff-list"
+
+    def form_valid(self, form):
+        form.instance.academy = self.request.user.profile.staff.academy
+        return super(StaffCreate, self).form_valid(form)
 
 
 class StaffUpdate(UpdateView):

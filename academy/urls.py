@@ -30,6 +30,8 @@ urlpatterns = patterns('academy.views',
     url(r'^lecture-list', LectureList.as_view(), name="lecture-list"),
     url(r'^lecture-add', LectureCreate.as_view(), name="lecture-add"),
     url(r'^calendar', TemplateView.as_view(template_name="calendar.html")),
+    #TYPE: student:0, staff:1
+    url(r'^account-create/(?P<type>\d+)/(?P<pk>\d+)$', AccountCreate.as_view(), name="account-create"),
 )
     
 

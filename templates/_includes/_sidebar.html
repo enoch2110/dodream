@@ -25,7 +25,12 @@
                             <li><a href="{% url "staff-add" %}">직원 추가</a></li>
                         </ul>
                     </li>
-                    <li><a href="#"><i class="fa  fa-bullhorn"></i><span>출석관리</span></a></li>
+                    <li>
+                        <a href="#"><i class="fa  fa-bullhorn"></i><span>출석관리</span></a>
+                        <ul class="sub-menu">
+                            <li><a href="{% url "attendance-list" %}">출석 조회</a></li>
+                        </ul>
+                    </li>
                     <li><a href="#"><i class="fa fa-sitemap nav-icon"></i><span>과목관리</span></a>
                         <ul class="sub-menu">
                             <li><a href="{% url "course-list" %}">과목 조회</a></li>
