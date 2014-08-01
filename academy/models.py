@@ -3,6 +3,9 @@
 from django.contrib.auth.models import User, Group
 from django.db import models
 import datetime
+from django.db.models import Sum
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 class Academy(models.Model):
@@ -15,27 +18,55 @@ class Academy(models.Model):
 
 
 class Profile(models.Model):
-    user = models.OneToOneField(User)
+    user = models.OneToOneField(User, blank=True, null=True)
 
     def __unicode__(self):
-        return self.user.username + "'s profile"
+        instance = self.get_instance()
+        username = self.user.username if self.user else "no user"
+        name = instance.__class__.__name__ +": "+instance.name if instance else "No name"
+
+        return name + "'s profile (" + username + ")"
 
     def get_name(self):
         return self.user.last_name+" "+self.user.first_name
 
     def can_use_admin(self):
-        return Staff.objects.filter(user=self.user).exists()
+        return Staff.objects.filter(profile__user=self.user).exists()
 
+    def get_instance(self):
+        if Student.objects.filter(profile=self).exists():
+            instance = self.student
+        elif Staff.objects.filter(profile=self).exists():
+            instance = self.staff
+        elif Guardian.objects.filter(profile=self).exists():
+            instance = self.guardian
+        else:
+            instance = None
+        return instance
+
+    def get_type(self):
+        instance = self.get_instance()
+        return instance.__class__.__name__.lower() if instance else ""
+
+    def get_academy(self):
+        if self.get_type() in ["student", "staff"]:
+            academy = self.get_instance().academy
+        elif self.get_type() in ["guardian"]:
+            academy = self.get_instance().student.academy
+        else:
+            academy = None
+        return academy
+    
 
 class Student(models.Model):
     GENDER_CHOICES = [(True, "남"), (False, "여")]
     ATTEND_METHOD_CHOICES = [(1, "도보"), (2, "통학버스")]
 
     name = models.CharField(max_length=100)
+    email = models.EmailField(blank=True, null=True)
     image = models.ImageField(upload_to="academy/student")
     gender = models.BooleanField(choices=GENDER_CHOICES)
     birthday = models.DateField()
-    email = models.EmailField()
     address = models.CharField(max_length=200, blank=True, null=True)
     contact = models.CharField(max_length=20, blank=True, null=True)
     school = models.CharField(max_length=50, blank=True, null=True)
@@ -43,24 +74,59 @@ class Student(models.Model):
     use_sms = models.BooleanField()
     registered_date = models.DateField(default=datetime.date.today())
     information = models.TextField(blank=True, null=True)
-    user = models.OneToOneField(User, blank=True, null=True)
+    profile = models.OneToOneField(Profile)
     academy = models.ForeignKey(Academy)
 
     def __unicode__(self):
         return self.name
 
+    def get_total_fees(self):
+        total_fees = 0
+        if self.lecture_set.all() == 'true':
+            for lecture in self.lecture_set.all():
+                total_fees += lecture.get_price()
+        return total_fees
+
+    def get_total_payments(self):
+        return self.payment_set.aggregate(total_payments=Sum('amount'))['total_payments']
+
+    def is_paid(self):
+        return self.get_total_fees() - self.get_total_payments() <= 0
+
+    def get_total_unpaid_amount(self):
+        return self.get_total_fee() - self.get_total_payments()
+
+    def get_total_unpaid_entries(self):
+        if not self.is_paid():
+            total_unpaid_amount = self.get_total_unpaid_amount()
+            lectures = self.lecture_set.all().order_by('-datetime', '-course__price')     #descending(최신순), descending(큰금액순)    #datetime!!!
+            total_unpaid_entries = []
+            for lecture in lectures:
+                lecture_price = lecture.get_price()
+                if total_unpaid_amount > 0:
+                    total_unpaid_amount -= lecture_price
+                    status = 'unpaid' if total_unpaid_amount >= 0 else 'partially paid'
+                    unpaid_amount = lecture_price if total_unpaid_amount >= 0 else lecture_price + total_unpaid_amount
+                    total_unpaid_entries.append({'lecture': lecture, 'status': status, 'amount': unpaid_amount})
+        return total_unpaid_entries
+
+    def get_last_unpaid_lecture(self):
+        total_unpaid_entries = self.get_total_unpaid_entries()
+        return total_unpaid_entries[total_unpaid_entries.count()-1]
+
 
 class Staff(models.Model):
     name = models.CharField(max_length=100)
+    email = models.EmailField(blank=True, null=True)
     image = models.ImageField(upload_to="academy/staff", blank=True, null=True)
-    email = models.EmailField()
+    birthday = models.DateField()
     address = models.CharField(max_length=200, blank=True, null=True)
     contact = models.CharField(max_length=20, blank=True, null=True)
     group = models.ForeignKey(Group)
     main_course = models.ForeignKey("Course", blank=True, null=True)
     specs = models.TextField(max_length=100, blank=True, null=True)
     registered_date = models.DateField(default=datetime.date.today())
-    user = models.OneToOneField(User, blank=True, null=True)
+    profile = models.OneToOneField(Profile)
     academy = models.ForeignKey(Academy)
 
     def __unicode__(self):
@@ -76,7 +142,7 @@ class Guardian(models.Model):
     contact = models.CharField(max_length=20, blank=True, null=True)
     relation = models.CharField(max_length=100)
     student = models.ForeignKey(Student)
-    user = models.OneToOneField(User, blank=True, null=True)
+    profile = models.OneToOneField(Profile)
 
 
 class Lecture(models.Model):
@@ -167,3 +233,33 @@ class StudentLecture(models.Model):
 
     def __unicode__(self):
         return self.lecture.__unicode__()+" "+self.student.__unicode__()
+
+
+class Lecture(models.Model):
+    number = models.CharField(max_length=50)
+    course = models.ForeignKey("Course")
+    staff = models.ManyToManyField("Staff")
+    student = models.ManyToManyField("Student")
+    is_online = models.BooleanField()
+
+    def __unicode__(self):
+        return self.course.name
+
+    def get_lecture(self):
+        return Lecture.objects.filter(category__id__in=self.get_leaves())
+
+    def get_stu_num(self):
+        return Lecture.objects.filter(course=self.course, number=self.number).count()
+
+    def get_price(self): #TODO course_price 계산법 수정 (할인률, lecture에 따로 할당된 금액 등등)
+        return self.course.price
+
+
+class Payment(models.Model):
+    student = models.ForeignKey(Student)
+    amount = models.IntegerField()
+    datetime = models.DateTimeField(default=datetime.datetime.today())
+    receipt_number = models.CharField(max_length=100, blank=True, null=True)
+
+    def __unicode__(self):
+        return str(self.datetime)+" "+self.student.name +" "+str(self.amount)

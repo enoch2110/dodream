@@ -1,13 +1,21 @@
-from django.core.urlresolvers import reverse, reverse_lazy
+# -*- coding: utf8 -*-
+
+from django.contrib.auth.forms import UserCreationForm, SetPasswordForm
+from django.core.urlresolvers import reverse
 from django.forms.models import modelformset_factory
 from django.forms.formsets import formset_factory
-from django.shortcuts import render, redirect
+from django.http import HttpResponse
+from django.shortcuts import render, redirect, render_to_response
 from django.views.generic import View, CreateView, ListView, DetailView, UpdateView, DeleteView, FormView
 from django.views.generic.edit import ModelFormMixin
 from rest_framework.filters import SearchFilter
-from academy.admin import StudentModelAdmin
+from academy.admin import StudentModelAdmin, PaymentModelAdmin
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from academy.admin import StudentModelAdmin, PaymentModelAdmin
+from academy.filters import StudentFilter
 from academy.forms import *
 from academy.models import *
+from dodream.coolsms import send_sms
 
 
 class AcademySetting(UpdateView):
@@ -16,7 +24,44 @@ class AcademySetting(UpdateView):
     success_url = "/setting"
 
     def get_object(self, queryset=None):
-        return Academy.objects.get(id=self.request.user.staff.academy.id)
+        return Academy.objects.get(id=self.request.user.profile.staff.academy.id)
+
+
+class AccountCreate(CreateView):
+    template_name = "account-add.html"
+    form_class = UserCreationForm
+
+    def get_success_url(self):
+        class_type = self.kwargs['type']
+        if class_type in ["0", "2"]:
+            return reverse("student-list")
+        if class_type == "1":
+            return reverse("staff-list")
+        else:
+            return "/"
+
+    def form_valid(self, form):
+        class_type = self.kwargs['type']
+        pk = self.kwargs['pk']
+
+        exists_1 = class_type == "0" and Student.objects.filter(id=pk).exists()
+        exists_2 = class_type == "1" and Staff.objects.filter(id=pk).exists()
+        exists_3 = class_type == "2" and Guardian.objects.filter(id=pk).exists()
+
+        if exists_1 or exists_2 or exists_3:
+            instance = form.save()
+            if class_type == "0":
+                profile = Student.objects.get(id=pk).profile
+            if class_type == "1":
+                profile = Staff.objects.get(id=pk).profile
+            if class_type == "2":
+                profile = Guardian.objects.get(id=pk).profile
+
+            profile.user = instance
+            profile.save()
+            return super(AccountCreate, self).form_valid(form)
+        else:
+            return super(AccountCreate, self).form_invalid(form)
 
 
 class StudentRegistration(View):
@@ -75,9 +120,37 @@ class StudentList(ListView):
     template_name = "student-list.html"
     queryset = Student.objects.all()
     context_object_name = "students"
+    paginate_by = 10
+
+    def get_context_data(self, **kwargs):
+        context = super(StudentList, self).get_context_data(**kwargs)
+        context.update({"filter_form": StudentFilterForm(self.request.GET)})
+        return context
 
     def get_queryset(self):
-        return StudentModelAdmin(Student, None).get_search_results(self.request, self.queryset, self.request.GET.get('q'))[0]
+        search_param = self.request.GET.get('search')
+        attend_method_param = self.request.GET.get('attend_method')
+        is_paid_param = self.request.GET.get('is_paid')
+        course_param = self.request.GET.get('course')
+
+        students = StudentModelAdmin(Student, None).get_search_results(self.request, self.queryset, search_param)[0]
+        students = StudentFilter(self.request.GET, queryset=students)
+
+        return students
+
+    def listing(request):
+        student_list = Student.objects.all();
+        paginator = Paginator(student_list, 10)
+
+        page = request.GET.get('page')
+        try:
+            students = paginator.page(page)
+        except PageNotAnInteger:
+            students = paginator.page(1)
+        except EmptyPage:
+            students = paginator.page(paginator.num_page)
+
+        return render_to_response('student-list.html', {"students": students})
 
 
 class StaffList(ListView):
@@ -97,6 +170,10 @@ class StaffCreate(CreateView):
     model = Staff
     form_class = StaffForm
     success_url = "/staff-list"
+
+    def form_valid(self, form):
+        form.instance.academy = self.request.user.profile.staff.academy
+        return super(StaffCreate, self).form_valid(form)
 
 
 class StaffUpdate(UpdateView):
@@ -140,6 +217,19 @@ class CourseCategoryCreate(CreateView):
         return context
 
 
+class CourseUpdate(UpdateView):
+    template_name = "course-update.html"
+    model = Course
+    form_class = CourseForm
+    success_url = "/course-list"
+
+
+class CourseDelete(DeleteView):
+    template_name = "course-delete.html"
+    model = Course
+    success_url = "/course-list"
+
+
 class LectureList(ListView):
     template_name = "lecture-list.html"
     model = Course
@@ -153,7 +243,7 @@ class LectureCreate(CreateView):
     template_name = "lecture-add.html"
     model = Lecture
     form_class = LectureForm
-    success_url = "/lecture-list"
+        success_url = "/lecture-list"
 
     def form_valid(self, form):
         lecture = form.save()
@@ -204,3 +294,84 @@ class LectureUpdate(UpdateView):
                 student_lecture.save()
 
         return super(ModelFormMixin, self).form_valid(form)
+
+
+class PaymentList(ListView):
+    template_name = "payment-list.html"
+    context_object_name = "payments"
+
+    def get_queryset(self):
+        import datetime
+        if self.request.GET.get('date'):
+            date_begin = datetime.datetime.strptime(self.request.GET.get('date').split(" - ")[0], "%Y-%m-%d")
+            date_end = datetime.datetime.strptime(self.request.GET.get('date').split(" - ")[1], "%Y-%m-%d")
+            print date_begin
+            print date_end
+            daterange = [datetime.datetime.combine(date_begin, datetime.time.min), datetime.datetime.combine(date_end, datetime.time.max)]
+            queryset = Payment.objects.filter(datetime__range=daterange)
+        else:
+            queryset = Payment.objects.all()
+        if self.request.GET.get('order'):
+            if self.request.GET.get('order') == "Date":
+                queryset = queryset.order_by('datetime')
+            if self.request.GET.get('order') == "Name":
+                queryset = queryset.order_by('student__name')
+            if self.request.GET.get('order') == "Amount":
+                queryset = queryset.order_by('amount')
+
+        return PaymentModelAdmin(Payment, None).get_search_results(self.request, queryset, self.request.GET.get('q'))[0]
+
+
+class PaymentCreate(CreateView):
+    template_name = "payment-add.html"
+    model = Payment
+    form_class = PaymentForm
+    success_url = "/payment-list"
+
+
+class PaymentUpdate(UpdateView):
+    template_name = "payment-update.html"
+    model = Payment
+    form_class = PaymentForm
+    success_url = "/payment-list"
+
+
+class PaymentDelete(DeleteView):
+    template_name = "payment-delete.html"
+    model = Payment
+    success_url = "/payment-list"
+
+
+class UnpaidList(ListView):
+    template_name = "unpaid-list.html"
+    context_object_name = "unpaid_students"
+
+    def get_queryset(self):
+        students = Student.objects.all()
+        queryset = []
+        for student in students:
+            if student.is_paid() == 'false':
+                queryset.append(student)
+
+        return queryset
+
+
+class UnpaidDetail(DetailView):
+    template_name = "unpaid-detail.html"
+    context_object_name = "unpaid-entries"
+    model = Student
+
+    def get_queryset(self):
+        queryset = self.get_total_unpaid_entries()
+
+        return queryset
+
+
+def sms(request):
+    message = "신대호는 바보"#request.GET.get('message').encode('utf-8', 'ignore')
+    to = request.GET.get('to').encode('ascii')
+    if message and to:
+        send_sms(message, to)
+        return HttpResponse('sms sent')
+    else:
+        return HttpResponse('sms could not be sent')

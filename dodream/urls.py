@@ -13,8 +13,8 @@ admin.autodiscover()
 urlpatterns = patterns(
     '',
     (r'', include('academy.urls')),
-    (r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     (r'^api/', include('api.urls')),
+    (r'^attendance/', include('attendance.urls')),
     (r'^admin/', include(admin.site.urls)),
 
     url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'login.html', 'authentication_form': StaffAuthenticationForm}, name="login"),

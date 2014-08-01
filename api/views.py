@@ -6,9 +6,12 @@ from rest_framework import generics
 from rest_framework.filters import SearchFilter
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
-from academy.models import Student
-from api.serializer import UserSerializer, StudentSerializer, LoginSerializer, AttendanceSerializer
+from rest_framework.views import APIView
+from academy.models import Student, Profile
+from api.serializer import UserSerializer, StudentSerializer, LoginSerializer, AttendanceSerializer, CardSerializer
+from attendance.models import AttendanceManager
 from dodream import settings
+from dodream.coolsms import send_sms
 
 
 class Login(generics.RetrieveAPIView):
@@ -67,29 +70,68 @@ class StudentListAPI(generics.ListAPIView):
     search_fields = ('name', 'contact')
 
     def get_queryset(self):
-        return Student.objects.filter(academy=self.request.user.staff.academy)
+        academy = self.request.user.profile.staff.academy
+        return Student.objects.filter(academy=academy)
 
 
 class AttendanceCreateAPI(generics.CreateAPIView):
+    permission_classes = (IsAuthenticated,)
     serializer_class = AttendanceSerializer
 
     def create(self, request, *args, **kwargs):
-        if not (request.user.is_authenticated() and request.user.is_superuser):
-            result = {"code": 0, "message": "not authorized"}
-            return Response(result)
-
+        academy = self.request.user.profile.staff.academy
         serializer = self.get_serializer(data=request.DATA, files=request.FILES)
         if serializer.is_valid():
-            result = {}
             nfc_id = serializer.data['nfc_id']
-            if User.objects.filter(attendancemanager__nfc_id=nfc_id).exists():
-                user = User.objects.get(attendancemanager__nfc_id=nfc_id)
-                serializer.object.user = user
-
+            profile = Profile.objects.filter(attendancemanager__nfc_id=nfc_id).first()
+            if profile and profile.get_academy() == academy:
+                serializer.object.profile = profile
                 self.pre_save(serializer.object)
                 self.object = serializer.save(force_insert=True)
                 self.post_save(self.object, created=True)
                 headers = self.get_success_headers(serializer.data)
-                result = {"data": serializer.data, "message": "success", "result": self.object.get_status()}
+                result = {
+                    "data": serializer.data,
+                    "message": "success",
+                    "result": self.object.get_status(),
+                    "student": StudentSerializer(profile.student).data
+                }
+
+                # message = ""
+                # to = request.GET.get('to').encode('ascii')
+                # if message and to:
+                #     send_sms(message, to)
+                #     sms_result = 'sms sent'
+                # else:d
+                #     sms_result = 'sms could not be sent'
+                # result.update({"sms": sms_result})
+
                 return Response(result, headers=headers)
         return Response(serializer.errors)
+
+
+class CardRegisterAPI(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request, *args, **kwargs):
+        academy = self.request.user.profile.staff.academy
+
+        student_id = request.POST.get("student_id")
+        nfc_id = request.POST.get("nfc_id")
+        force_set = True if request.POST.get("force_set") == "true" else False
+
+        attendance_manager = AttendanceManager.objects.get_or_create(profile__student__id=student_id)[0]
+        success, message = attendance_manager.set_nfc(nfc_id, force_set)
+
+        return Response({"success": success, "message": message})
+
+
+class CardDetailAPI(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request, *args, **kwargs):
+        academy = self.request.user.profile.staff.academy
+        nfc_id = request.POST.get("nfc_id")
+        student = Student.objects.filter(profile__attendancemanager__nfc_id=nfc_id, academy=academy).first()
+        student_data = StudentSerializer(student).data if student else None
+        return Response({"student": student_data})

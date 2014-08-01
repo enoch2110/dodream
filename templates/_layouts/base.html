@@ -18,11 +18,12 @@
     <!-- Bootstrap core CSS -->
     <link href="{% static "js/bootstrap/dist/css/bootstrap.css" %}" rel="stylesheet" />
     <link href="{% static "fonts/font-awesome-4/css/font-awesome.min.css" %}" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="{% static "js/bootstrap.switch/bootstrap-switch.min.css" %}" />
+	<link rel="stylesheet" type="text/css" href="{% static "js/bootstrap.datetimepicker/css/bootstrap-datetimepicker.min.css" %}" />
     <link rel="stylesheet" type="text/css" href="{% static "js/bootstrap.datetimepicker/css/bootstrap-datetimepicker.min.css" %}" />
 
-
-    <link rel="stylesheet" type="text/css" href="{% static "js/bootstrap.daterangepicker/daterangepicker-bs3.css" %}" />
-
+    <!-- DateRange -->
+	<link rel="stylesheet" type="text/css" href="{% static "js/bootstrap.daterangepicker/daterangepicker-bs3.css" %}" />
 
     <!-- Select2 -->
     <link rel="stylesheet" type="text/css" href="{% static "js/jquery.select2/select2.css" %}" />
@@ -31,7 +32,6 @@
     <link rel="stylesheet" type="text/css" href="{% static "js/bootstrap.slider/css/slider.css" %}" />
 
     <!-- DateRange -->
-    <link rel="stylesheet" type="text/css" href="{% static "js/bootstrap.daterangepicker/daterangepicker-bs3.css" %}" />
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -45,6 +45,7 @@
     <link rel="stylesheet" type="text/css" href="{% static "js/jquery.select2/select2.css" %}" />
     <link rel="stylesheet" type="text/css" href="{% static "js/bootstrap.slider/css/slider.css" %}" />
     <link rel="stylesheet" type="text/css" href="{% static "js/intro.js/introjs.css" %}" />
+    <link rel="stylesheet" href="{% static "js/jquery.icheck/skins/square/blue.css" %}" />
     <!-- Custom styles for this template -->
     <link rel="stylesheet"  href="{% static "css/style.css" %}" />
 
@@ -54,7 +55,6 @@
     <link href="{% static "js/jquery.icheck/skins/square/blue.css" %}" rel="stylesheet">
 
     <link rel="stylesheet" type="text/css" href="{% static "js/jquery.nanoscroller/nanoscroller.css" %}"/>
-    <link href="{% static "js/jquery.icheck/skins/square/blue.css" %}" rel="stylesheet">
     <link href="{% static "css/custom.css" %}" rel="stylesheet">
 </head>
 <body>
@@ -87,13 +87,13 @@
 
 <div id="cl-wrapper" class="fixed-menu">
     {% include "_includes/_sidebar.html" %}
-
-
+    {% block content_parent %}
     <div class="container-fluid" id="pcont">
         {% block content %}
+
         {% endblock %}
     </div>
-
+    {% endblock %}
 </div>
 
 <script type="text/javascript" src="{% static "js/jquery.js" %}"></script>
@@ -104,88 +104,20 @@
 <script type="text/javascript" src="{% static "js/jquery.sparkline/jquery.sparkline.min.js" %}"></script>
 <script type="text/javascript" src="{% static "js/jquery.easypiechart/jquery.easy-pie-chart.js" %}"></script>
 <script type="text/javascript" src="{% static "js/jquery.nestable/jquery.nestable.js" %}"></script>
+<script type="text/javascript" src="{% static "js/jquery.parsley/dist/parsley.js" %}" ></script>
 <script type="text/javascript" src="{% static "js/bootstrap.switch/bootstrap-switch.min.js" %}"></script>
 <script type="text/javascript" src="{% static "js/bootstrap.datetimepicker/js/bootstrap-datetimepicker.min.js" %}"></script>
+<script type="text/javascript" src="{% static "js/bootstrap.daterangepicker/moment.min.js" %}"></script>
+<script type="text/javascript" src="{% static "js/bootstrap.daterangepicker/daterangepicker.js" %}"></script>
 <script type="text/javascript" src="{% static "js/jquery.select2/select2.min.js" %}"></script>
 <script type="text/javascript" src="{% static "js/bootstrap.slider/js/bootstrap-slider.js" %}"></script>
 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;sensor=false"></script>
+<script type="text/javascript" src="{% static "js/jquery.icheck/icheck.min.js" %}"></script>
 <script type="text/javascript" src="{% static "js/main.js" %}"></script>
-  <script type="text/javascript" src="{% static "js/bootstrap.daterangepicker/moment.min.js"%}"></script>
-
-<script type="text/javascript" src="{% static "js/bootstrap.daterangepicker/daterangepicker.js"%}"></script>
-
 <script type="text/javascript">
-    $(document).ready(function(){
-        //initialize the javascript
-        App.init();
-
-        $('#reservation').daterangepicker();
-        $('#reservationtime').daterangepicker({
-            timePicker: true,
-            timePickerIncrement: 30,
-            format: 'MM/DD/YYYY h:mm A'
-        });
-        var cb = function(start, end) {
-            $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-            alert("Callback has fired: [" + start.format('MMMM D, YYYY') + " to " + end.format('MMMM D, YYYY') + "]");
-        }
-
-        var optionSet1 = {
-            startDate: moment().subtract('days', 29),
-            endDate: moment(),
-            minDate: '01/01/2012',
-            maxDate: '12/31/2014',
-            dateLimit: { days: 60 },
-            showDropdowns: true,
-            showWeekNumbers: true,
-            timePicker: false,
-            timePickerIncrement: 1,
-            timePicker12Hour: true,
-            ranges: {
-                'Today': [moment(), moment()],
-                'Yesterday': [moment().subtract('days', 1), moment().subtract('days', 1)],
-                'Last 7 Days': [moment().subtract('days', 6), moment()],
-                'Last 30 Days': [moment().subtract('days', 29), moment()],
-                'This Month': [moment().startOf('month'), moment().endOf('month')],
-                'Last Month': [moment().subtract('month', 1).startOf('month'), moment().subtract('month', 1).endOf('month')]
-            },
-            opens: 'left',
-            buttonClasses: ['btn'],
-            applyClass: 'btn-small btn-primary',
-            cancelClass: 'btn-small',
-            format: 'MM/DD/YYYY',
-            separator: ' to ',
-            locale: {
-                applyLabel: 'Submit',
-                cancelLabel: 'Clear',
-                fromLabel: 'From',
-                toLabel: 'To',
-                customRangeLabel: 'Custom',
-                daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr','Sa'],
-                monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-                firstDay: 1
-            }
-        };
-
-        var optionSet2 = {
-            startDate: moment().subtract('days', 7),
-            endDate: moment(),
-            opens: 'left',
-            ranges: {
-                'Today': [moment(), moment()],
-                'Yesterday': [moment().subtract('days', 1), moment().subtract('days', 1)],
-                'Last 7 Days': [moment().subtract('days', 6), moment()],
-                'Last 30 Days': [moment().subtract('days', 29), moment()],
-                'This Month': [moment().startOf('month'), moment().endOf('month')],
-                'Last Month': [moment().subtract('month', 1).startOf('month'), moment().subtract('month', 1).endOf('month')]
-            }
-        };
-
-        $('#reportrange span').html(moment().subtract('days', 29).format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
-
-        $('#reportrange').daterangepicker(optionSet2, cb);
-
-    });
+$(document).ready(function(){
+    App.init();
+});
 </script>
 {% block script %}
 

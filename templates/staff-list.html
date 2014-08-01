@@ -19,23 +19,32 @@
                                     <th>전화번호</th>
                                     <th>직위</th>
                                     <th>주과목</th>
+                                    <th>계정</th>
                                     <th></th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 {% for staff in staffs %}
-                                <tr class="odd gradeX">
-                                    <td><a href="/staff-detail/{{ staff.id }}">{{ staff.name }}</a></td>
-                                    <td align="center"><img src="{% if staff.image %}{{ staff.image.url }}{% endif %}" alt="" class="img-circle" width="25" height="25"/></td>
-                                    <td>{{ staff.contact }}</td>
-                                    <td class="center">{{ staff.group }}</td>
-                                    <td class="center">{{ staff.main_course }}</td>
-                                    <td class="center">
-                                        <a class="btn btn-default btn-xs" href="#" data-original-title="Open" data-toggle="tooltip"><i class="fa fa-file"></i></a>
-                                        <a class="btn btn-primary btn-xs" href="{% url "staff-update" staff.id %}" data-original-title="Edit" data-toggle="tooltip"><i class="fa fa-pencil"></i></a>
-                                        <a class="btn btn-danger btn-xs" href="{% url "staff-delete" staff.id %}" data-original-title="Remove" data-toggle="tooltip"><i class="fa fa-times"></i></a>
-                                    </td>
-                                </tr>
+                                    <tr class="odd gradeX">
+                                        <td><a href="{% url "staff-detail" staff.id %}">{{ staff.name }}</a></td>
+                                        <td align="center"><img src="{% if staff.image %}{{ staff.image.url }}{% endif %}" alt="" class="img-circle" width="25" height="25"/></td>
+                                        <td>{{ staff.contact }}</td>
+                                        <td class="center">{{ staff.group }}</td>
+                                        <td class="center">{{ staff.main_course }}</td>
+                                        <td>
+                                            {% if staff.profile.user %}
+                                                {{staff.profile.user}}
+                                            {% else %}
+                                                <a href="{% url "account-create" type=1 pk=staff.id %}" class="btn btn-primary btn-xs">계정추가</a>
+                                            {% endif %}
+                                        </td>
+                                        <td class="center">
+                                            <a class="btn btn-default btn-xs" href="{% url "staff-detail" staff.id %}" data-original-title="Open" data-toggle="tooltip"><i class="fa fa-file"></i></a>
+                                            <a class="btn btn-primary btn-xs" href="{% url "staff-update" staff.id %}" data-original-title="Edit" data-toggle="tooltip"><i class="fa fa-pencil"></i></a>
+                                            <a class="btn btn-danger btn-xs" href="{% url "staff-delete" staff.id %}" data-original-title="Remove" data-toggle="tooltip"><i class="fa fa-times"></i></a>
+                                        </td>
+
+                                    </tr>
                                 {% endfor %}
                                 </tbody>
                             </table>
