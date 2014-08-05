@@ -87,9 +87,9 @@
                             <span class="caret"></span>
                         </button>
                         <ul role="menu" class="dropdown-menu">
-                            <li><a href="{% url "payment-list" %}?order=Date">Date</a></li>
-                            <li><a href="{% url "payment-list" %}?order=Name">Name</a></li>
-                            <li><a href="{% url "payment-list" %}?order=Amount">Amount</a></li>
+                            <li><a href="{% url "payment-list" %}?order=date">Date</a></li>
+                            <li><a href="{% url "payment-list" %}?order=name">Name</a></li>
+                            <li><a href="{% url "payment-list" %}?order=amount">Amount</a></li>
                         </ul>
                     </div>
 
@@ -143,11 +143,5 @@
                     }
             );
         });
-
-        {#        $(".dropdown-menu li a").click(function(){#}
-        {#            var selText = $(this).text();#}
-        {#            $(this).parents('.btn-group').find('.dropdown-toggle').html(selText+' <span class="caret"></span>');#}
-        {#            $("<input/>",{type:'hidden',name:'order'}).val(selText).appendTo("form");#}
-        {#        });#}
     </script>
 {% endblock %}

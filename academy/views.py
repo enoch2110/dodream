@@ -312,11 +312,11 @@ class PaymentList(ListView):
         else:
             queryset = Payment.objects.all()
         if self.request.GET.get('order'):
-            if self.request.GET.get('order') == "Date":
+            if self.request.GET.get('order') == "date":
                 queryset = queryset.order_by('datetime')
-            if self.request.GET.get('order') == "Name":
+            if self.request.GET.get('order') == "name":
                 queryset = queryset.order_by('student__name')
-            if self.request.GET.get('order') == "Amount":
+            if self.request.GET.get('order') == "amount":
                 queryset = queryset.order_by('amount')
 
         return PaymentModelAdmin(Payment, None).get_search_results(self.request, queryset, self.request.GET.get('q'))[0]
@@ -344,27 +344,41 @@ class PaymentDelete(DeleteView):
 
 class UnpaidList(ListView):
     template_name = "unpaid-list.html"
-    context_object_name = "unpaid_students"
+    context_object_name = "unpaids"
 
     def get_queryset(self):
-        students = Student.objects.all()
-        queryset = []
-        for student in students:
-            if student.is_paid() == 'false':
-                queryset.append(student)
-
-        return queryset
+        import datetime
+        if self.request.GET.get('date'):
+            date_begin = datetime.datetime.strptime(self.request.GET.get('date').split(" - ")[0], "%Y-%m-%d")
+            date_end = datetime.datetime.strptime(self.request.GET.get('date').split(" - ")[1], "%Y-%m-%d")
+            print date_begin
+            print date_end
+            daterange = [date_begin, date_end]
+            queryset = StudentLecture.objects.filter(student__academy=self.request.user.profile.staff.academy, date__range=daterange)
+        else:
+            queryset = StudentLecture.objects.filter(student__academy=self.request.user.profile.staff.academy)
+        if self.request.GET.get('order'):
+            if self.request.GET.get('order') == "Date":
+                queryset = queryset.order_by('date')
+            if self.request.GET.get('order') == "Name":
+                queryset = queryset.order_by('student__name')
+            # if self.request.GET.get('order') == "Amount":
+            #     queryset = queryset.order_by('fee')
+        unpaids = []
+        for element in queryset:
+            if not element.student.is_paid():
+                earliest = StudentLecture.objects.filter(student=element.student).earliest('date')
+                if element == earliest:
+                    unpaids.append(earliest)
+        return unpaids
+        #return PaymentModelAdmin(Payment, None).get_search_results(self.request, unpaids, self.request.GET.get('q'))[0]
+        #list라 불가능ㅠㅠ
 
 
 class UnpaidDetail(DetailView):
     template_name = "unpaid-detail.html"
-    context_object_name = "unpaid-entries"
+    context_object_name = "unpaid_student"
     model = Student
-
-    def get_queryset(self):
-        queryset = self.get_total_unpaid_entries()
-
-        return queryset
 
 
 def sms(request):

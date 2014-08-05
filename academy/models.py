@@ -82,38 +82,42 @@ class Student(models.Model):
 
     def get_total_fees(self):
         total_fees = 0
-        if self.lecture_set.all() == 'true':
-            for lecture in self.lecture_set.all():
-                total_fees += lecture.get_price()
+        for lecture in StudentLecture.objects.filter(student=self):
+            total_fees += lecture.get_fee()
         return total_fees
 
     def get_total_payments(self):
-        return self.payment_set.aggregate(total_payments=Sum('amount'))['total_payments']
+        total_payments = self.payment_set.aggregate(total_payments=Sum('amount'))['total_payments']
+        if not total_payments:
+            total_payments = 0
+        return total_payments
 
     def is_paid(self):
         return self.get_total_fees() - self.get_total_payments() <= 0
 
     def get_total_unpaid_amount(self):
-        return self.get_total_fee() - self.get_total_payments()
+        return self.get_total_fees() - self.get_total_payments()
 
     def get_total_unpaid_entries(self):
         if not self.is_paid():
             total_unpaid_amount = self.get_total_unpaid_amount()
-            lectures = self.lecture_set.all().order_by('-datetime', '-course__price')     #descending(최신순), descending(큰금액순)    #datetime!!!
+            lectures = StudentLecture.objects.filter(student=self).order_by('-date', '-fee')      #descending(최신순), descending(큰금액순)
             total_unpaid_entries = []
             for lecture in lectures:
-                lecture_price = lecture.get_price()
+                lecture_price = lecture.get_fee()
                 if total_unpaid_amount > 0:
                     total_unpaid_amount -= lecture_price
                     status = 'unpaid' if total_unpaid_amount >= 0 else 'partially paid'
                     unpaid_amount = lecture_price if total_unpaid_amount >= 0 else lecture_price + total_unpaid_amount
-                    total_unpaid_entries.append({'lecture': lecture, 'status': status, 'amount': unpaid_amount})
+                    total_unpaid_entries.append({'lecture': lecture.lecture, 'date': lecture.date, 'fee': lecture.fee,
+                                                 'status': status, 'amount': unpaid_amount})
+            total_unpaid_entries.reverse()      #unpaid-detail에서 오래된 순으로 출력하기 위해서
         return total_unpaid_entries
 
     def get_last_unpaid_lecture(self):
         total_unpaid_entries = self.get_total_unpaid_entries()
-        return total_unpaid_entries[total_unpaid_entries.count()-1]
-
+        print total_unpaid_entries.index[total_unpaid_entries.count()-1]
+        return total_unpaid_entries.index[total_unpaid_entries.count()-1]
 
 class Staff(models.Model):
     name = models.CharField(max_length=100)
@@ -157,6 +161,16 @@ class Lecture(models.Model):
         code = self.code if self.code else "No Code"
         return code
 
+    def get_price(self):
+        #TODO course_price 계산법 수정 (할인률, lecture에 따로 할당된 금액 등등)
+        return self.course.price
+
+    def get_stu_num(self):
+        return Lecture.objects.filter(course=self.course, number=self.number).count()
+
+    def get_date_time(self):
+        return LectureDateTime.objects.filter(lecture=self, type=1)
+
 
 class LectureDateTime(models.Model):
     """
@@ -173,7 +187,6 @@ class LectureDateTime(models.Model):
 
     def __unicode__(self):
         return self.lecture.__unicode__()+self.lecture.staff.__unicode__()
-
 
 class Course(models.Model):
     name = models.CharField(max_length=100)
@@ -234,25 +247,11 @@ class StudentLecture(models.Model):
     def __unicode__(self):
         return self.lecture.__unicode__()+" "+self.student.__unicode__()
 
+    def get_fee(self):
+        return self.fee
 
-class Lecture(models.Model):
-    number = models.CharField(max_length=50)
-    course = models.ForeignKey("Course")
-    staff = models.ManyToManyField("Staff")
-    student = models.ManyToManyField("Student")
-    is_online = models.BooleanField()
-
-    def __unicode__(self):
-        return self.course.name
-
-    def get_lecture(self):
-        return Lecture.objects.filter(category__id__in=self.get_leaves())
-
-    def get_stu_num(self):
-        return Lecture.objects.filter(course=self.course, number=self.number).count()
-
-    def get_price(self): #TODO course_price 계산법 수정 (할인률, lecture에 따로 할당된 금액 등등)
-        return self.course.price
+    def is_last(self):
+        return StudentLecture.objects.filter(student=self.student).earliest('date') == self
 
 
 class Payment(models.Model):
