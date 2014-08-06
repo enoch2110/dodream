@@ -25,6 +25,10 @@ class PaymentModelAdmin(admin.ModelAdmin):
     search_fields = ['student__name']
 
 
+class CourseModelAdmin(admin.ModelAdmin):
+    search_fields = ['name']
+
+
 class LectureDateTimeInline(admin.TabularInline):
     model = LectureDateTime
     extra = 0

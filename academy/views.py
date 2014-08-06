@@ -9,7 +9,7 @@ from django.shortcuts import render, redirect, render_to_response
 from django.views.generic import View, CreateView, ListView, DetailView, UpdateView, DeleteView, FormView
 from django.views.generic.edit import ModelFormMixin
 from rest_framework.filters import SearchFilter
-from academy.admin import StudentModelAdmin, PaymentModelAdmin
+from academy.admin import StudentModelAdmin, PaymentModelAdmin, CourseModelAdmin
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from academy.admin import StudentModelAdmin, PaymentModelAdmin
 from academy.filters import StudentFilter
@@ -235,8 +235,27 @@ class LectureList(ListView):
     model = Course
     #queryset = Lecture.objects.filter(Lecture__course_parent=None)
     #context_object_name = "root_categories"
-    queryset = Course.objects.all()
+    # queryset = Course.objects.all()
     context_object_name = "courses"
+
+    def get_queryset(self):
+        import datetime
+        if self.request.GET.get('date'):
+            date_begin = datetime.datetime.strptime(self.request.GET.get('date').split(" - ")[0], "%Y-%m-%d")
+            date_end = datetime.datetime.strptime(self.request.GET.get('date').split(" - ")[1], "%Y-%m-%d")
+            print date_begin
+            print date_end
+            daterange = [datetime.datetime.combine(date_begin, datetime.time.min), datetime.datetime.combine(date_end, datetime.time.max)]
+            queryset = Course.objects.all()
+        else:
+            queryset = Course.objects.all()
+        if self.request.GET.get('order'):
+            if self.request.GET.get('order') == "Date":
+                queryset = queryset.order_by('price')
+            if self.request.GET.get('order') == "Amount":
+                queryset = queryset.order_by('name')
+
+        return CourseModelAdmin(Course, None).get_search_results(self.request, queryset, self.request.GET.get('q'))[0]
 
 
 class LectureCreate(CreateView):
@@ -251,16 +270,9 @@ class LectureCreate(CreateView):
         datetimes = datetime_string.split(" - ")
 
         for (counter, datetime) in enumerate(datetimes):
-            date_string = datetime.split(" ")[0]
-            hour_string = datetime.split(" ")[1].split(":")[0]
-            minute_string = datetime.split(" ")[1].split(":")[1]
-
-            new_date_string = date_string.split("/")[2]+"-"+date_string.split("/")[0]+"-"+date_string.split("/")[1]
-            new_time_string = hour_string if datetime.split(" ")[2] == "AM" else str((int(hour_string)+12%24)) + ":" + minute_string
-
             type = 0 if counter == 0 else 1
 
-            lecture_datetime = LectureDateTime(date=new_date_string, time=new_time_string, lecture=lecture, type=type)
+            lecture_datetime = LectureDateTime(date=datetime.split(" "), time=datetime.split(" "), lecture=lecture, type=type)
             lecture_datetime.save()
 
         return super(LectureCreate, self).form_valid(form)
@@ -280,17 +292,9 @@ class LectureUpdate(UpdateView):
         datetimes = datetime_string.split(" - ")
         for student in students:
             student_lecture, created = StudentLecture.objects.get_or_create(lecture=lecture, student=student)
-            print "why"
             student_lecture.fee = price
             for (counter, datetime) in enumerate(datetimes):
-                date_string = datetime.split(" ")[0]
-                hour_string = datetime.split(" ")[1].split(":")[0]
-                minute_string = datetime.split(" ")[1].split(":")[1]
-
-                new_date_string = date_string.split("/")[2]+"-"+date_string.split("/")[0]+"-"+date_string.split("/")[1]
-                new_time_string = hour_string if datetime.split(" ")[2] == "AM" else str((int(hour_string)+12%24)) + ":" + minute_string
-
-                student_lecture.date = new_date_string
+                student_lecture.date = datetime.split(" ")
                 student_lecture.save()
 
         return super(ModelFormMixin, self).form_valid(form)

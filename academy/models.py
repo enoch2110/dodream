@@ -119,6 +119,7 @@ class Student(models.Model):
         print total_unpaid_entries.index[total_unpaid_entries.count()-1]
         return total_unpaid_entries.index[total_unpaid_entries.count()-1]
 
+
 class Staff(models.Model):
     name = models.CharField(max_length=100)
     email = models.EmailField(blank=True, null=True)
@@ -149,29 +150,6 @@ class Guardian(models.Model):
     profile = models.OneToOneField(Profile)
 
 
-class Lecture(models.Model):
-    code = models.CharField(max_length=40, blank=True, null=True)
-    course = models.ForeignKey("Course")
-    staff = models.ForeignKey("Staff")
-    students = models.ManyToManyField("Student", through="StudentLecture")
-    is_online = models.BooleanField()
-    is_active = models.BooleanField(default=False)
-
-    def __unicode__(self):
-        code = self.code if self.code else "No Code"
-        return code
-
-    def get_price(self):
-        #TODO course_price 계산법 수정 (할인률, lecture에 따로 할당된 금액 등등)
-        return self.course.price
-
-    def get_stu_num(self):
-        return Lecture.objects.filter(course=self.course, number=self.number).count()
-
-    def get_date_time(self):
-        return LectureDateTime.objects.filter(lecture=self, type=1)
-
-
 class LectureDateTime(models.Model):
     """
     type
@@ -187,6 +165,7 @@ class LectureDateTime(models.Model):
 
     def __unicode__(self):
         return self.lecture.__unicode__()+self.lecture.staff.__unicode__()
+
 
 class Course(models.Model):
     name = models.CharField(max_length=100)
@@ -250,8 +229,25 @@ class StudentLecture(models.Model):
     def get_fee(self):
         return self.fee
 
-    def is_last(self):
-        return StudentLecture.objects.filter(student=self.student).earliest('date') == self
+
+class Lecture(models.Model):
+    code = models.CharField(max_length=50)
+    course = models.ForeignKey("Course")
+    staff = models.ManyToManyField("Staff")
+    student = models.ManyToManyField("Student")
+    is_online = models.BooleanField()
+
+    def __unicode__(self):
+        return self.course.name
+
+    def get_lecture(self):
+        return Lecture.objects.filter(category__id__in=self.get_leaves())
+
+    def get_stu_num(self):
+        return Lecture.objects.filter(course=self.course, number=self.number).count()
+
+    def get_price(self): #TODO course_price 계산법 수정 (할인률, lecture에 따로 할당된 금액 등등)
+        return self.course.price*(1-self.discount/100)
 
 
 class Payment(models.Model):
