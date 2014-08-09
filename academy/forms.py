@@ -102,6 +102,17 @@ class CourseForm(forms.ModelForm):
         exclude = ['is_active', 'academy']
 
 
+class CourseCategoryForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        academy = self.self.request.user.profile.staff.academy
+        super(CourseCategoryForm, self).__init__(*args, **kwargs)
+        self.category['parent'].queryset = academy.get_parents()
+
+    class Meta:
+        model = CourseCategory
+
+
 class LectureForm(forms.ModelForm):
 
     class Meta:
@@ -109,7 +120,14 @@ class LectureForm(forms.ModelForm):
         widgets = {
             'weekday': CheckboxSelectMultiple,
         }
-        exclude = ['students','is_active']
+        exclude = ['students', 'is_active']
+        unique_together = ("code", "course__academy")
+
+    def __init__(self, *args, **kwargs):
+        academy = kwargs.pop("academy")
+        super(LectureForm, self).__init__(*args, **kwargs)
+        self.fields['staffs'].queryset = academy.get_staffs()
+        self.fields['course'].queryset = academy.get_courses()
 
 
 class LectureRegistrationForm(forms.ModelForm):
@@ -122,8 +140,9 @@ class LectureRegistrationForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(LectureRegistrationForm, self).__init__(*args, **kwargs)
         #TODO academy specific
+        #students.filter(~Q(id__in=self.instance.students.all()))
+
         self.fields['students'].queryset = Student.objects.filter(~Q(id__in=self.instance.students.all()))
-        model = Lecture
 
 
 class PaymentForm(forms.ModelForm):

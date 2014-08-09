@@ -16,6 +16,15 @@ class Academy(models.Model):
     def __unicode__(self):
         return self.name
 
+    def get_students(self):
+        return Student.objects.filter(academy=self)
+
+    def get_staffs(self):
+        return Staff.objects.filter(academy=self)
+
+    def get_courses(self):
+        return Course.objects.filter(academy=self)
+
 
 class Profile(models.Model):
     user = models.OneToOneField(User, blank=True, null=True)
@@ -161,7 +170,7 @@ class LectureDateTime(models.Model):
     value = models.CharField(max_length=20)
     date = models.DateField()
     time = models.TimeField()
-    lecture = models.ForeignKey(Lecture)
+    lecture = models.ForeignKey("Lecture")
 
     def __unicode__(self):
         return self.lecture.__unicode__()+self.lecture.staff.__unicode__()
@@ -233,8 +242,8 @@ class StudentLecture(models.Model):
 class Lecture(models.Model):
     code = models.CharField(max_length=50)
     course = models.ForeignKey("Course")
-    staff = models.ManyToManyField("Staff")
-    student = models.ManyToManyField("Student")
+    staffs = models.ManyToManyField("Staff")
+    students = models.ManyToManyField("Student")
     is_online = models.BooleanField()
 
     def __unicode__(self):

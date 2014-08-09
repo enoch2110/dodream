@@ -14,11 +14,12 @@ urlpatterns = patterns(
     '',
     (r'', include('academy.urls')),
     (r'^api/', include('api.urls')),
+    (r'^website/', include('website.urls')),
     (r'^attendance/', include('attendance.urls')),
     (r'^admin/', include(admin.site.urls)),
 
-    url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'login.html', 'authentication_form': StaffAuthenticationForm}, name="login"),
-    url(r'^logout/$', 'django.contrib.auth.views.logout', {'template_name': 'logout.html'}, name="logout"),
+    url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'template_academy/login.html', 'authentication_form': StaffAuthenticationForm}, name="login"),
+    url(r'^logout/$', 'django.contrib.auth.views.logout', {'template_name': 'template_academy/logout.html'}, name="logout"),
 )
 if settings.DEBUG:
     urlpatterns += patterns('',

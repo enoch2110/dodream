@@ -4,5 +4,5 @@ from attendance.models import Attendance
 
 class AttendanceList(ListView):
     model = Attendance
-    template_name = "attendance-list.html"
+    template_name = "template_academy/attendance-list.html"
     context_object_name = "attendances"
