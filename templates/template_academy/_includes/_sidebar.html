@@ -1,3 +1,5 @@
+{% load static from staticfiles %}
+
 <div class="cl-sidebar" data-position="right" data-step="1" data-intro="<strong>Fixed Sidebar</strong> <br/> It adjust to your needs." >
     <div class="cl-toggle"><i class="fa fa-bars"></i></div>
     <div class="cl-navblock">
@@ -7,7 +9,7 @@
                     <div class="avatar"><img src="{% if request.user.staff.academy.image %}{{ request.user.staff.academy.image.url }}{% endif %}" alt="Avatar" width="50" height="50"/></div>
                     <div class="info">
                         <a href="#">{{ request.user.staff.academy.name }}</a>
-                        <img src="/static/images/state_online.png" alt="Status" /> <span>온라인</span>
+                        <img src="{% static "static_academy/images/state_online.png"%}" alt="Status" /> <span>온라인</span>
                     </div>
                 </div>
                 <ul class="cl-vnavigation">

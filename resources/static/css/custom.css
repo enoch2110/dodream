@@ -1,1 +1,10 @@
 /* Put your custom css here */
+
+div.mediaHover {
+	text-align:center;
+	overflow:hidden;
+	position:absolute;
+	top:0;
+	left:0;
+	width:100%;
+}

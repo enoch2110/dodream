@@ -33,6 +33,8 @@
     <link rel="stylesheet" href="{%  static "js-plugin/owl.carousel/owl-carousel/owl.carousel.css" %}" >
     <link rel="stylesheet" href="{%  static "js-plugin/owl.carousel/owl-carousel/owl.transitions.css" %}" >
     <link rel="stylesheet" href="{%  static "js-plugin/owl.carousel/owl-carousel/owl.theme.css" %}" >
+    <!-- isotope -->
+    <link type="text/css" rel="stylesheet" href="{% static "js-plugin/isotope/css/style.css"  %}" >
     <!-- icon fonts -->
     <link type="text/css" rel="stylesheet" href="{%  static "font-icons/custom-icons/css/custom-icons.css" %}" >
     <link type="text/css" rel="stylesheet" href="{%  static "font-icons/custom-icons/css/custom-icons-ie7.css" %}" >
@@ -41,8 +43,9 @@
     <!-- Custom css -->
     <link type="text/css" rel="stylesheet" href="{%  static "css/layout.css" %}" >
     <link type="text/css" id="colors" rel="stylesheet" href="{%  static "css/light.css" %}" >
+{#    <link type="text/css" id="colors" rel="stylesheet" href="{%  static "css/colors.css" %}" >#}
     <link type="text/css" rel="stylesheet" href="{%  static "css/custom.css" %}" >
-    <!--[if lt IE 9]><script src="{% static "http://html5shim.googlecode.com/svn/trunk/html5.js" %}"></script> <![endif]-->
+    <!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script> <![endif]-->
     <script src="{% static "js/modernizr-2.6.1.min.js" %}"></script>
     <!-- Favicons
     ================================================== -->
@@ -59,15 +62,11 @@
 <div id="globalWrapper" >
     {% include "template_website/_includes/_navbar.html" %}
     {% block content_parent %}
-        <div class="container-fluid" id="pcont">
-            {% block content %}
-<!-- ======================================= content ======================================= -->
-            {% endblock %}
-        </div>
+
     {% endblock %}
-</div>
-
-
+    {% block content %}
+        <!-- ======================================= content ======================================= -->
+    {% endblock %}
 </div>
 <!-- global wrapper -->
 <!-- End Document
@@ -86,12 +85,15 @@
 <script type="text/javascript" src="{% static "js-plugin/flexslider/jquery.flexslider-min.js" %}"></script>
 <!-- isotope -->
 <script type="text/javascript" src="{% static "js-plugin/isotope/jquery.isotope.min.js" %}"></script>
+<script type="text/javascript" src="{% static "js-plugin/isotope/jquery.isotope.sloppy-masonry.min.js" %}"></script>
 <!-- form -->
 <script type="text/javascript" src="{% static "js-plugin/neko-contact-ajax-plugin/js/jquery.form.js" %}"></script>
 <script type="text/javascript" src="{% static "js-plugin/neko-contact-ajax-plugin/js/jquery.validate.min.js" %}"></script>
 <!-- parallax -->
 <script type="text/javascript" src="{% static "js-plugin/parallax/js/jquery.stellar.min.js" %}"></script>
 <script type="text/javascript" src="{% static "js-plugin/parallax/js/jquery.localscroll-1.2.7-min.js" %}"></script>
+<!-- sharrre -->
+<script type="text/javascript" src="{% static "js-plugin/jquery.sharrre-1.3.4/jquery.sharrre-1.3.4.min.js" %}"></script>
 <!-- appear -->
 <script type="text/javascript" src="{% static "js-plugin/appear/jquery.appear.js" %}"></script>
 <!-- Custom  -->
@@ -100,9 +102,10 @@
 $(document).ready(function(){
     App.init();
 });
+</script>
 {% block script %}
 
 {% endblock %}
-    </script>
+
 </body>
 </html>
