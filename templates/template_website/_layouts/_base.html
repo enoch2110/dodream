@@ -96,5 +96,13 @@
 <script type="text/javascript" src="{% static "js-plugin/appear/jquery.appear.js" %}"></script>
 <!-- Custom  -->
 <script type="text/javascript" src="{% static "js/custom.js" %}"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+    App.init();
+});
+{% block script %}
+
+{% endblock %}
+    </script>
 </body>
 </html>

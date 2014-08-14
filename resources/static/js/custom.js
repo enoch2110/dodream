@@ -1043,8 +1043,8 @@ function initializeMainMenu() {
 	var $mainMenu = $('#mainMenu').children('ul');
 
 
-	//var action0 = (isMobile === false)?'mouseenter':'click';
-	//var action1 = (isMobile === false)?'mouseleave':'click';
+//	var action0 = (isMobile === false)?'mouseenter':'click';
+//	var action1 = (isMobile === false)?'mouseleave':'click';
 
 	if(Modernizr.mq('only all and (max-width: 767px)') ) {
 
@@ -1055,7 +1055,7 @@ function initializeMainMenu() {
 			$("a.hasSubMenu").unbind('click');
 			$('li',$mainMenu).unbind('mouseenter mouseleave');
 
-			$("a.hasSubMenu").on("click", function(e) {
+			$("a.hasSubMenu").on("mouse", function(e) {
 				
 				e.preventDefault();
 
