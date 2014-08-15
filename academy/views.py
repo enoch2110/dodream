@@ -385,7 +385,8 @@ class UnpaidList(ListView):
                 if element == earliest:
                     unpaids.append(earliest)
         return unpaids
-        #return PaymentModelAdmin(Payment, None).get_search_results(self.request, unpaids, self.request.GET.get('q'))[0]    list라 
+        #return PaymentModelAdmin(Payment, None).get_search_results(self.request, unpaids, self.request.GET.get('q'))[0]
+        #list라 불가능ㅠㅠ
 
 
 class UnpaidDetail(DetailView):
