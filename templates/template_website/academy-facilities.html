@@ -1,0 +1,97 @@
+{% extends "template_website/_layouts/_base.html" %}
+{% load static from staticfiles %}
+
+{% block content %}
+    <body class="activateAppearAnimation">
+    <section id="page">
+        <header class="page-header">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1>학원 시설</h1>
+                        {#                        <p>Along with all the Bootstraps components,<br /> we added some extra shortcode to help you customize your website.</p>#}
+                        <ul class="breadcrumb visible-md visible-lg">
+                            <li><a href="{% url "academy-introduction" %}">학원 소개</a></li>
+                            <li class="active">학원 시설</li>
+                            <li><a href="{% url "headmaster-introduction" %}">원장 소개</a></li>
+                            <li><a href="{% url "staff-introduction" %}">강사 소개</a></li>
+                            <li><a href="{% url "academy-directions" %}">원장 소개</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <section id="content" class="mt30 pb30">
+            <section class="pb30">
+                <div class="container clearfix">
+                    <div class="row">
+                        <nav id="filter" class="span12 text-center">
+                            <div class="btn-group">
+                                <a href="" class="btn btn-default" data-filter="*">All</a>
+                                <a href="" class="btn btn-default" data-filter=".director">원장실</a>
+                                <a href="" class="btn btn-default" data-filter=".practice">연습실</a>
+                                <a href="" class="btn btn-default" data-filter=".contest">연주회실</a>
+                            </div>
+                        </nav>
+                        <div class="portfolio-items  isotopeWrapper clearfix imgHover" id="2">
+                            <!-- portfolio item -->
+                            <article class="col-sm-6 isotopeItem practice">
+                                <div class="imgBorder">
+                                    <img alt="" src="{% static "static_website/photos/practice_room.jpg" %}" class="img-responsive">
+                                    <div class="mediaHover">
+                                        <div class="mask"></div>
+                                        <div class="iconLinks">
+                                            <a href="home.html" title="link">
+                                                <i class="icon-camera iconRounded iconMedium"></i>
+                                                <span>link</span>
+                                            </a>
+                                            <a href="home.html" class="image-link" title="Zoom" data-gallery="images/portfolio/carousel-2.jpg,images/portfolio/carousel-3.jpg">
+                                                <i class="icon-search iconRounded iconMedium"></i>
+                                                <span>gallery</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <section class="boxContent">
+                                        <h3>Gallery</h3>
+                                        <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi vulputate nunc ut tellus sollicitudin placerat. <br>
+                                            <a href="portfolio-project-fullwidth-carousel.html" class="moreLink">&rarr; read more</a>
+                                        </p>
+                                    </section>
+                                </div>
+                            </article>
+                            <!-- portfolio item -->
+                            <!-- portfolio item -->
+                            <article class="col-sm-6 isotopeItem contest">
+                                <div class="imgBorder">
+                                    <img alt="" src="{% static "static_website/photos/contest_room.jpg" %}" class="img-responsive">
+                                    <div class="mediaHover">
+                                        <div class="mask"></div>
+                                        <div class="iconLinks">
+                                            <a href="portfolio-project-fullwidth-carousel.html" title="link">
+                                                <i class="icon-camera iconRounded iconMedium"></i>
+                                                <span>link</span>
+                                            </a>
+                                            <a href="images/portfolio/carousel-1.jpg" class="image-link" title="Zoom" data-gallery="images/portfolio/carousel-2.jpg,images/portfolio/carousel-3.jpg">
+                                                <i class="icon-search iconRounded iconMedium"></i>
+                                                <span>gallery</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <section class="boxContent">
+                                        <h3>Gallery</h3>
+                                        <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi vulputate nunc ut tellus sollicitudin placerat. <br>
+                                            <a href="portfolio-project-fullwidth-carousel.html" class="moreLink">&rarr; read more</a>
+                                        </p>
+                                    </section>
+                                </div>
+                            </article>
+                            <!-- portfolio item -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </section>
+    </section>
+    </body>
+    <!-- content -->
+{% endblock %}

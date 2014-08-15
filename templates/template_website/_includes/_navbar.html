@@ -14,132 +14,55 @@
                         <span class="icon-bar"></span>
                     </button>
                     <!-- Logo -->
-                    <a class="navbar-brand" href="#"><img src="{% static "images/main-logo.png"%}" alt="SEATTLE website template"/></a>
+                    <a class="navbar-brand" href="index.html"><img src="/static/images/main-logo.png" alt="SEATTLE website template"/></a>
                 </div>
                 <div class="collapse navbar-collapse" id="mainMenu">
                     <!-- Main navigation -->
                     <ul class="nav navbar-nav pull-right">
-
                         <li class="primary">
-                            <a href="#" class="firstLevel active hasSubMenu" >Home</a>
+                            <a href="/website" class="firstLevel active hasSubMenu" >Home</a>
+                        </li>
+                        <li class="sep"></li>
+                        <li class="primary">
+                            <a href="{% url "academy-introduction" %}" class="firstLevel hasSubMenu" >학원 안내</a>
                             <ul class="subMenu">
-                                <li><a href="index.html">학원 소개</a></li>
-                                <li><a href="home1.html">학원 시설</a></li>
-                                <li><a href="home2.html">원장 소개</a></li>
-                                <li><a href="home3.html">강사 소개</a></li>
-                                <li class="last"><a href="home4.html">No Slider</a></li>
+                                <li><a href="{% url "academy-introduction" %}">학원 소개</a></li>
+                                <li><a href="{% url "academy-facilities" %}">학원 시설</a></li>
+                                <li><a href="{% url "headmaster-introduction" %}">원장 소개</a></li>
+                                <li><a href="{% url "staff-introduction" %}">강사 소개</a></li>
+                                <li><a href="{% url "academy-directions" %}">오시는 길</a></li>
                             </ul>
                         </li>
                         <li class="sep"></li>
                         <li class="primary">
-                            <a href="features-neko-shortcodes.html" class="firstLevel hasSubMenu" >학원 안내</a>
+                            <a href="{% url "elementary-course" %}" class="firstLevel hasSubMenu">교육 과정</a>
                             <ul class="subMenu">
-                                <li><a href="index.html">학원 소개</a></li>
-                                <li><a href="home1.html">학원 시설</a></li>
-                                <li><a href="home2.html">원장 소개</a></li>
-                                <li><a href="home3.html">강사 소개</a></li>
-
-                                <li class="dropdownSubmenu last">
-                                    <a href="#" class="hasSubMenu">Sub menu</a>
-                                    <ul class="subMenu">
-                                        <li><a href="#" class="">Third level 1</a></li>
-                                        <li><a href="#" class="">Third level 2</a></li>
-                                        <li class="last"><a href="#" class="">Third level 3</a></li>
-                                    </ul>
-
-                                </li>
+                                <li><a href="{% url "elementary-course" %}">초급</a></li>
+                                <li><a href="{% url "intermediate-course" %}">중급</a></li>
+                                <li><a href="{% url "advanced-course" %}">고급</a></li>
+                                <li><a href="{% url "entrance-course" %}">입시</a></li>
+                                <li><a href="{% url "adult-course" %}">성인</a></li>
+                        </ul>
+                        </li>
+                        <li class="sep"></li>
+                        <li class="primary">
+                            <a href="{%  url "photo-gallery" %}" class="firstLevel hasSubMenu">자료실</a>
+                            <ul class="subMenu">
+                                <li><a href="{% url "photo-gallery" %}">사진</a></li>
+                                <li class="last"><a href="{% url "video-gallery" %}">동영상</a></li>
                             </ul>
                         </li>
                         <li class="sep"></li>
                         <li class="primary">
-                            <a href="template-menu-left.html" class="firstLevel hasSubMenu">교육 과정</a>
+                            <a href="{% url "notices" %}" class="firstLevel hasSubMenu">커뮤니티</a>
                             <ul class="subMenu">
-                                <li><a href="template-menu-left.html">Menu left</a></li>
-                                <li><a href="template-sidebar-right.html">Sidebar right</a></li>
-                                <li><a href="template-2-sidebars.html">2 sidebars</a></li>
-                                <li><a href="template-contact.html">Contact</a></li>
-                                <li><a href="template-full-width.html">Full width</a></li>
-                                <li><a href="template-plans.html">Our plans</a></li>
-                                <li><a href="template-about.html">About us</a></li>
-                                <li><a href="template-team.html">Our team</a></li>
-                                <li><a href="template-services.html">Services</a></li>
-                                <li><a href="template-faq.html">FAQ</a></li>
-                                <li><a href="template-404.html">404 error</a></li>
-                                <li class="last"><a href="template-site-map.html">Site map</a></li>
+                                <li><a href="{% url "notices" %}">공지 사항</a></li>
+                                <li><a href="{% url "schedule" %}">학사 일정</a></li>
+                                <li><a href="{% url "communication" %}">소통 마당</a></li>
+                                <li class="last"><a href="{% url "QnA" %}">Q&A</a></li>
                             </ul>
-                        </li>
-                        <li class="sep"></li>
-                        <li class="primary nekoMegaMenuTrigger">
-                            <a href="#" class="firstLevel hasSubMenu">자료실</a>
-                            <div class="nekoMegaMenu subMenu">
-                                <div class="row">
-                                    <div class="col-sm-4">
 
-                                        <div class="megaInner">
-                                            <h2>Who doesn't love mega menu?</h2>
-                                            <img alt="" src="{% static "images/portfolio/vign8.jpg"%}" class="img-responsive">
-                                        </div>
 
-                                    </div>
-                                    <div class="col-sm-4">
-                                        <div class="megaInner">
-                                            <h2>Home options</h2>
-                                            <ul>
-                                                <li><a href="index.html">Default</a></li>
-                                                <li><a href="home2.html">Carousel</a></li>
-                                                <li><a href="home3.html">Camera Slider</a></li>
-                                                <li><a href="home8.html">Fullscreen Slider</a></li>
-                                                <li class="last"><a href="home7.html">No Slider</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-4">
-                                        <div class="megaInner">
-                                            <h2>Some page templates</h2>
-                                            <ul>
-                                                <li><a href="template-menu-left.html">Menu left</a></li>
-                                                <li><a href="template-sidebar-right.html">Sidebar right</a></li>
-                                                <li><a href="template-2-sidebars.html">2 sidebars</a></li>
-                                                <li><a href="template-contact.html">Contact</a></li>
-                                                <li><a href="template-full-width.html">Full width</a></li>
-                                                <li><a href="template-plans.html">Our plans</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="sep"></li>
-                        <li class="primary">
-                            <a href="portfolio-masonery.html" class="firstLevel hasSubMenu">커뮤니티</a>
-                            <ul class="subMenu">
-                                <li><a href="portfolio-masonery.html" >Masonry</a></li>
-                                <li class="dropdownSubmenu">
-                                    <a href="portfolio-2columns.html" class="hasSubMenu">Filterable</a>
-                                    <ul class="subMenu">
-                                        <li><a href="portfolio-2columns.html">2 columns</a></li>
-                                        <li><a href="portfolio-3columns.html">3 columns</a></li>
-                                        <li class="last"><a href="portfolio-4columns.html">4 columns</a></li>
-                                    </ul>
-                                </li>
-                                <li class="dropdownSubmenu">
-                                    <a href="portfolio-project-image.html" class="hasSubMenu">Single project</a>
-                                    <ul class="subMenu">
-                                        <li><a href="portfolio-project-image.html">Image</a></li>
-                                        <li><a href="portfolio-project-carousel.html">Carousel</a></li>
-                                        <li class="last"><a href="portfolio-project-video.html">Video</a></li>
-                                    </ul>
-                                </li>
-                                <li class="dropdownSubmenu last">
-                                    <a href="portfolio-project-fullwidth-image.html" class="hasSubMenu last">Single project full width</a>
-                                    <ul class="subMenu">
-                                        <li><a href="portfolio-project-fullwidth-image.html">Image</a></li>
-                                        <li><a href="portfolio-project-fullwidth-carousel.html">Carousel</a></li>
-                                        <li class="last"><a href="portfolio-project-fullwidth-video.html">Video</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
                     </ul>
                     <!-- End main navigation -->
                 </div>
