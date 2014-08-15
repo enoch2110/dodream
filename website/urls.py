@@ -39,5 +39,7 @@ urlpatterns = patterns('website.views',
     url(r'^communication', TemplateView.as_view(template_name="template_website/communication.html"),
         name="communication"),
     url(r'^QnA', TemplateView.as_view(template_name="template_website/QnA.html"), name="QnA"),
+    url(r'^facillities$', TemplateView.as_view(template_name="template_website/facillities.html")),
+    # url(r'^setting$', AcademySetting.as_view(), name="academy-setting"),
 )
 
