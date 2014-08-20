@@ -79,7 +79,7 @@ class StudentRegistration(View):
         formset = self.formset_class(request.POST)
         if form.is_valid() and formset.is_valid():
             student = form.save(commit=False)
-            student.academy = request.user.staff.academy
+            student.academy = request.user.profile.staff.academy
             student.save()
             for form in formset:
                 if form.has_changed():
@@ -156,6 +156,7 @@ class StudentList(ListView):
 class StaffList(ListView):
     template_name = "template_academy/staff-list.html"
     context_object_name = "staffs"
+    paginate_by = 10
 
     def get_queryset(self):
         return Staff.objects.filter(academy=self.request.user.profile.staff.academy)
@@ -280,6 +281,13 @@ class LectureCreate(CreateView):
         datetimes = datetime_string.split(" - ")
 
         for (counter, datetime) in enumerate(datetimes):
+            date_string = datetime.split(" ")[0]
+            hour_string = datetime.split(" ")[1].split(":")[0]
+            minute_string = datetime.split(" ")[1].split(":")[1]
+
+            new_date_string = date_string.split("/")[2]+"-"+date_string.split("/")[0]+"-"+date_string.split("/")[1]
+            new_time_string = hour_string if datetime.split(" ")[2] == "AM" else str((int(hour_string)+12%24)) + ":" + minute_string
+
             type = 0 if counter == 0 else 1
 
             lecture_datetime = LectureDateTime(date=datetime.split(" ")[0], time=datetime.split(" ")[1], lecture=lecture, type=type)
@@ -302,6 +310,7 @@ class LectureUpdate(UpdateView):
         datetimes = datetime_string.split(" - ")
         for student in students:
             student_lecture, created = StudentLecture.objects.get_or_create(lecture=lecture, student=student)
+            print "why"
             student_lecture.fee = price
             for (counter, datetime) in enumerate(datetimes):
                 student_lecture.date = datetime.split(" ")
@@ -388,6 +397,7 @@ class UnpaidList(ListView):
         #return PaymentModelAdmin(Payment, None).get_search_results(self.request, unpaids, self.request.GET.get('q'))[0]
         #list라 불가능ㅠㅠ
 
+        return queryset
 
 class UnpaidDetail(DetailView):
     template_name = "template_academy/unpaid-detail.html"

@@ -9,8 +9,14 @@ from django.forms import CheckboxSelectMultiple
 
 
 class AcademyForm(forms.ModelForm):
+    opening_time = forms.DateField()
+
     class Meta:
         model = Academy
+
+    def __init__(self, *args, **kwargs):
+        super(AcademyForm, self).__init__(*args, **kwargs)
+        settings = Setting.objects.filter(academy=self.instance)
 
 
 class UserCreateMixin(object):
@@ -143,6 +149,7 @@ class LectureRegistrationForm(forms.ModelForm):
         #students.filter(~Q(id__in=self.instance.students.all()))
 
         self.fields['students'].queryset = Student.objects.filter(~Q(id__in=self.instance.students.all()))
+        model = Lecture
 
 
 class PaymentForm(forms.ModelForm):

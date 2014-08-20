@@ -11,8 +11,8 @@
     <!-- Basic Page Needs
     ================================================== -->
     <meta charset="utf-8">
-    <title>SEATTLE HTML5, CSS3, responsive, Bootstrap 3 website template</title>
-    <meta name="description" content="SEATTLE is a One Page Bootstrap 3 Premium website Template, using nice Paralax effect, HTML5, CSS3 and Twitter Bootstrap 3">
+    <title>Pollini 음악학원</title>
+    <meta name="description" content="Pollini 음악학원">
     <meta name="author" content="Little NEKO">
     <!-- Mobile Specific Metas
     ================================================== -->
@@ -43,7 +43,7 @@
     <!-- Custom css -->
     <link type="text/css" rel="stylesheet" href="{%  static "css/layout.css" %}" >
     <link type="text/css" id="colors" rel="stylesheet" href="{%  static "css/light.css" %}" >
-{#    <link type="text/css" id="colors" rel="stylesheet" href="{%  static "css/colors.css" %}" >#}
+    {#    <link type="text/css" id="colors" rel="stylesheet" href="{%  static "css/colors.css" %}" >#}
     <link type="text/css" rel="stylesheet" href="{%  static "css/custom.css" %}" >
     <!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script> <![endif]-->
     <script src="{% static "js/modernizr-2.6.1.min.js" %}"></script>
@@ -61,14 +61,18 @@
 <!-- globalWrapper -->
 <div id="globalWrapper" >
     {% include "template_website/_includes/_navbar.html" %}
-    {% block content_parent %}
 
+    {% block content_parent %}
     {% endblock %}
+
+    <!-- ======================================= content ======================================= -->
     {% block content %}
-        <!-- ======================================= content ======================================= -->
     {% endblock %}
 </div>
 <!-- global wrapper -->
+
+{% include "template_website/_includes/_footer.html" %}
+
 <!-- End Document
 ================================================== -->
 <script type="text/javascript" src="{% static "js-plugin/respond/respond.min.js" %}"></script>
@@ -99,12 +103,11 @@
 <!-- Custom  -->
 <script type="text/javascript" src="{% static "js/custom.js" %}"></script>
 <script type="text/javascript">
-$(document).ready(function(){
-    App.init();
-});
+    $(document).ready(function(){
+        App.init();
+    });
 </script>
 {% block script %}
-
 {% endblock %}
 
 </body>

@@ -7,6 +7,10 @@ from academy.forms import StaffForm
 from academy.models import *
 
 
+# class SettingModelAdmin(admin.ModelAdmin):
+#
+#
+
 class StudentModelAdmin(admin.ModelAdmin):
     search_fields = ('name', 'contact')
 
@@ -38,6 +42,10 @@ class LectureAdmin(admin.ModelAdmin):
     inlines = [LectureDateTimeInline]
 
 
+class SettingAdmin(admin.ModelAdmin):
+    list_display = ['name', 'value', 'academy']
+
+
 admin.site.register(Academy)
 admin.site.register(Student, StudentModelAdmin)
 admin.site.register(Staff, StaffAdmin)
@@ -49,3 +57,4 @@ admin.site.register(Payment)
 admin.site.register(Lecture, LectureAdmin)
 admin.site.register(StudentLecture)
 admin.site.register(LectureDateTime)
+admin.site.register(Setting, SettingAdmin)

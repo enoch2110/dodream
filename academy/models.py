@@ -26,6 +26,12 @@ class Academy(models.Model):
         return Course.objects.filter(academy=self)
 
 
+class Setting(models.Model):
+    name = models.CharField(max_length=100)
+    value = models.TextField()
+    academy = models.ForeignKey(Academy)
+
+
 class Profile(models.Model):
     user = models.OneToOneField(User, blank=True, null=True)
 
