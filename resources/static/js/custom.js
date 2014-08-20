@@ -6,7 +6,7 @@
 
 /*************** COLORS TO BE ERASED WHEN INSTALLING THE THEME ***********/
 
-$(document).ready(function() {
+$(window).load(function() {
 
     "use strict";
 
@@ -1277,7 +1277,7 @@ function initialize(id) {
                 "stylers": [
                     {
                         "color": "#6196AD"
-                    },
+                    }
                 ]
             },
             {
@@ -1286,7 +1286,7 @@ function initialize(id) {
                 "stylers": [
                     {
                         "color": "#FCFFF5"
-                    },
+                    }
                 ]
             },
             {
