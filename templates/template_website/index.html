@@ -1,0 +1,16 @@
+{% extends "template_website/_layouts/_base.html" %}
+{% load static from staticfiles %}
+
+{% block content %}
+    {% if request.user.is_authenticated %}
+        <li><a href="{% url "logout" %}">logout</a></li>
+    {% else %}
+        <form method="post" action="{% url 'django.contrib.auth.views.login' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn btn-primary" type="submit">로그인</button>
+        <input type="hidden" name="next" value="/website"/>
+    </form>
+    {% endif %}
+
+{% endblock %}

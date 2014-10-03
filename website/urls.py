@@ -3,9 +3,10 @@ from django.contrib.auth.decorators import user_passes_test
 from django.views.generic import TemplateView
 from academy.views import *
 from dodream.helpers import decorated_includes
+from website.views import PhotoAdd
 
 urlpatterns = patterns('website.views',
-    url(r'^$', TemplateView.as_view(template_name="template_website/home.html")),
+    url(r'^$', TemplateView.as_view(template_name="template_website/index.html")),
     url(r'^academy-introduction$', TemplateView.as_view(template_name="template_website/academy-introduction.html"),
         name="academy-introduction"),
     url(r'^academy-facilities$', TemplateView.as_view(template_name="template_website/academy-facilities.html"),
@@ -28,9 +29,10 @@ urlpatterns = patterns('website.views',
         name="entrance-course"),
     url(r'^adult-course$', TemplateView.as_view(template_name="template_website/adult-course.html"),
         name="adult-course"),
-    url(r'^photo-gallery', TemplateView.as_view(template_name="template_website/photo-gallery.html"),
+    url(r'^photo-gallery', TemplateView.as_view(template_name="template_website/gallery-photo.html"),
         name="photo-gallery"),
-    url(r'^video-gallery', TemplateView.as_view(template_name="template_website/video-gallery.html"),
+    url(r'^photo-add', PhotoAdd.as_view(), name="photo-add"),
+    url(r'^video-gallery', TemplateView.as_view(template_name="template_website/gallery-video.html"),
         name="video-gallery"),
     url(r'^notices', TemplateView.as_view(template_name="template_website/notices.html"),
         name="notices"),
@@ -39,5 +41,7 @@ urlpatterns = patterns('website.views',
     url(r'^communication', TemplateView.as_view(template_name="template_website/communication.html"),
         name="communication"),
     url(r'^QnA', TemplateView.as_view(template_name="template_website/QnA.html"), name="QnA"),
+    # url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'template_website/login.html'},name="login"),
+    # url(r'^logout/$', 'django.contrib.auth.views.logout', {'template_name': 'template_website/logout.html'}, name="logout"),
 )
 

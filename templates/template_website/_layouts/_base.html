@@ -43,7 +43,7 @@
     <!-- Custom css -->
     <link type="text/css" rel="stylesheet" href="{%  static "css/layout.css" %}" >
     <link type="text/css" id="colors" rel="stylesheet" href="{%  static "css/light.css" %}" >
-    {#    <link type="text/css" id="colors" rel="stylesheet" href="{%  static "css/colors.css" %}" >#}
+{#    <link type="text/css" id="colors" rel="stylesheet" href="{%  static "css/colors.css" %}" >#}
     <link type="text/css" rel="stylesheet" href="{%  static "css/custom.css" %}" >
     <!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script> <![endif]-->
     <script src="{% static "js/modernizr-2.6.1.min.js" %}"></script>
@@ -61,12 +61,11 @@
 <!-- globalWrapper -->
 <div id="globalWrapper" >
     {% include "template_website/_includes/_navbar.html" %}
-
     {% block content_parent %}
-    {% endblock %}
 
-    <!-- ======================================= content ======================================= -->
+    {% endblock %}
     {% block content %}
+        <!-- ======================================= content ======================================= -->
     {% endblock %}
 </div>
 <!-- global wrapper -->
@@ -103,11 +102,12 @@
 <!-- Custom  -->
 <script type="text/javascript" src="{% static "js/custom.js" %}"></script>
 <script type="text/javascript">
-    $(document).ready(function(){
-        App.init();
-    });
+$(document).ready(function(){
+    App.init();
+});
 </script>
 {% block script %}
+
 {% endblock %}
 
 </body>

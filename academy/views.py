@@ -65,7 +65,7 @@ class AccountCreate(CreateView):
 
 
 class StudentRegistration(View):
-    template_name = "student-add.html"
+    template_name = "template_academy/student-add.html"
     formset_class = formset_factory(GuardianForm)
     form_class = StudentCreateForm
 
