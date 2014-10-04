@@ -1,0 +1,55 @@
+{% extends "template_website/_layouts/_base.html" %}
+{% load web_extras %}
+
+{% block content %}
+    <body class="activateAppearAnimation">
+    <section id="page">
+        <header class="page-header">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1>커뮤니티</h1>
+                        {#                        <p>Along with all the Bootstraps components,<br /> we added some extra shortcode to help you customize your website.</p>#}
+                        <ul class="breadcrumb visible-md visible-lg">
+                            <li class="active">공지 사항</li>
+                            <li><a href="{% url "schedule" %}">학사 일정</a></li>
+                            <li><a href="{% url "communication" %}">소통 마당</a></li>
+                            <li><a href="{% url "QnA" %}">Q&A</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <section id="content">
+            <section class="pt30 pb30">
+                <div class="container clearfix">
+                    <div class="col-sm-8">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th class="text-info">{{ notice.subject }}</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <thead>
+                            <tr>
+                                <th>Writer   {{ notice.writer }}</th>
+                                <th class="text-right">Date   {{ notice.date }}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>{{ notice.text }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-sm-8" style="text-align: center;">
+                        <a class="btn btn-default" href="{% url 'notice-list' %}">List</a>
+                    </div>
+                </div>
+            </section>
+        </section>
+    </section>
+    </body>
+{% endblock %}

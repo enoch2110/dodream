@@ -10,6 +10,8 @@ from academy.models import *
 # class SettingModelAdmin(admin.ModelAdmin):
 #
 #
+from website.models import Notice
+
 
 class StudentModelAdmin(admin.ModelAdmin):
     search_fields = ('name', 'contact')
@@ -58,3 +60,4 @@ admin.site.register(Lecture, LectureAdmin)
 admin.site.register(StudentLecture)
 admin.site.register(LectureDateTime)
 admin.site.register(Setting, SettingAdmin)
+admin.site.register(Notice)

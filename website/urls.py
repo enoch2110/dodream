@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import user_passes_test
 from django.views.generic import TemplateView
 from academy.views import *
 from dodream.helpers import decorated_includes
-from website.views import PhotoAdd
+from website.views import PhotoAdd, NoticeAdd, NoticeList, NoticeDetail
 
 urlpatterns = patterns('website.views',
     url(r'^$', TemplateView.as_view(template_name="template_website/index.html")),
@@ -34,8 +34,9 @@ urlpatterns = patterns('website.views',
     url(r'^photo-add', PhotoAdd.as_view(), name="photo-add"),
     url(r'^video-gallery', TemplateView.as_view(template_name="template_website/gallery-video.html"),
         name="video-gallery"),
-    url(r'^notices', TemplateView.as_view(template_name="template_website/notices.html"),
-        name="notices"),
+    url(r'^notice-list$', NoticeList.as_view(), name="notice-list"),
+    url(r'^notice-add$', NoticeAdd.as_view(), name="notice-add"),
+    url(r'^notice-detail/(?P<pk>\d+)$', NoticeDetail.as_view(), name="notice-detail"),
     url(r'^schedule', TemplateView.as_view(template_name="template_website/schedule.html"),
         name="schedule"),
     url(r'^communication', TemplateView.as_view(template_name="template_website/communication.html"),
