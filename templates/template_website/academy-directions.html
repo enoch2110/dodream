@@ -2,5 +2,79 @@
 {% load static from staticfiles %}
 
 {% block content %}
-    
+    <section id="page">
+        <header class="page-header">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1>학원 오시는 길</h1>
+                        {#                        <p>Along with all the Bootstraps components,<br /> we added some extra shortcode to help you customize your website.</p>#}
+                        <ul class="breadcrumb visible-md visible-lg">
+                            <li><a href="{% url "academy-introduction" %}">학원 소개</a></li>
+                            <li><a href="{% url "headmaster-introduction" %}">원장 소개</a></li>
+                            <li><a href="{% url "staff-introduction" %}">강사 소개</a></li>
+                            <li><a href="{% url "academy-facilities" %}">학원 시설</a></li>
+                            <li class="active">오시는 길</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <section id="content">
+            <div style="height: 400px;"><iframe scrolling="no" src="https://maps.google.com/maps?q=포항시%20북구%20양덕동%201703&amp;z=16&amp;output=embed" width="100%" height="100%"></iframe></div>
+            <div class="container" style="padding-bottom: 3%;">
+                <div class="col-md-12 text-center pt30 pb30">
+                    <h1>여러분의 목소리를 들려주세요</h1>
+                    <h2 class="subTitle">항상 최선을 다하는 폴리니 음악학원이 되겠습니다</h2>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <h4>주소 :</h4>
+                        <address>
+                            포항시 북구 장량로 196<br/>
+                            (양덕동 1703번지)<br/>
+                            2층 폴리니 음악학원<br/>
+                        </address>
+                        <h4>연락처 :</h4>
+                        <address>
+                            054) 000 - 0000<br/>
+                        </address>
+                    </div>
+                    <form method="post" action="js-plugin/neko-contact-ajax-plugin/php/form-handler.php" id="contactfrm" role="form">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="name">이름</label>
+                                <input type="text" class="form-control" name="name" id="name" placeholder="이름을 입력하세요"  title="최소 2자 이상 입력해주세요"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">이메일</label>
+                                <input type="email" class="form-control" name="email" id="email" placeholder="이메일을 입력하세요" title="유효한 이메일을 입력해주세요"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">연락처</label>
+                                <input name="phone" class="form-control required digits" type="tel" id="phone" size="30" value="" placeholder="연락처를 입력하세요" title="'-' 없이 입력해주세요 (최소 10자 이상)">
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="comments">내용</label>
+                                <textarea name="comment" class="form-control" id="comments" cols="3" rows="5" placeholder="내용을 입력하세요" title="최소 10자 이상 입력해주세요"></textarea>
+                            </div>
+                            {#                            <fieldset class="clearfix securityCheck">#}
+                            {#                                <h3>Security</h3>#}
+                            {#                                <div class="form-group">#}
+                            {#                                    <img src="js-plugin/neko-contact-ajax-plugin/php/image.php" alt="Image verification"/>#}
+                            {#                                    <input class="required form-control"  id="verify" name="verify" type="text" >#}
+                            {#                                </div>#}
+                            {#                            </fieldset>#}
+                            <div class="col-md-8 col-md-offset-4">
+                                <div class="rsult"></div>
+                                <button name="submit" type="submit" class="btn btn-lg" id="submit"> 제 출</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </section>
 {% endblock %}

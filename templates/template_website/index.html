@@ -2,15 +2,159 @@
 {% load static from staticfiles %}
 
 {% block content %}
-    {% if request.user.is_authenticated %}
-        <li><a href="{% url "logout" %}">logout</a></li>
-    {% else %}
-        <form method="post" action="{% url 'django.contrib.auth.views.login' %}">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button class="btn btn-primary" type="submit">로그인</button>
-        <input type="hidden" name="next" value="/website"/>
-    </form>
-    {% endif %}
+    <header class="page-header" style="padding:5px 0px;">
+            <div class="container">
+            {% if request.user.is_authenticated %}
+                <li><a href="{% url "logout" %}">logout</a></li>
+            {% else %}
+                <form method="post" action="{% url 'django.contrib.auth.views.login' %}">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button class="btn btn-primary" style="float: right;" type="submit">로그인</button>
+                    <input type="hidden" name="next" value="/website"/>
+                </form>
+            {% endif %}
+        </div>
+        </header>
 
+
+    <section id="homeFlex">
+        <div class="flexslider flexFullScreen" >
+            <ul class="slides sliderWrapper">
+                <li class="slideN0">
+                    <img src="/static/static_website/photos/carousel6.jpg" alt="pic 1"/>
+                    <div class="caption left">
+                        <div class="element1-1" data-animation="fadeInRightBig">
+                            <h1>아이의 정서발달에 좋은 음악</h1>
+                        </div>
+                        <div class="element1-2" data-animation="fadeInRightBig">
+                            <h2>피아노로 아이의 정서 발달에 도움을 주세요!</h2>
+                        </div>
+                        <div class="element1-3  hidden-xs" data-animation="fadeInRightBig">
+                            <p>아이의 정서 발달에 피아노로 어느 정도의 효과를 얻을 수 있을까? 관련 정보를 보시려면 '정보 얻어가기' 버튼을 누르세요</p>
+                        </div>
+                        <div class="element1-4" data-animation="fadeInRightBig"><a href="#" class="btn btn-primary">정보 얻어가기</a></div>
+                    </div>
+                </li>
+                <li class="slideN1"> <img src="/static/static_website/photos/carousel4.jpg" alt="pic 3"/>
+                    <div class="caption left">
+                        <div class="element3-1" data-animation="fadeInLeftBig">
+                            <h1>클래식 감상회</h1>
+                        </div>
+                        <div class="element3-2" data-animation="fadeInLeftBig">
+                            <h2>클래식 감상회에 초청합니다! 오셔서 아름다운 피아노의 선율을 온 몸으로 느껴보세요!</h2>
+                        </div>
+                        <div class="element3-3" data-animation="fadeInRightBig"><a href="#" class="btn btn-primary">상세일정 알아보기</a></div>
+                    </div>
+                </li>
+                <li class="slideN2">
+                    <img src="/static/static_website/photos/carousel5.jpg" alt="pic 1"/>
+                    <div class="caption left">
+                        <div class="element1-1" data-animation="bounceInDown">
+                            <h1>정기 연주회 및 콩쿨 일정 안내</h1>
+                        </div>
+                        <div class="element1-2" data-animation="fadeInLeftBig">
+                            <h2>오는 12월 학원 정기 연주회와 경상북도가 주최하는 콩쿨이 열립니다.</br> 아래 버튼을 눌러 자세한 정보를 확인하세요</h2>
+                        </div>
+                        <div class="element1-3" data-animation="fadeInRightBig"><a href="#" class="btn btn-primary">상세일정 알아보기</a></div>
+
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </section>
+    <section id="content">
+        <section class="pt40 pb40 mt30" id="services" data-nekoanim="bounceInUp" data-nekodelay="100">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 text-center mb30">
+                        <h1>우리 학원만의 특징</h1>
+                        <h2 class="subTitle">We are doing a couple of things you might be interested in</h2>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="featureBox posLeft">
+                            <i class="icon-pencil iconBig iconRounded"></i>
+                            <div class="boxContent">
+                                <h2>수준 높은 레슨</h2>
+                                <p>다른 학원과는 다른 높은 수준의 레슨을 제공합니다</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="featureBox">
+                            <i class="icon-location iconBig iconRounded"></i>
+                            <div class="boxContent">
+                                <h2>쾌적한 교육 공간</h2>
+                                <p>넓고 쾌적할 뿐만 아니라, 방음 소재 사용으로 레슨에 집중할 수 있는 환경을 제공합니다</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="featureBox posLeft">
+                            <i class="icon-thumbs-up iconBig iconRounded"></i>
+                            <div class="boxContent">
+                                <h2>무료 수요 특강</h2>
+                                <p>동요, 음악감상, 리코더, 단소, 오카리나 등의 무료 특강을 실시합니다</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="featureBox">
+                            <i class="icon-calendar iconBig iconRounded"></i>
+                            <div class="boxContent">
+                                <h2>정기 연주회 실시</h2>
+                                <p>아이들의 멋진 연주를 감상하실 수 있도록 정기 연주회를 엽니다</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="featureBox posLeft">
+                            <i class="icon-heart iconBig iconRounded"></i>
+                            <div class="boxContent">
+                                <h2>아이들이 좋아하는 달란트 잔치</h2>
+                                <p>한 달에 한 번, 아이들이 손꼽아 기다리는 행복의 달란트 잔치가 열립니다</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="featureBox">
+                            <i class="icon-search iconBig iconRounded"></i>
+                            <div class="boxContent">
+                                <h2>끊임없는 연구</h2>
+                                <p>더욱 높은 수준의 레슨을 제공하기 위하여 끊임없이 연구하고 공부합니다</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="pb30 color1 mt30">
+            <div class="col-md-12 text-center pt30 pb30">
+                <h1>아이들의 마음을 움직이는 음악교육!</h1>
+                <h2 class="subTitle">같아 보이지만 정말 다른 음악교육, '폴리니'에 맡겨주세요</h2>
+            </div>
+            <div class="container">
+                <div class="row mb30 mt30">
+                    <div class="col-md-4">
+                        <h3>세계적인 핵심 인재로 키우려면 피아노를 시켜라 - 김용(동양인 최초 세계은행 총재)</h3>
+                        <p>"... 여섯 살 때 피아노 교육을 받으면 여덟 살 때의 갈등 해결능력이 향상된다고 한다. 예술 교육을 많이 받은 사람은 그렇지 않은 사람에 비해 두뇌의 다양한 부분을 작동시켜 문제를 푼다."</p>
+                        <p>- 백지연의 <피플 인사이드> 인터뷰 중에서</p>
+                    </div>
+                    <div class="col-md-4">
+                        <h3>공병호 (경영 전문가, 공병호 경영연구소 소장)</h3>
+                        <p>"음악은 자아실현의 가장 높은 단계, 악기는 감성지수를 높여주는 가장 확실한 교육이다. 자녀가 사춘기를 지날 때까지 악기교육에 과감하게 투자하고 절대 포기하지 마라. 악기교육은 장시간 계속 되어야 한다. 악기를 참고 배울 수 있는 의지력과 인내력이면 어떤 일이든 훌륭하게 해낼 수 있는 능력이 생긴다."</p>
+                    </div>
+                    <div>
+                        <p></p>
+                        <p>이 밖에</p>
+                        <p>칼리 피오리나(포츈지 선정 세계최고의 여성, 전 휴렛패커드 CEO), 콘돌리자 라이스(전 미국 국무장관), 하워드 가드너(세계 최고의 교육학자) 등</p>
+                        <h5>세계를 움직이는 핵심 인재들이 음악교육의 중요성을 역설하고 어린 시절의 음악교육이 지금의 '나'를 만들었음을 고백한다.</h5>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </section>
+    </section>
 {% endblock %}
