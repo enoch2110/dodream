@@ -1,0 +1,31 @@
+{% load static from staticfiles %}
+<ul class="dropdown-toggle" data-toggle="dropdown">
+    <li class="dropdown">
+        <ul class="dropdown-menu" role="menu">
+            <div id="navbar-sub2" class="col-xs-3 subMenu">
+                <li><a href="{% url "academy-introduction" %}">학원 소개</a></li>
+                <li><a href="{% url "academy-facilities" %}">학원 시설</a></li>
+                <li><a href="{% url "headmaster-introduction" %}">원장 소개</a></li>
+                <li><a href="{% url "staff-introduction" %}">강사 소개</a></li>
+                <li><a href="{% url "academy-directions" %}">오시는 길</a></li>
+            </div>
+            <div id="navbar-sub3" class="col-xs-3 subMenu">
+                <li><a href="{% url "elementary-course" %}">초급</a></li>
+                <li><a href="{% url "intermediate-course" %}">중급</a></li>
+                <li><a href="{% url "advanced-course" %}">고급</a></li>
+                <li><a href="{% url "entrance-course" %}">입시</a></li>
+                <li><a href="{% url "adult-course" %}">성인</a></li>
+            </div>
+            <div id="navbar-sub4" class="col-xs-3 subMenu">
+                <li><a href="{% url "photo-gallery" %}">사진</a></li>
+                <li class="last"><a href="{% url "video-gallery" %}">동영상</a></li>
+            </div>
+            <div id="navbar-sub5" class="col-xs-4 subMenu">
+                <li><a href="{% url "notices" %}">공지 사항</a></li>
+                <li><a href="{% url "schedule" %}">학사 일정</a></li>
+                <li><a href="{% url "communication" %}">소통 마당</a></li>
+                <li class="last"><a href="{% url "QnA" %}">Q&A</a></li>
+            </div>
+        </ul>
+    </li>
+</ul>

@@ -569,7 +569,7 @@ $(document).ready(function() {
 
             enableHover: false,
             enableCounter: false,
-            enableTracking: true,
+            enableTracking: true
             //url:'document.location.href'
         });
     }
@@ -1596,5 +1596,4 @@ function toTop(mobile){
 
 }
 
-
-
+//-------------------------------------------------------------------------------------

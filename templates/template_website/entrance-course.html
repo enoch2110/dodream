@@ -2,5 +2,23 @@
 {% load static from staticfiles %}
 
 {% block content %}
-    
+    <section id="page">
+        <header class="page-header">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1>입시반 과정</h1>
+                        {#                        <p>Along with all the Bootstraps components,<br /> we added some extra shortcode to help you customize your website.</p>#}
+                        <ul class="breadcrumb visible-md visible-lg">
+                            <li><a href="{% url "elementary-course" %}">초급 과정</a></li>
+                            <li><a href="{% url "intermediate-course" %}">중급 과정</a></li>
+                            <li><a href="{% url "advanced-course" %}">고급 과정</a></li>
+                            <li class="active">입시반</li>
+                            <li><a href="{% url "adult-course" %}">성인반</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </header>
+    </section>
 {% endblock %}
