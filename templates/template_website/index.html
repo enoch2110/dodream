@@ -3,7 +3,7 @@
 
 {% block content %}
     <header class="page-header" style="padding:5px 0px;">
-            <div class="container">
+        <div class="container">
             {% if request.user.is_authenticated %}
                 <li><a href="{% url "logout" %}">logout</a></li>
             {% else %}
@@ -15,7 +15,8 @@
                 </form>
             {% endif %}
         </div>
-        </header>
+    </header>
+
 
 
     <section id="homeFlex">
@@ -155,6 +156,5 @@
                 </div>
             </div>
         </section>
-    </section>
     </section>
 {% endblock %}
