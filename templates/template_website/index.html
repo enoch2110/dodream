@@ -2,22 +2,20 @@
 {% load static from staticfiles %}
 
 {% block content %}
-    <header class="page-header" style="padding:5px 0px;">
-        <div class="container">
-            {% if request.user.is_authenticated %}
-                <li><a href="{% url "logout" %}">logout</a></li>
-            {% else %}
-                <form method="post" action="{% url 'django.contrib.auth.views.login' %}">
-                    {% csrf_token %}
-                    {{ form.as_p }}
-                    <button class="btn btn-primary" style="float: right;" type="submit">로그인</button>
-                    <input type="hidden" name="next" value="/website"/>
-                </form>
-            {% endif %}
-        </div>
-    </header>
-
-
+{#    <header class="page-header" style="padding:5px 0px;">#}
+{#        <div class="container">#}
+{#            {% if request.user.is_authenticated %}#}
+{#                <li><a href="{% url "logout" %}">logout</a></li>#}
+{#            {% else %}#}
+{#                <form method="post" action="{% url 'django.contrib.auth.views.login' %}">#}
+{#                    {% csrf_token %}#}
+{#                    {{ form.as_p }}#}
+{#                    <button class="btn btn-primary" style="float: right;" type="submit">로그인</button>#}
+{#                    <input type="hidden" name="next" value="/website"/>#}
+{#                </form>#}
+{#            {% endif %}#}
+{#        </div>#}
+{#    </header>#}
 
     <section id="homeFlex">
         <div class="flexslider flexFullScreen" >
@@ -88,7 +86,7 @@
                             <i class="icon-location iconBig iconRounded"></i>
                             <div class="boxContent">
                                 <h2>쾌적한 교육 공간</h2>
-                                <p>넓고 쾌적할 뿐만 아니라, 방음 소재 사용으로 레슨에 집중할 수 있는 환경을 제공합니다</p>
+                                <p>넓고 쾌적하며, 레슨에 집중할 수 있는 방음환경을 제공합니다</p>
                             </div>
                         </div>
                     </div>

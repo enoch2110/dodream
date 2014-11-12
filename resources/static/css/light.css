@@ -703,8 +703,8 @@ label.error {
 
 /*color2*/
 .color2, .slice.color2, .bulle.color2, .ctaBox.color2{
-	background-color:#46b0c3 ;
-	color:#fff;
+	background-color:#FFFFFF ;
+	color:#000000;
 }
 
 .color2 h1, .color2 h2, .color2 h3, .color2 h4, .color2 blockquote,
@@ -715,7 +715,7 @@ label.error {
 .color2 h4 .small, .color2 h5 .small, .color2 h6 .small, .color2 .h1 .small,
 .color2 .h2 .small, .color2 .h3 .small, .color2 .h4 .small, .color2 .h5 .small,
 .color2 .h6 .small {
-	color:#fff;
+	color:#000000;
 }
 
 .color2 a.btn{color:#fff;}
