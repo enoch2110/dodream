@@ -10,7 +10,7 @@ from academy.models import *
 # class SettingModelAdmin(admin.ModelAdmin):
 #
 #
-from website.models import Notice
+from website.models import Entry
 
 
 class StudentModelAdmin(admin.ModelAdmin):
@@ -60,4 +60,4 @@ admin.site.register(Lecture, LectureAdmin)
 admin.site.register(StudentLecture)
 admin.site.register(LectureDateTime)
 admin.site.register(Setting, SettingAdmin)
-admin.site.register(Notice)
+admin.site.register(Entry)
