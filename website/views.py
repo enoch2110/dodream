@@ -9,7 +9,7 @@ from website.models import *
 
 
 class EntryAdd(CreateView):
-    template_name = "template_website/entry-add.html"
+    template_name = "entry-add.html"
     model = Entry
     form_class = EntryAddForm
 
@@ -24,12 +24,11 @@ class EntryList(ListView):
     model = Entry
     paginate_by = 9
 
-
     def get_queryset(self):
         return Entry.objects.filter(type=self.request.GET.get("type"))
 
     def get_template_names(self):
-        return ["template_website/"+self.request.GET.get("type")+"-list.html"]
+        return [self.request.GET.get("type")+"-list.html"]
 
 
 class EntryDetail(DetailView):

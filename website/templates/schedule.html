@@ -1,4 +1,4 @@
-{% extends "template_website/_layouts/_base.html" %}
+{% extends "_layouts/_base.html" %}
 {% load static from staticfiles %}
 
 {% block content %}
@@ -12,8 +12,8 @@
                         {#                        <p>Along with all the Bootstraps components,<br /> we added some extra shortcode to help you customize your website.</p>#}
                         <ul class="breadcrumb visible-md visible-lg">
                             <li><a href="{% url "notice-list" %}">공지 사항</a></li>
-                            <li><a href="{% url "schedule" %}">학사 일정</a></li>
-                            <li class="active">소통 마당</li>
+                            <li class="active">학사 일정</li>
+                            <li><a href="{% url "communication" %}">소통 마당</a></li>
                             <li><a href="{% url "QnA" %}">Q&A</a></li>
                         </ul>
                     </div>

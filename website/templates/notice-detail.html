@@ -1,4 +1,4 @@
-{% extends "template_website/_layouts/_base.html" %}
+{% extends "_layouts/_base.html" %}
 {% load web_extras %}
 
 {% block content %}
@@ -23,29 +23,29 @@
         <section id="content">
             <section class="pt30 pb30">
                 <div class="container clearfix">
-                    <div class="col-sm-8">
+                    <div class="col-sm-12">
                         <table class="table">
                             <thead>
                             <tr>
-                                <th class="text-info">{{ notice.subject }}</th>
+                                <th class="text-info">{{ object.title }}</th>
                                 <th></th>
                             </tr>
                             </thead>
                             <thead>
                             <tr>
-                                <th>Writer   {{ notice.writer }}</th>
-                                <th class="text-right">Date   {{ notice.date }}</th>
+                                <th>Writer:   {{ object.writer }}</th>
+                                <th class="text-right">Date   {{ object.datetime|date:"Y-m-d" }}</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr>
-                                <td>{{ notice.text }}</td>
+                                <td>{{ object.content|safe }}</td>
                             </tr>
                             </tbody>
                         </table>
                     </div>
-                    <div class="col-sm-8" style="text-align: center;">
-                        <a class="btn btn-default" href="{% url 'notice-list' %}">List</a>
+                    <div class="col-sm-12" style="text-align: center;">
+                        <a class="btn btn-default" href="{% url 'entry-list' %}?type=notice">List</a>
                     </div>
                 </div>
             </section>

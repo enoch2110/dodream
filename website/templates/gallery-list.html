@@ -1,4 +1,4 @@
-<{% extends "template_website/_layouts/_base.html" %}
+<{% extends "_layouts/_base.html" %}
 {% load static from staticfiles %}
 
 {% block content %}
@@ -36,7 +36,7 @@
                                         <div class="mediaHover">
                                             <div class="mask"></div>
                                             <div class="iconLinks">
-                                                <a href="#" title="link">
+                                                <a href="{% url "entry-detail" gallery.id %}" title="link">
                                                     <i class="icon-picture iconRounded iconMedium"></i>
                                                     <span>link</span>
                                                 </a>
@@ -51,7 +51,7 @@
 
                         </div>
                         <div class="text-center">
-                            {% include "template_website/_includes/entry_pagination.html" %}
+                            {% include "_includes/entry_pagination.html" %}
                         </div>
                     </div>
                 </div>

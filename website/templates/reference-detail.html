@@ -1,0 +1,52 @@
+{% extends "_layouts/_base.html" %}
+{% load web_extras %}
+
+{% block content %}
+    <body class="activateAppearAnimation">
+    <section id="page">
+        <header class="page-header">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1>기타자료</h1>
+                        <ul class="breadcrumb visible-md visible-lg">
+                            <li><a href="gallery.html">학원소식</a></li>
+                            <li class="active">기타자료</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <section id="content">
+            <section class="pt30 pb30">
+                <div class="container clearfix">
+                    <div class="col-sm-12">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th class="text-info">{{ object.title }}</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <thead>
+                            <tr>
+                                <th>Writer:   {{ object.writer }}</th>
+                                <th class="text-right">Date   {{ object.datetime|date:"Y-m-d" }}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>{{ object.content|safe }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-sm-12" style="text-align: center;">
+                        <a class="btn btn-default" href="{% url 'entry-list' %}?type=reference">List</a>
+                    </div>
+                </div>
+            </section>
+        </section>
+    </section>
+    </body>
+{% endblock %}
