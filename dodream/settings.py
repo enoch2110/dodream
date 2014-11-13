@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'rest_framework.authtoken',
     'django_filters',
     'south',
+    'django_summernote',
     'academy',
     'attendance',
     'website'

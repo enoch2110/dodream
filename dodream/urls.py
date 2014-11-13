@@ -12,11 +12,12 @@ admin.autodiscover()
 
 urlpatterns = patterns(
     '',
-    (r'', include('academy.urls')),
-    (r'^api/', include('api.urls')),
-    (r'^website/', include('website.urls')),
-    (r'^attendance/', include('attendance.urls')),
-    (r'^admin/', include(admin.site.urls)),
+    url(r'', include('academy.urls')),
+    url(r'^api/', include('api.urls')),
+    url(r'^website/', include('website.urls')),
+    url(r'^attendance/', include('attendance.urls')),
+    url(r'^summernote/', include('django_summernote.urls')),
+    url(r'^admin/', include(admin.site.urls)),
 
     url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'template_academy/login.html', 'authentication_form': StaffAuthenticationForm}, name="login"),
     url(r'^logout/$', 'django.contrib.auth.views.logout', {'template_name': 'template_academy/logout.html'}, name="logout"),

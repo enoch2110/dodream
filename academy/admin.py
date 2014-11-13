@@ -6,13 +6,6 @@ from django.contrib import admin
 from academy.forms import StaffForm
 from academy.models import *
 
-
-# class SettingModelAdmin(admin.ModelAdmin):
-#
-#
-from website.models import Entry
-
-
 class StudentModelAdmin(admin.ModelAdmin):
     search_fields = ('name', 'contact')
 
@@ -60,4 +53,3 @@ admin.site.register(Lecture, LectureAdmin)
 admin.site.register(StudentLecture)
 admin.site.register(LectureDateTime)
 admin.site.register(Setting, SettingAdmin)
-admin.site.register(Entry)

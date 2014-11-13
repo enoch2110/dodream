@@ -27,31 +27,32 @@
                                 <a href="" class="btn btn-default" data-filter=".video">비디오</a>
                             </div>
                         </nav>
-{#                        <div class="portfolio-items  isotopeWrapper clearfix imgHover" id="3">#}
-{#                            <article class="col-sm-4 isotopeItem women">#}
-{#                                <div class="imgBorder">#}
-{#                                    <img alt="" src="{% static "images/portfolio/vign6.jpg"%}" class="img-responsive imgBorder">#}
-{#                                    <div class="mediaHover">#}
-{#                                        <div class="mask"></div>#}
-{#                                        <div class="iconLinks">#}
-{#                                            <a href="portfolio-project-fullwidth-image.html" title="link">#}
-{#                                                <i class="icon-picture iconRounded iconMedium"></i>#}
-{#                                                <span>link</span>#}
-{#                                            </a>#}
-{#                                            <a href="{% static "images/portfolio/zoom6.jpg"%}" class="image-link" title="Full width image" >#}
-{#                                                <i class="icon-search iconRounded iconMedium"></i>#}
-{#                                                <span>zoom</span>#}
-{#                                            </a>#}
-{#                                        </div>#}
-{#                                    </div>#}
-{#                                    <section class="boxContent text-center" style="padding:15px;">#}
-{#                                        <h3 style="margin-bottom: 0px;">Full width image<br/><small>2014/11/10</small></h3>#}
-{#                                    </section>#}
-{#                                </div>#}
-{#                            </article>#}
-{#                        </div>#}
 
+                        <div class="portfolio-items  isotopeWrapper clearfix imgHover" id="3">
+                            {% for gallery in object_list %}
+                                <article class="col-sm-4 isotopeItem women">
+                                    <div class="imgBorder">
+                                        <img alt="" src="{{ gallery.get_main_image.url }}" class="img-responsive imgBorder">
+                                        <div class="mediaHover">
+                                            <div class="mask"></div>
+                                            <div class="iconLinks">
+                                                <a href="#" title="link">
+                                                    <i class="icon-picture iconRounded iconMedium"></i>
+                                                    <span>link</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <section class="boxContent text-center" style="padding:15px;">
+                                            <h3 style="margin-bottom: 0px;">{{ gallery.title }}<br/><small>{{ gallery.datetime|date:"Y-m-d" }}</small></h3>
+                                        </section>
+                                    </div>
+                                </article>
+                            {% endfor %}
 
+                        </div>
+                        <div class="text-center">
+                            {% include "template_website/_includes/entry_pagination.html" %}
+                        </div>
                     </div>
                 </div>
             </section>

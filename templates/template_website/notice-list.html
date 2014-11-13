@@ -27,37 +27,29 @@
                             <thead>
                             <tr>
                                 <th class="text-center">No</th>
-                                <th class="text-center">Subject</th>
+                                <th class="text-center">Title</th>
                                 <th class="text-center">File</th>
                                 <th class="text-center">Writer</th>
                                 <th class="text-center">Date</th>
                             </tr>
                             </thead>
                             <tbody>
-                            {% for notice in notices %}
+                            {% for notice in object_list %}
                                 <tr>
                                     <td class="text-center">{{ forloop.counter }}</td>
-                                    <td><a href="{% url 'notice-detail' notice.id %}">{{ notice.subject }}</a></td>
-                                    <td class="text-center">{{ notice.file.counter }}</td>
+                                    <td><a href="{% url 'notice-detail' notice.id %}">{{ notice.title }}</a></td>
+                                    <td class="text-center">{{ notice.entryfile_set.count }}</td>
                                     <td class="text-center">{{ notice.writer }}</td>
-                                    <td class="center">{{ notice.date }}</td>
+                                    <td class="center">{{ notice.datetime|date:"Y-m-d" }}</td>
                                 </tr>
                             {% endfor %}
                             </tbody>
                         </table>
                         <div class="col-sm-12" style="text-align: right;">
-                            <a class="btn btn-default" href="{% url 'notice-add' %}">Write</a>
+{#                            <a class="btn btn-default" href="{% url 'notice-add' %}">Write</a>#}
                         </div>
                         <div class="text-center">
-                            <ul class="pagination">
-                                <li><a href="#">«</a></li>
-                                <li><a href="#">1</a></li>
-                                <li><a href="#">2</a></li>
-                                <li><a href="#">3</a></li>
-                                <li><a href="#">4</a></li>
-                                <li><a href="#">5</a></li>
-                                <li><a href="#">»</a></li>
-                            </ul>
+                            {% include "template_website/_includes/entry_pagination.html" %}
                         </div>
                     </div>
                 </div>
