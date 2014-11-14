@@ -10,7 +10,7 @@
                         <h1>학원소식</h1>
                         <ul class="breadcrumb visible-md visible-lg">
                             <li class="active">학원소식</li>
-                            <li><a href="reference-list.html">기타자료</a></li>
+                            <li><a href="{% url "entry-list" %}?type=reference">기타자료</a></li>
                         </ul>
                     </div>
                 </div>
@@ -20,14 +20,13 @@
             <section class="pt30 pb30">
                 <div class="container clearfix">
                     <div class="row">
-                        <nav id="filter" class="span12 text-center">
-                            <div class="btn-group">
-                                <a href="" class="btn btn-default" data-filter="*">모두</a>
-                                <a href="" class="btn btn-default" data-filter=".photo">사진</a>
-                                <a href="" class="btn btn-default" data-filter=".video">비디오</a>
-                            </div>
-                        </nav>
-
+{#                        <nav id="filter" class="span12 text-center">#}
+{#                            <div class="btn-group">#}
+{#                                <a href="" class="btn btn-default" data-filter="*">모두</a>#}
+{#                                <a href="" class="btn btn-default" data-filter=".photo">사진</a>#}
+{#                                <a href="" class="btn btn-default" data-filter=".video">비디오</a>#}
+{#                            </div>#}
+{#                        </nav>#}
                         <div class="portfolio-items  isotopeWrapper clearfix imgHover" id="3">
                             {% for gallery in object_list %}
                                 <article class="col-sm-4 isotopeItem women">
