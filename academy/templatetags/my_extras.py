@@ -10,13 +10,13 @@ def addcss(field, css):
         return field
 
 
-@register.inclusion_tag('template_academy/_includes/_children.html')
+@register.inclusion_tag('_includes/_children.html')
 def children_tag(parent):
     children = parent.children()
     return {'children': children}
 
 
-@register.inclusion_tag('template_academy/_includes/_child_categories.html')
+@register.inclusion_tag('_includes/_child_categories.html')
 def child_categories(parent):
     children = parent.children()
     return {'children': children}

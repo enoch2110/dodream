@@ -91,6 +91,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "resources", "static"),
     os.path.join(BASE_DIR, "website", "static"),
+    os.path.join(BASE_DIR, "academy", "static"),
 )
 
 MEDIA_URL = '/media/'
