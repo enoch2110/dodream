@@ -1,0 +1,47 @@
+{% extends "_layouts/base.html" %}
+{% load my_extras %}
+
+{% block content %}
+    <div class="page-head">
+        <h2>직원 수정</h2>
+    </div>
+    <div class="cl-mcont">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="block-flat">
+                    <div class="row">
+                        <form class="form-horizontal group-border-dashed" action="{% url "staff-update" object.id %}" method="post">
+                            <div class="col-sm-12">
+                                <div class="header">
+                                    <h3>Staff Profile</h3>
+                                </div>
+                                <div class="content">
+                                    <form class="form-horizontal group-border-dashed" action="{% url "staff-update" object.id %}" method="post" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        {% for field in form %}
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label">{{ field.label }}</label>
+                                                <div class="col-sm-6">
+                                                    {{ field|addattr:"class=form-control" }}
+                                                    {% for error in field.errors %}
+                                                        <span class="label label-danger">{{ error }}</span>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                        <div class="row">
+                                            <div class="col-sm-12" style="text-align: center;">
+                                                <button type="submit" class="btn btn-primary">저장</button>
+                                                <a href="{% url "staff-list" %}" class="btn btn-default">취소</a>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

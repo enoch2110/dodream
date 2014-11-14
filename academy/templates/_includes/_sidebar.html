@@ -1,0 +1,63 @@
+{% load static from staticfiles %}
+<div class="cl-sidebar" data-position="right" data-step="1" data-intro="<strong>Fixed Sidebar</strong> <br/> It adjust to your needs." >
+    <div class="cl-toggle"><i class="fa fa-bars"></i></div>
+    <div class="cl-navblock">
+        <div class="menu-space">
+            <div class="content">
+                <div class="side-user">
+                    <div class="avatar"><img src="{% if request.user.staff.academy.image %}{{ request.user.staff.academy.image.url }}{% endif %}" alt="Avatar" width="50" height="50"/></div>
+                    <div class="info">
+                        <a href="#">{{ request.user.staff.academy.name }}</a>
+                        <img src="{% static "academy/_core/images/state_online.png" %}" alt="Status" /> <span>온라인</span>
+                    </div>
+                </div>
+                <ul class="cl-vnavigation">
+                    <li><a href="/"><i class="fa fa-home"></i><span>메인화면</span></a>
+                    </li>
+                    <li><a href="#"><i class="fa fa-smile-o"></i><span>수강생관리</span></a>
+                        <ul class="sub-menu">
+                            <li><a href="/student-list">수강생 조회</a></li>
+                            <li><a href="{% url "student-registration" %}">수강생 추가</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#"><i class="fa fa-users"></i><span>직원관리</span></a>
+                        <ul class="sub-menu">
+                            <li><a href="{% url "staff-list" %}">직원 조회</a></li>
+                            <li><a href="{% url "staff-add" %}">직원 추가</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa  fa-bullhorn"></i><span>출석관리</span></a>
+                        <ul class="sub-menu">
+                            <li><a href="{% url "attendance-list" %}">출석 조회</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#"><i class="fa fa-sitemap nav-icon"></i><span>과목관리</span></a>
+                        <ul class="sub-menu">
+                            <li><a href="{% url "course-list" %}">과목 조회</a></li>
+                            <li><a href="{% url "course-add" %}">과목 추가</a></li>
+                            <li><a href="{% url "course-category" %}">과목 카테고리</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#"><i class="fa fa-book nav-icon"></i><span>강의관리</span></a>
+                        <ul class="sub-menu">
+                            <li><a href="{% url "lecture-list" %}">강의 조회</a></li>
+                            <li><a href="{% url "lecture-add" %}">강의 추가</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#"><i class="fa fa-credit-card"></i><span>수강료 관리</span></a>
+                        <ul class="sub-menu">
+                            <li><a href="{% url "unpaid-list" %}">미납 내역</a></li>
+                            <li><a href="{% url "payment-list" %}">지불 내역</a></li>
+                            <li><a href="{% url "payment-add" %}">지불 내역 추가</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="{% url "academy-setting" %}"><i class="fa fa-cogs nav-icon"></i><span>학원정보관리</span></a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="text-right collapse-button" style="padding:7px 9px;">
+            <button id="sidebar-collapse" class="btn btn-default" style=""><i style="color:#fff;" class="fa fa-angle-left"></i></button>
+        </div>
+    </div>
+</div>
