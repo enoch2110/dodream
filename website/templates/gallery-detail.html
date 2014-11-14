@@ -10,7 +10,7 @@
                         <h1>학원소식</h1>
                         <ul class="breadcrumb visible-md visible-lg">
                             <li class="active">학원소식</li>
-                            <li><a href="reference-list.html">기타자료</a></li>
+                            <li><a href="{% url "entry-list" %}?type=reference">기타자료</a></li>
                         </ul>
                     </div>
                 </div>
@@ -19,6 +19,7 @@
         <section id="content" class="pt30 mb30">
             <div class="container">
                 <div class="row">
+                <div class="col-md-2"></div>
                     <div class="col-md-8">
                         <article class="post clearfix">
                             <div class="postPic">
@@ -35,19 +36,23 @@
                                     <i class="iconRounded icon-camera"></i>
                                 </div>
                                 <section class="col-sm-11 col-xs-10">
-                                    <h2>{{ object.title }}</h2>
                                     <ul class="entry-meta">
+                                        <li class="col-sm-8" style="padding-left: 0px;"><h2>{{ object.title }}</h2></li>
                                         <li class="entry-date"><a href="#"><i class="icon-pin"></i>&nbsp;{{ object.datetime|date:"Y-m-d" }}</a></li>
                                         <li class="entry-author"><a href="#"><i class="icon-male"></i>&nbsp; {{ object.writer }}</a></li>
                                     </ul>
-                                    {{ object.content|safe }}
+                                </section>
+                                <section>
+                                    <div class="col-xs-1"></div>
+                                    <div class="col-xs-10">{{ object.content|safe }}</div>
+                                    <div class="col-xs-1"></div>
                                 </section>
                             </div>
                         </article>
                     </div>
-                    <!-- Sidebar -->
-                    <aside class="col-md-4">
-                        {#                        <section>#}
+                <div class="col-md-2"></div>
+{#                    <aside class="col-md-4">#}
+                        {#                                                <section>#}
                         {#                            <h1>#}
                         {#                                If you think it's going to rain, it will.#}
                         {#                            </h1>#}
@@ -96,10 +101,9 @@
                         {#                            <a href="#" class="w3">Photos</a>#}
                         {#                            <a href="#" class="w2">Music</a>#}
                         {#                        </section>#}
-                    </aside>
-                    <!-- Sidebar -->
-                </div><!-- row -->
-            </div><!-- container -->
+{#                    </aside>#}
+                </div>
+            </div>
         </section>
     </section>
 {% endblock %}
