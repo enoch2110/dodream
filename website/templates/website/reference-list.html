@@ -1,0 +1,53 @@
+{% extends "website/_layouts/_base.html" %}
+{% load static from staticfiles %}
+
+{% block content %}
+    <section id="page">
+        <header class="page-header">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1>기타자료</h1>
+                        <ul class="breadcrumb visible-md visible-lg">
+                            <li><a href="{% url "entry-list" %}?type=gallery">학원소식</a></li>
+                            <li class="active">기타자료</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <section id="content">
+            <section class="pt30 pb30">
+                <div class="container clearfix">
+                    <div class="col-md-12">
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th class="text-center">No</th>
+                                <th class="text-center">Subject</th>
+                                <th class="text-center">File</th>
+                                <th class="text-center">Writer</th>
+                                <th class="text-center">Date</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for reference in object_list %}
+                                <tr>
+                                    <td class="text-center">{{ forloop.counter }}</td>
+                                    <td><a href="{% url 'entry-detail' reference.id %}">{{ reference.title }}</a></td>
+                                    <td class="text-center">{{ reference.entryfile_set.count }}</td>
+                                    <td class="text-center">{{ reference.writer }}</td>
+                                    <td class="center">{{ reference.datetime|date:"Y-m-d" }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        <div class="text-center">
+                            {% include "website/_includes/entry_pagination.html" %}
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </section>
+    </section>
+{% endblock %}

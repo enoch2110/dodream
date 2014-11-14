@@ -9,7 +9,7 @@ from website.models import *
 
 
 class EntryAdd(CreateView):
-    template_name = "entry-add.html"
+    template_name = "website/entry-add.html"
     model = Entry
     form_class = EntryAddForm
 
@@ -17,7 +17,7 @@ class EntryAdd(CreateView):
         return super(EntryAdd, self).form_valid(form)
 
     def get_success_url(self):
-        return [self.get_object().type]+"-list.html"
+        return ["website/"+self.get_object().type]+"-list.html"
 
 
 class EntryList(ListView):
@@ -28,11 +28,11 @@ class EntryList(ListView):
         return Entry.objects.filter(type=self.request.GET.get("type"))
 
     def get_template_names(self):
-        return [self.request.GET.get("type")+"-list.html"]
+        return ["website/"+self.request.GET.get("type")+"-list.html"]
 
 
 class EntryDetail(DetailView):
     model = Entry
 
     def get_template_names(self):
-        return self.get_object().type+"-detail.html"
+        return "website/"+self.get_object().type+"-detail.html"

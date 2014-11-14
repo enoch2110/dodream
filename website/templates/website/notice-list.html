@@ -1,0 +1,59 @@
+{% extends "website/_layouts/_base.html" %}
+{% load static from staticfiles %}
+
+{% block content %}
+    <section id="page">
+        <header class="page-header">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1>공지사항</h1>
+                        {#                        <p>Along with all the Bootstraps components,<br /> we added some extra shortcode to help you customize your website.</p>#}
+                        <ul class="breadcrumb visible-md visible-lg">
+                            <li class="active">공지 사항</li>
+                            <li><a href="{% url "schedule" %}">학사 일정</a></li>
+                            <li><a href="{% url "communication" %}">소통 마당</a></li>
+                            <li><a href="{% url "QnA" %}">Q&A</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <section id="content">
+            <section class="pt30 pb30">
+                <div class="container clearfix">
+                    <div class="col-md-12">
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th class="text-center">No</th>
+                                <th class="text-center">Title</th>
+                                <th class="text-center">File</th>
+                                <th class="text-center">Writer</th>
+                                <th class="text-center">Date</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for notice in object_list %}
+                                <tr>
+                                    <td class="text-center">{{ forloop.counter }}</td>
+                                    <td><a href="{% url 'entry-detail' notice.id %}">{{ notice.title }}</a></td>
+                                    <td class="text-center">{{ notice.entryfile_set.count }}</td>
+                                    <td class="text-center">{{ notice.writer }}</td>
+                                    <td class="center">{{ notice.datetime|date:"Y-m-d" }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        <div class="col-sm-12" style="text-align: right;">
+{#                            <a class="btn btn-default" href="{% url 'notice-add' %}">Write</a>#}
+                        </div>
+                        <div class="text-center">
+                            {% include "website/_includes/entry_pagination.html" %}
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </section>
+    </section>
+{% endblock %}

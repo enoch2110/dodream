@@ -1,0 +1,112 @@
+{% extends "website/_layouts/_base.html" %}
+{% load static from staticfiles %}
+
+{% block content %}
+    <section id="page">
+        <header class="page-header">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1>초급 과정</h1>
+                        {#                        <p>Along with all the Bootstraps components,<br /> we added some extra shortcode to help you customize your website.</p>#}
+                        <ul class="breadcrumb visible-md visible-lg">
+                            <li class="active">초급 과정</li>
+                            <li><a href="{% url "intermediate-course" %}">중급 과정</a></li>
+                            <li><a href="{% url "advanced-course" %}">고급 과정</a></li>
+                            <li><a href="{% url "entrance-course" %}">입시반</a></li>
+                            <li><a href="{% url "adult-course" %}">성인반</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </header>
+    </section>
+    <section id="page">
+        <section>
+            <section class="mt15 mb15">
+                <div class="nekoDataOwl owl-carousel text-center" data-neko_items="2" data-neko_singleitem="false" data-neko_navigation="false" data-neko_pagination="true" data-neko_mousedrag="true">
+                    <img src="{% static "website/images/course/1A.png" %}" alt="1A"/>
+                    <img src="{% static "website/images/course/1B.png" %}" alt="1B"/>
+                    <img src="{% static "website/images/course/2A.png" %}" alt="2A"/>
+                    <img src="{% static "website/images/course/2B.png" %}" alt="2B"/>
+                    <img src="{% static "website/images/course/3A.png" %}" alt="3A"/>
+                    <img src="{% static "website/images/course/3B.png" %}" alt="3B"/>
+                </div>
+            </section>
+        </section>
+        <section id="content">
+            <div class="container">
+                <div class="row mt30 mb30">
+                    <div class="col-md-12">
+                        <h2>초급 과정 </h2>
+                        <div class="panel-group" id="accordion">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                                            피아노 어드벤쳐 1급
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseOne" class="panel-collapse in" >
+                                    <div class="panel-body">
+                                        <h2 class="panel-title">피아노 어드벤쳐 1급은 피아노만 가르치는 교재가 아닙니다.</h2>
+                                        <p></p>
+                                        <h2 class="panel-title">전인성, 영재성 개발 교재입니다.</h2>
+                                        <h2></h2>
+                                        <p>- 아동심리와 아동발달을 바탕으로 아이들 눈높이에 꼭 맞춘 피아노 첫걸음</p>
+                                        <p>- 예쁜 캐릭터와 놀이처럼 배우는 즐거운 피아노 체험!</p>
+                                        <p>- 가장 중요한 첫걸음! 처음부터 음악의 7요소를 골고루 경험시킵니다.</p>
+                                        <p>- 초견, 청음, 작곡, 음색, 릴렉스… 1급부터 이 모든 것을 함께 시작합니다.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                                            피아노 어드벤쳐 2급
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseTwo" class="panel-collapse collapse" >
+                                    <div class="panel-body">
+                                        <h2 class="panel-title">이렇게 일찍 반주법에 들어가는 교재 보셨나요?</h2>
+                                        <p></p>
+                                        <h2 class="panel-title">반주법의 기초를 탄탄하게 다집니다.</h2>
+                                        <h2></h2>
+                                        <p>- 음악을 춤추게 하는 아티큘레이션! 2급에서 확실하게 가르칩니다.</p>
+                                        <p>- 초견부터 음정을 읽을 수 있도록 훈련시킵니다.</p>
+                                        <p>- 음정과 화음 교육, 반주법의 기초를 다지는 중요한 급수입니다.</p>
+                                        <p>- 으뜸음, 딸림음, 교육으로 조성과 조옮김 학습을 준비합니다.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+                                            피아노 어드벤쳐 3급
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseThree" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <h2 class="panel-title">조성을 이해해야 음악이 보입니다!</h2>
+                                        <p></p>
+                                        <h2 class="panel-title">제대로 알고치면 피아노가 너무 좋아져요.</h2>
+                                        <h2></h2>
+                                        <p>- 조옮김은 피아니스트의 기본! 자유자재로 조옮김을 할 수 있게 훈련시킵니다.</p>
+                                        <p>- 조성과 화음 학습이 체계적으로 심화됩니다.</p>
+                                        <p>- 음악적인 연주의 핵심, 프제이즈의 흐름을 가르칩니다.</p>
+                                        <p>- 장조와 단조의 차이를 눈으로, 귀로, 손으로 느끼게 합니다.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </section>
+{% endblock %}
