@@ -25,14 +25,11 @@ class Attendance(models.Model):
         is_first = first_attendance == self
 
         try:
-            attend_time = self.user.attendancemanager.get_attend_time()
-            leave_time = self.user.attendancemanager.get_attend_time()
+            attend_time = self.profile.attendancemanager.get_attend_time()
+            leave_time = self.profile.attendancemanager.get_leave_time()
         except:
             attend_time = first_datetime.time()
             leave_time = (datetime.datetime(2000, 1, 1, attend_time.hour, attend_time.minute, attend_time.second) + datetime.timedelta(hours=1)).time()
-
-        print attend_time
-        print leave_time
 
         if is_first and current_datetime.time() <= attend_time:
             result = "attend"
