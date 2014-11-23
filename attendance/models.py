@@ -10,6 +10,7 @@ from academy.models import Profile
 
 class Attendance(models.Model):
     profile = models.ForeignKey(Profile)
+    image = models.ImageField(upload_to="attendance/attendance", blank=True)
     datetime = models.DateTimeField(auto_now=True)
 
     def __unicode__(self):

@@ -5,9 +5,9 @@
         <div class="menu-space">
             <div class="content">
                 <div class="side-user">
-                    <div class="avatar"><img src="{% if request.user.staff.academy.image %}{{ request.user.staff.academy.image.url }}{% endif %}" alt="Avatar" width="50" height="50"/></div>
+                    <div class="avatar"><img src="{% if request.user.profile.staff.academy.image %}{{ request.user.profile.staff.academy.image.url }}{% endif %}" alt="Avatar" height="40"/></div>
                     <div class="info">
-                        <a href="#">{{ request.user.staff.academy.name }}</a>
+                        <a href="#">{{ request.user.profile.staff.academy.name }}</a>
                         <img src="{% static "academy/_core/images/state_online.png" %}" alt="Status" /> <span>온라인</span>
                     </div>
                 </div>

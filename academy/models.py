@@ -75,18 +75,18 @@ class Profile(models.Model):
 
 class Student(models.Model):
     GENDER_CHOICES = [(True, "남"), (False, "여")]
-    ATTEND_METHOD_CHOICES = [(1, "도보"), (2, "통학버스")]
+    ATTEND_METHOD_CHOICES = [(0, "정보없음"), (1, "도보"), (2, "통학버스")]
 
     name = models.CharField(max_length=100)
     email = models.EmailField(blank=True, null=True)
-    image = models.ImageField(upload_to="academy/student")
+    image = models.ImageField(upload_to="academy/student", default="defaults/avatar.png")
     gender = models.BooleanField(choices=GENDER_CHOICES)
-    birthday = models.DateField()
+    birthday = models.DateField(blank=True, null=True)
     address = models.CharField(max_length=200, blank=True, null=True)
     contact = models.CharField(max_length=20, blank=True, null=True)
     school = models.CharField(max_length=50, blank=True, null=True)
     attend_method = models.IntegerField(choices=ATTEND_METHOD_CHOICES)
-    use_sms = models.BooleanField()
+    use_sms = models.BooleanField(default=False)
     registered_date = models.DateField(default=datetime.date.today())
     information = models.TextField(blank=True, null=True)
     profile = models.OneToOneField(Profile)
@@ -158,7 +158,7 @@ class Staff(models.Model):
 
 class Guardian(models.Model):
     name = models.CharField(max_length=100)
-    email = models.EmailField()
+    email = models.EmailField(blank=True)
     contact = models.CharField(max_length=20, blank=True, null=True)
     relation = models.CharField(max_length=100)
     student = models.ForeignKey(Student)
