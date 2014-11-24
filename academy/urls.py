@@ -5,7 +5,7 @@ from academy.views import *
 from dodream.helpers import decorated_includes
 
 urlpatterns = patterns('academy.views',
-    url(r'^$', TemplateView.as_view(template_name="template_academy/index.html")),
+    url(r'^$', TemplateView.as_view(template_name="academy/index.html")),
     url(r'^setting$', AcademySetting.as_view(), name="academy-setting"),
     url(r'^student-list$', StudentList.as_view(), name="student-list"),
     url(r'^student-registration', StudentRegistration.as_view(), name="student-registration"),
@@ -30,7 +30,7 @@ urlpatterns = patterns('academy.views',
     url(r'^lecture-list', LectureList.as_view(), name="lecture-list"),
     url(r'^lecture-add', LectureCreate.as_view(), name="lecture-add"),
     url(r'^lecture-apply/(?P<pk>\d+)$', LectureUpdate.as_view(), name="lecture-apply"),
-    url(r'^calendar', TemplateView.as_view(template_name="template_academy/calendar.html")),
+    url(r'^calendar', TemplateView.as_view(template_name="academy/calendar.html")),
     #TYPE: student:0, staff:1
     url(r'^account-create/(?P<type>\d+)/(?P<pk>\d+)$', AccountCreate.as_view(), name="account-create"),
 )

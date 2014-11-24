@@ -1,0 +1,62 @@
+{% extends "website/_layouts/_base.html" %}
+{% load static from staticfiles %}
+
+{% block content %}
+    <section id="page">
+        <header class="page-header">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1>강사 소개</h1>
+                        {#                        <p>Along with all the Bootstraps components,<br /> we added some extra shortcode to help you customize your website.</p>#}
+                        <ul class="breadcrumb visible-md visible-lg">
+                            <li><a href="{% url "academy-introduction" %}">학원 소개</a></li>
+                            <li class="active">강사 소개</li>
+                            <li><a href="{% url "academy-facilities" %}">학원 시설</a></li>
+                            <li><a href="{% url "academy-directions" %}">오시는 길</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <section>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6 pt40 pb40 text-center" data-nekoanim="fadeInLeftBig" data-nekodelay="100">
+                        <img src="{% static "website/images/staff/headmaster.png" %}" width="50%"/>
+                    </div>
+                    <div class="col-md-5 pt30 mt40" data-nekoanim="fadeInRightBig" data-nekodelay="100">
+                        <h2>원장</h2>
+                        <h1>박 새봄</h1>
+                        <br/>
+                        <h3>약력</h3>
+                        <ul class="list-unstyled iconList">
+                            <li>한양대 음대 피아노과 졸업</li>
+                            <li>동대학원 석사학위 취득</li>
+                            <li>러시아 상트 페테르부르크 국립 음악원 전문 연주자 과정 수료</li>
+                            <li>어드벤쳐 피아노 전임강사</li>
+                            <li>현. 포항예고 출강</li>
+                        </ul>
+                    </div>
+                </div>
+{#                <div class="row">#}
+{#                    <div class="col-md-6 pt40 pb40 text-center" data-nekoanim="fadeInLeftBig" data-nekodelay="100">#}
+{#                        <img src="/static/static_website/images/staff/staff2.jpg" width="50%"/>#}
+{#                    </div>#}
+{#                    <div class="col-md-5 pt40 mt40" data-nekoanim="fadeInRightBig" data-nekodelay="100">#}
+{#                        <h1>진 사랑</h1>#}
+{#                        <br/>#}
+{#                        <h3>약력</h3>#}
+{#                        <ul class="list-unstyled iconList">#}
+{#                            <li></li>#}
+{#                            <li></li>#}
+{#                            <li></li>#}
+{#                            <li></li>#}
+{#                            <li></li>#}
+{#                        </ul>#}
+{#                    </div>#}
+{#                </div>#}
+            </div>
+        </section>
+    </section>
+{% endblock %}

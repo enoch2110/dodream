@@ -9,7 +9,7 @@ from django.forms import CheckboxSelectMultiple
 
 
 class AcademyForm(forms.ModelForm):
-    opening_time = forms.DateField()
+    #opening_time = forms.DateField()
 
     class Meta:
         model = Academy

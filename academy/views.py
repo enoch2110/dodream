@@ -19,7 +19,7 @@ from dodream.coolsms import send_sms
 
 
 class AcademySetting(UpdateView):
-    template_name = "template_academy/academy-setting.html"
+    template_name = "academy/academy-setting.html"
     form_class = AcademyForm
     success_url = "/setting"
 
@@ -28,7 +28,7 @@ class AcademySetting(UpdateView):
 
 
 class AccountCreate(CreateView):
-    template_name = "template_academy/account-add.html"
+    template_name = "academy/account-add.html"
     form_class = UserCreationForm
 
     def get_success_url(self):
@@ -65,7 +65,7 @@ class AccountCreate(CreateView):
 
 
 class StudentRegistration(View):
-    template_name = "template_academy/student-add.html"
+    template_name = "academy/student-add.html"
     formset_class = formset_factory(GuardianForm)
     form_class = StudentCreateForm
 
@@ -91,7 +91,7 @@ class StudentRegistration(View):
 
 
 class StudentUpdate(View):
-    template_name = 'student-update.html'
+    template_name = 'academy/student-update.html'
     formset_class = modelformset_factory(Guardian, form=GuardianForm)
     form_class = StudentCreateForm
 
@@ -117,7 +117,7 @@ class StudentUpdate(View):
 
 
 class StudentList(ListView):
-    template_name = "template_academy/student-list.html"
+    template_name = "academy/student-list.html"
     queryset = Student.objects.all()
     context_object_name = "students"
     paginate_by = 10
@@ -150,11 +150,11 @@ class StudentList(ListView):
         except EmptyPage:
             students = paginator.page(paginator.num_page)
 
-        return render_to_response('template_academy/student-list.html', {"students": students})
+        return render_to_response('academy/student-list.html', {"students": students})
 
 
 class StaffList(ListView):
-    template_name = "template_academy/staff-list.html"
+    template_name = "academy/staff-list.html"
     context_object_name = "staffs"
     paginate_by = 10
 
@@ -163,13 +163,13 @@ class StaffList(ListView):
 
 
 class StaffDetail(DetailView):
-    template_name = "template_academy/staff-detail.html"
+    template_name = "academy/staff-detail.html"
     context_object_name = "staff"
     model = Staff
 
 
 class StaffCreate(CreateView):
-    template_name = "template_academy/staff-add.html"
+    template_name = "academy/staff-add.html"
     model = Staff
     form_class = StaffForm
     success_url = "/staff-list"
@@ -180,20 +180,20 @@ class StaffCreate(CreateView):
 
 
 class StaffUpdate(UpdateView):
-    template_name = "template_academy/staff-update.html"
+    template_name = "academy/staff-update.html"
     model = Staff
     form_class = StaffForm
     success_url = "/staff-list"
 
 
 class StaffDelete(DeleteView):
-    template_name = "template_academy/staff-delete.html"
+    template_name = "academy/staff-delete.html"
     model = Staff
     success_url = "/staff-list"
 
 
 class CourseCategoryList(ListView):
-    template_name = "template_academy/course-list.html"
+    template_name = "academy/course-list.html"
     context_object_name = "root_categories"
 
     def get_queryset(self):
@@ -202,7 +202,7 @@ class CourseCategoryList(ListView):
 
 
 class CourseCreate(CreateView):
-    template_name = "template_academy/course-add.html"
+    template_name = "academy/course-add.html"
     model = Course
     form_class = CourseForm
     success_url = "/course-list"
@@ -213,7 +213,7 @@ class CourseCreate(CreateView):
 
 
 class CourseCategoryCreate(CreateView):
-    template_name = "template_academy/course-category.html"
+    template_name = "academy/course-category.html"
     model = CourseCategory
     success_url = "/course-category-list"
 
@@ -224,20 +224,20 @@ class CourseCategoryCreate(CreateView):
 
 
 class CourseUpdate(UpdateView):
-    template_name = "template_academy/course-update.html"
+    template_name = "academy/course-update.html"
     model = Course
     form_class = CourseForm
     success_url = "/course-list"
 
 
 class CourseDelete(DeleteView):
-    template_name = "template_academy/course-delete.html"
+    template_name = "academy/course-delete.html"
     model = Course
     success_url = "/course-list"
 
 
 class LectureList(ListView):
-    template_name = "template_academy/lecture-list.html"
+    template_name = "academy/lecture-list.html"
     model = Course
     #queryset = Lecture.objects.filter(Lecture__course_parent=None)
     #context_object_name = "root_categories"
@@ -265,7 +265,7 @@ class LectureList(ListView):
 
 
 class LectureCreate(CreateView):
-    template_name = "template_academy/lecture-add.html"
+    template_name = "academy/lecture-add.html"
     model = Lecture
     form_class = LectureForm
     success_url = "/lecture-list"
@@ -297,7 +297,7 @@ class LectureCreate(CreateView):
 
 
 class LectureUpdate(UpdateView):
-    template_name = "template_academy/lecture-apply.html"
+    template_name = "academy/lecture-apply.html"
     model = Lecture
     form_class = LectureRegistrationForm
     success_url = "/lecture-list"
@@ -320,7 +320,7 @@ class LectureUpdate(UpdateView):
 
 
 class PaymentList(ListView):
-    template_name = "template_academy/payment-list.html"
+    template_name = "academy/payment-list.html"
     context_object_name = "payments"
 
     def get_queryset(self):
@@ -346,27 +346,27 @@ class PaymentList(ListView):
 
 
 class PaymentCreate(CreateView):
-    template_name = "template_academy/payment-add.html"
+    template_name = "academy/payment-add.html"
     model = Payment
     form_class = PaymentForm
     success_url = "/payment-list"
 
 
 class PaymentUpdate(UpdateView):
-    template_name = "template_academy/payment-update.html"
+    template_name = "academy/payment-update.html"
     model = Payment
     form_class = PaymentForm
     success_url = "/payment-list"
 
 
 class PaymentDelete(DeleteView):
-    template_name = "template_academy/payment-delete.html"
+    template_name = "academy/payment-delete.html"
     model = Payment
     success_url = "/payment-list"
 
 
 class UnpaidList(ListView):
-    template_name = "template_academy/unpaid-list.html"
+    template_name = "academy/unpaid-list.html"
     context_object_name = "unpaids"
 
     def get_queryset(self):
@@ -399,8 +399,9 @@ class UnpaidList(ListView):
 
         return queryset
 
+
 class UnpaidDetail(DetailView):
-    template_name = "template_academy/unpaid-detail.html"
+    template_name = "academy/unpaid-detail.html"
     context_object_name = "unpaid_student"
     model = Student
 

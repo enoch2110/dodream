@@ -1,0 +1,118 @@
+{% extends "website/_layouts/_base.html" %}
+{% load static from staticfiles %}
+
+{% block content %}
+    <section id="page">
+        <header class="page-header">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1>중급 과정</h1>
+                        {#                        <p>Along with all the Bootstraps components,<br /> we added some extra shortcode to help you customize your website.</p>#}
+                        <ul class="breadcrumb visible-md visible-lg">
+                            <li><a href="{% url "elementary-course" %}">초급 과정</a></li>
+                            <li class="active">중급 과정</li>
+                            <li><a href="{% url "advanced-course" %}">고급 과정</a></li>
+                            <li><a href="{% url "entrance-course" %}">입시반</a></li>
+                            <li><a href="{% url "adult-course" %}">성인반</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </header>
+    </section>
+    <section id="page">
+        <section>
+            <section class="mb15">
+                <div class="nekoDataOwl owl-carousel text-center" data-neko_items="2" data-neko_singleitem="false" data-neko_navigation="false" data-neko_pagination="true" data-neko_mousedrag="true">
+                    <img src="{% static "website/images/course/4A.png" %}" alt="4A"/>
+                    <img src="{% static "website/images/course/4B.png" %}" alt="4B"/>
+                    <img src="{% static "website/images/course/5A.png" %}" alt="5A"/>
+                    <img src="{% static "website/images/course/5B.png" %}" alt="5B"/>
+                </div>
+            </section>
+        </section>
+        <section id="content">
+            <section class="largeQuote pb40 pt40">
+				<div class="container">
+					<div class="row">
+						<div class="span12 text-center">
+							<h1>기초를 튼튼히 다졌다면?</h1>
+							<h2 class="subTitle">다양한 장르의 곡을 다루면서 세계 여러나라, 각 시대별 음악을 공부하여<br/>
+                                표현력과 음악적 감수성을 키울 수 있는 교육을 실시합니다</h2>
+
+						</div>
+					</div>
+				</div>
+			</section>
+            <div class="container">
+                <div class="row mt30 mb30">
+                    <div class="col-md-12">
+                        <h2>중급 과정 </h2>
+                        <div class="panel-group" id="accordion">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                                            피아노 어드벤쳐 4급
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseOne" class="panel-collapse in" >
+                                    <div class="panel-body">
+                                        <h2 class="panel-title">반주가 저절로 척척!</h2>
+                                        <p></p>
+                                        <h2 class="panel-title">다양한 화음 학습과 섬세한 페달 훈련!</h2>
+                                        <h2></h2>
+                                        <p>- 조성과 주요 3화음을 눈으로, 귀로, 손으로 익힙니다.</p>
+                                        <p>- 펼침화음, 왈츠 패턴 등 다양한 반주 주법을 훈련시킵니다.</p>
+                                        <p>- 레가토 페달을 자유자재로 밟을 수 있게 훈련시킵니다.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                                            피아노 어드벤쳐 5급
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseTwo" class="panel-collapse collapse" >
+                                    <div class="panel-body">
+                                        <h2 class="panel-title">어려운 박자, 독특한 리듬…</h2>
+                                        <p></p>
+                                        <h2 class="panel-title">그 어떤 것도 두렵지 않아요!</h2>
+                                        <h2></h2>
+                                        <p>- 싱코페이션, 셋잇단음표, 스윙 등 다양한 리듬을 재미있는 음악으로 훈련시킵니다.</p>
+                                        <p>- 멜로디가 돋보이는 보이싱 기법을 익혀 타 교재가 따라올 수 없는 예술적인 연주를 가능하게 합니다.</p>
+                                        <p>- 오스티나토, 알베르티 베이스 등 반주법이 심화되는 급수입니다. 반주를 스스로 만들어 보는 경험을 통해 교재에 없는 노래도 자유자재로 반주를 넣을 수 있게 됩니다.</p>
+                                        <p>- 곡 전체를 분석하는 훈련을 통해 곡의 형식을 쉽게 파악하고 음악의 구성을 한 눈에 읽을 수 있도록 합니다.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+                                            병용교재
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseThree" class="panel-collapse collapse" >
+                                    <div class="panel-body">
+                                        <h2 class="panel-title">소나티나</h2>
+                                        <p></p>
+                                        <h2 class="panel-title">피아노로 즐기는 클래식</h2>
+                                        <p></p>
+                                        <h2 class="panel-title">상큼한 재즈소곡집</h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </section>
+{% endblock %}

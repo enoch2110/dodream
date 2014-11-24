@@ -1,7 +1,10 @@
+from base64 import b64decode
+import uuid
 from django.conf import settings
 
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
+from django.core.files.base import ContentFile
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import generics
@@ -14,6 +17,12 @@ from api.serializer import UserSerializer, StudentSerializer, LoginSerializer, A
 from attendance.models import AttendanceManager
 from dodream import settings
 from dodream.coolsms import send_sms
+
+
+def get_filename(filename):
+    ext = filename.split('.')[-1].lower()
+    filename = "%s.%s" % (uuid.uuid4(), ext)
+    return filename
 
 
 class Login(generics.RetrieveAPIView):
@@ -82,20 +91,28 @@ class AttendanceCreateAPI(generics.CreateAPIView):
 
     def create(self, request, *args, **kwargs):
         academy = self.request.user.profile.staff.academy
-        serializer = self.get_serializer(data=request.DATA, files=request.FILES)
+        serializer = self.get_serializer(data=request.DATA)
+
         if serializer.is_valid():
             nfc_id = serializer.data['nfc_id']
+            image_base64 = request.DATA.get("image_base64")
+            if image_base64:
+                image = ContentFile(b64decode(image_base64))
+
             profile = Profile.objects.filter(attendancemanager__nfc_id=nfc_id).first()
             if profile and profile.get_academy() == academy:
                 serializer.object.profile = profile
                 self.pre_save(serializer.object)
                 self.object = serializer.save(force_insert=True)
+                if image:
+                    self.object.image.save(get_filename("image.jpg"), image, save=True)
                 self.post_save(self.object, created=True)
                 headers = self.get_success_headers(serializer.data)
                 result = {
                     "data": serializer.data,
                     "message": "success",
                     "result": self.object.get_status(),
+                    "image": self.object.image.url,
                     "student": StudentSerializer(profile.student).data
                 }
 

@@ -1,0 +1,43 @@
+{% extends "website/_layouts/_base.html" %}
+{% load static from staticfiles %}
+
+{% block content %}
+    <body class="activateAppearAnimation">
+    <section id="page">
+        <header class="page-header">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1>Q & A</h1>
+                        {#                        <p>Along with all the Bootstraps components,<br /> we added some extra shortcode to help you customize your website.</p>#}
+                        <ul class="breadcrumb visible-md visible-lg">
+                            <li><a href="{% url "entry-list" %}?type=notice">공지 사항</a></li>
+                            <li><a href="{% url "schedule" %}">학사 일정</a></li>
+                            <li><a href="{% url "communication" %}">소통 마당</a></li>
+                            <li class="active">Q&A</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </header>
+    </section>
+    <section class="pt40 pb40">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="ctaBox" style="background-color: #525252;" data-nekodelay="100">
+                            <div class="ctaBoxText">
+                                <h1 style="color: #FFFFFF;">
+                                    Q&A는 오시는 길 페이지의 문의하기를 이용해주세요.
+                                </h1>
+                                <p></p>
+                                <h3 style="color: #FFFFFF; margin:0px 0px;">성실하고 신속하게 답변해드리겠습니다.
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </body>
+{% endblock %}
