@@ -1,4 +1,4 @@
-{% extends "_layouts/_base.html" %}
+{% extends "website/_layouts/_base.html" %}
 {% load static from staticfiles %}
 
 {% block content %}
@@ -23,88 +23,93 @@
             <section class="pb30">
                 <div class="container clearfix">
                     <div class="row">
-                        <div class="portfolio-items  isotopeWrapper clearfix imgHover" id="2">
-                            <article class="col-sm-6 isotopeItem practice">
-                                <div class="imgBorder">
-                                    <section class="boxContent">
-                                        <div class="nekoDataOwl owl-carousel text-center" data-neko_items="1" data-neko_singleitem="true" data-neko_navigation="false" data-neko_pagination="true" data-neko_mousedrag="true">
-                                            <img alt="" src="{% static "static_website/images/facilities/입구_1.jpg" %}" class="img-responsive" style="display: inline;">
-                                            <img alt="" src="{% static "static_website/images/facilities/입구_2.jpg" %}" class="img-responsive">
-                                            <img alt="" src="{% static "static_website/images/facilities/입구_3.jpg" %}" class="img-responsive">
-                                        </div>
-                                        <h3>학원입구</h3>
-                                        <p></p>
-                                        <p>폴리니 음악학원에 오신 것을 환영합니다. 편안한 슬리퍼로 갈아신고 어서 들어오세요. 언제든지 상담받으러 오셔도 되는 편안한 폴리니입니다.</p>
-                                    </section>
-                                </div>
-                            </article>
-                            <article class="col-sm-6 isotopeItem practice">
-                                <div class="imgBorder">
-                                    <section class="boxContent">
-                                        <div class="nekoDataOwl owl-carousel text-center" data-neko_items="1" data-neko_singleitem="true" data-neko_navigation="false" data-neko_pagination="true" data-neko_mousedrag="true">
-                                            <img alt="" src="{% static "static_website/images/facilities/개방형이론공부실_1.jpg" %}" class="img-responsive">
-                                            <img alt="" src="{% static "static_website/images/facilities/개방형이론공부실_2.jpg" %}" class="img-responsive">
-                                        </div>
-                                        <h3>개방형 이론 공부실</h3>
-                                        <p> 듣기 및 실습 공부를 하기 전, 이론부터 튼튼히 다지는 공간입니다. 개방형으로 선생님 및 친구들과의 소통으로 머리에 쏙쏙 잘 들어가는 공부를 할 수 있는 곳입니다.</p>
-                                    </section>
-                                </div>
-                            </article>
-                            <article class="col-sm-6 isotopeItem practice">
-                                <div class="imgBorder">
-                                    <section class="boxContent">
-                                        <div class="nekoDataOwl owl-carousel text-center" data-neko_items="1" data-neko_singleitem="true" data-neko_navigation="false" data-neko_pagination="true" data-neko_mousedrag="true">
-                                            <img alt="" src="{% static "static_website/images/facilities/피아노실습실_1.jpg" %}" class="img-responsive">
-                                            <img alt="" src="{% static "static_website/images/facilities/피아노실습실_2.jpg" %}" class="img-responsive" style="display: inline;">
-                                            <img alt="" src="{% static "static_website/images/facilities/피아노실습실_3.jpg" %}" class="img-responsive">
-                                        </div>
-                                        <h3>피아노 실습실</h3>
-                                        <p> 이론 공부 후 듣기 및 연주 실습을 하는 개인 공간입니다. 개인 실습실이 많이 때문에 그냥 앉아서 기다리는 시간이 없어 아이들의 시간을 소중하게 사용할 수 있습니다.</p>
-                                    </section>
-                                </div>
-                            </article>
-                            <article class="col-sm-6 isotopeItem practice">
-                                <div class="imgBorder">
-                                    <section class="boxContent">
-                                        <div class="nekoDataOwl owl-carousel text-center" data-neko_items="1" data-neko_singleitem="true" data-neko_navigation="false" data-neko_pagination="true" data-neko_mousedrag="true">
-                                            <img alt="" src="{% static "static_website/images/facilities/연주실_1.jpg" %}" class="img-responsive">
-                                            <img alt="" src="{% static "static_website/images/facilities/연주실_2.jpg" %}" class="img-responsive">
-                                            <img alt="" src="{% static "static_website/images/facilities/연주실_3.jpg" %}" class="img-responsive">
-                                        </div>
-                                        <h3>연주실</h3>
-                                        <p>대회를 앞두고 작은 연주실에서 연습을 하거나, 선생님께 성악지도를 받을 수 있는 큰 레슨실입니다. 아이들이 이 방을 제일 좋아한답니다.</p>
-                                    </section>
-                                </div>
-                            </article>
-                            <article class="col-sm-6 isotopeItem practice">
-                                <div class="imgBorder">
-                                    <section class="boxContent">
-                                        <div class="nekoDataOwl owl-carousel text-center" data-neko_items="1" data-neko_singleitem="true" data-neko_navigation="false" data-neko_pagination="true" data-neko_mousedrag="true">
-                                            <img alt="" src="{% static "static_website/images/facilities/연주홀_4.jpg" %}" class="img-responsive" style="display: inline;">
-                                            <img alt="" src="{% static "static_website/images/facilities/연주홀_1.jpg" %}" class="img-responsive">
-                                            <img alt="" src="{% static "static_website/images/facilities/연주홀_2.jpg" %}" class="img-responsive">
-                                            <img alt="" src="{% static "static_website/images/facilities/연주홀_3.jpg" %}" class="img-responsive">
-                                        </div>
-                                        <h3>연주홀</h3>
-                                        <p>신나는 음악회 프로그램 및 토요 연주회가 열리는 곳입니다. 아이들과 부모님들 모두 함께 모여 연주를 감상하는 곳입니다.</p>
-                                    </section>
-                                </div>
-                            </article>
-                            <article class="col-sm-6 isotopeItem practice">
-                                <div class="imgBorder">
-                                    <section class="boxContent">
-                                        <div class="nekoDataOwl owl-carousel text-center" data-neko_items="1" data-neko_singleitem="true" data-neko_navigation="false" data-neko_pagination="true" data-neko_mousedrag="true">
-                                            <img alt="" src="{% static "static_website/images/facilities/상담실_2.jpg" %}" class="img-responsive" style="display: inline;">
-                                            <img alt="" src="{% static "static_website/images/facilities/상담실_1.jpg" %}" class="img-responsive" style="display: inline;">
-                                            <img alt="" src="{% static "static_website/images/facilities/드럼실습실.jpg" %}" class="img-responsive" style="display: inline;">
-                                        </div>
-                                        <h3>상담실 및 드럼연습실</h3>
-                                        <p>누구든지 편안하게 상담하러 오세요. 친절하게 편안하게 상담해드리겠습니다! 우리 폴리니의 자랑 드럼도 배우는 기회를 가져보세요.</p>
-                                    </section>
-                                </div>
-                            </article>
-                        </div>
+                        <article class="col-sm-6 isotopeItem practice">
+                            <div class="imgBorder">
+                                <section class="boxContent">
+                                    <div class="nekoDataOwl owl-carousel text-center" data-neko_items="1" data-neko_singleitem="true" data-neko_navigation="false" data-neko_pagination="true" data-neko_mousedrag="true">
+                                        <img alt="" src="{% static "website/images/facilities/a_1.jpg" %}" class="img-responsive" style="display: inline;">
+                                        <img alt="" src="{% static "website/images/facilities/a_2.jpg" %}" class="img-responsive">
+                                        <img alt="" src="{% static "website/images/facilities/a_3.jpg" %}" class="img-responsive">
+                                    </div>
+                                    <h3>학원입구</h3>
+                                    <p></p>
+                                    <p>폴리니 음악학원에 오신 것을 환영합니다. 편안한 슬리퍼로 갈아신고 어서 들어오세요. 언제든지 상담받으러 오셔도 되는 편안한 폴리니입니다.</p>
+                                </section>
+                            </div>
+                        </article>
+                        <article class="col-sm-6 isotopeItem practice">
+                            <div class="imgBorder">
+                                <section class="boxContent">
+                                    <div class="nekoDataOwl owl-carousel text-center" data-neko_items="1" data-neko_singleitem="true" data-neko_navigation="false" data-neko_pagination="true" data-neko_mousedrag="true">
+                                        <img alt="" src="{% static "website/images/facilities/b_1.jpg" %}" class="img-responsive">
+                                        <img alt="" src="{% static "website/images/facilities/b_2.jpg" %}" class="img-responsive">
+                                    </div>
+                                    <h3>개방형 이론 공부실</h3>
+                                    <p> 듣기 및 실습 공부를 하기 전, 이론부터 튼튼히 다지는 공간입니다. 개방형으로 선생님 및 친구들과의 소통으로 머리에 쏙쏙 잘 들어가는 공부를 할 수 있는 곳입니다.</p>
+                                </section>
+                            </div>
+                        </article>
                     </div>
+                    <div class="row">
+                        <article class="col-sm-6 isotopeItem practice">
+                            <div class="imgBorder">
+                                <section class="boxContent">
+                                    <div class="nekoDataOwl owl-carousel text-center" data-neko_items="1" data-neko_singleitem="true" data-neko_navigation="false" data-neko_pagination="true" data-neko_mousedrag="true">
+                                        <img alt="" src="{% static "website/images/facilities/c_1.jpg" %}" class="img-responsive">
+                                        <img alt="" src="{% static "website/images/facilities/c_2.jpg" %}" class="img-responsive" style="display: inline;">
+                                        <img alt="" src="{% static "website/images/facilities/c_3.jpg" %}" class="img-responsive">
+                                    </div>
+                                    <h3>피아노 실습실</h3>
+                                    <p> 이론 공부 후 듣기 및 연주 실습을 하는 개인 공간입니다. 개인 실습실이 많이 때문에 그냥 앉아서 기다리는 시간이 없어 아이들의 시간을 소중하게 사용할 수 있습니다.</p>
+                                </section>
+                            </div>
+                        </article>
+                        <article class="col-sm-6 isotopeItem practice">
+                            <div class="imgBorder">
+                                <section class="boxContent">
+                                    <div class="nekoDataOwl owl-carousel text-center" data-neko_items="1" data-neko_singleitem="true" data-neko_navigation="false" data-neko_pagination="true" data-neko_mousedrag="true">
+                                        <img alt="" src="{% static "website/images/facilities/d_1.jpg" %}" class="img-responsive">
+                                        <img alt="" src="{% static "website/images/facilities/d_2.jpg" %}" class="img-responsive">
+                                        <img alt="" src="{% static "website/images/facilities/d_3.jpg" %}" class="img-responsive">
+                                    </div>
+                                    <h3>연주실</h3>
+                                    <p>대회를 앞두고 작은 연주실에서 연습을 하거나, 선생님께 성악지도를 받을 수 있는 큰 레슨실입니다. 아이들이 이 방을 제일 좋아한답니다.</p>
+                                </section>
+                            </div>
+                        </article>
+                    </div>
+                    <div class="row">
+                        <article class="col-sm-6 isotopeItem practice">
+                            <div class="imgBorder">
+                                <section class="boxContent">
+                                    <div class="nekoDataOwl owl-carousel text-center" data-neko_items="1" data-neko_singleitem="true" data-neko_navigation="false" data-neko_pagination="true" data-neko_mousedrag="true">
+                                        <img alt="" src="{% static "website/images/facilities/e_4.jpg" %}" class="img-responsive" style="display: inline;">
+                                        <img alt="" src="{% static "website/images/facilities/e_1.jpg" %}" class="img-responsive">
+                                        <img alt="" src="{% static "website/images/facilities/e_2.jpg" %}" class="img-responsive">
+                                        <img alt="" src="{% static "website/images/facilities/e_3.jpg" %}" class="img-responsive">
+                                    </div>
+                                    <h3>연주홀</h3>
+                                    <p>신나는 음악회 프로그램 및 토요 연주회가 열리는 곳입니다. 아이들과 부모님들 모두 함께 모여 연주를 감상하는 곳입니다.</p>
+                                </section>
+                            </div>
+                        </article>
+                        <article class="col-sm-6 isotopeItem practice">
+                            <div class="imgBorder">
+                                <section class="boxContent">
+                                    <div class="nekoDataOwl owl-carousel text-center" data-neko_items="1" data-neko_singleitem="true" data-neko_navigation="false" data-neko_pagination="true" data-neko_mousedrag="true">
+                                        <img alt="" src="{% static "website/images/facilities/f_2.jpg" %}" class="img-responsive" style="display: inline;">
+                                        <img alt="" src="{% static "website/images/facilities/f_1.jpg" %}" class="img-responsive" style="display: inline;">
+                                        <img alt="" src="{% static "website/images/facilities/g.jpg" %}" class="img-responsive" style="display: inline;">
+                                    </div>
+                                    <h3>상담실 및 드럼연습실</h3>
+                                    <p>누구든지 편안하게 상담하러 오세요. 친절하게 편안하게 상담해드리겠습니다! 우리 폴리니의 자랑 드럼도 배우는 기회를 가져보세요.</p>
+                                </section>
+                            </div>
+                        </article>
+                    </div>
+
+
+
                 </div>
             </section>
         </section>

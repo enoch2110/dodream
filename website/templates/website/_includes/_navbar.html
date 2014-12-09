@@ -4,14 +4,16 @@
     <div id="mainHeader" role="banner">
         <div class="container">
             <nav class="navbar navbar-default scrollMenu" role="navigation">
-                <div class="navbar-header">
+                <div class="navbar-header hidden-sm">
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                         <span class="sr-only">Toggle navigation</span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="/website" style="width: 200px; padding-top:7%;"><img src="{% static "website/images/logo/logo.png" %}" style="width:200px;" alt="Pollini music academy"/></a>
+                    <a class="navbar-brand" href="/website" style="padding: 5px;">
+                        <img src="{% static "website/images/logo/logo.png" %}" class="logo" alt="Pollini music academy"/>
+                    </a>
                 </div>
                 <div class="collapse navbar-collapse" id="mainMenu">
                     <ul class="nav navbar-nav pull-right">
@@ -52,7 +54,7 @@
                             <a href="{% url "entry-list" %}?type=notice" class="firstLevel hasSubMenu">커뮤니티</a>
                             <ul class="subMenu">
                                 <li><a href="{% url "entry-list" %}?type=notice">공지 사항</a></li>
-                                <li><a href="{% url "schedule" %}">학사 일정</a></li>
+{#                                <li><a href="{% url "schedule" %}">학사 일정</a></li>#}
                                 <li class="last"><a href="{% url "QnA" %}">Q&A</a></li>
                             </ul>
                     </ul>

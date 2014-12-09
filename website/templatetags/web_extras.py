@@ -16,3 +16,11 @@ def addattr(field, attr_string):
     for attr in attr_string.split(" "):
         attrs.update({attr.split("=")[0]: attr.split("=")[1]})
     return field.as_widget(attrs=attrs)
+
+
+@register.simple_tag
+def add_attr(field, **kwargs):
+    attrs = {}
+    for arg in kwargs:
+        attrs.update({arg: kwargs[arg]})
+    return field.as_widget(attrs=attrs)

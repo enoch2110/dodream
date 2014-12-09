@@ -5,6 +5,7 @@
  Copyright (C) 2008-2010 D&SOFT
  http://open.coolsms.co.kr
 """
+from django.conf import settings
 
 __version__ = "2.3.1"
 
@@ -539,6 +540,7 @@ def cscp_build(cscpstr, attach_dir="", attach_file=""):
 
     return capsule
 
+
 def read_attachfile(the_dir, the_file):
     file_length = "%3d" % len(the_file)
     f = file(the_dir+os.sep+the_file, "rb")
@@ -549,11 +551,18 @@ def read_attachfile(the_dir, the_file):
 
 
 def send_sms(message, to):
+    if not settings.USE_COOLSMS:
+        return
+
+    username = settings.COOLSMS_ID
+    password = settings.COOLSMS_PW
+    sms_sender = settings.COOLSMS_SENDER
+
     # 객체 생성
     cs = sms()
 
     # 프로그램명과 버젼을 입력합니다. (생략가능)
-    cs.appversion("TEST/1.0")
+    #cs.appversion("TEST/1.0")
 
     # 한글인코딩 방식을 설정합니다.  (생략시 euckr로 설정)
     # 지원 인코딩: euckr, utf8
@@ -561,7 +570,7 @@ def send_sms(message, to):
 
     # 아이디와 패스워드를 입력합니다.
     # 쿨에스엠에스에서 회원가입시 입력한 아이디/비밀번호를 입력합니다.
-    cs.setuser("enoch2110", "dodream14")
+    cs.setuser(username, password)
 
     # add("받는사람 폰번호", "보내는사람 폰번호", "문자 내용", "예약전송시간")
     # "예약전송시간"을 생략 하거나 현재 시간보다 이전시간으로 설정하면 즉시 전송 됨
@@ -569,7 +578,7 @@ def send_sms(message, to):
     # String 으로 표기하며 ss(초)는 생략 가능
 
     # 즉시 전송시
-    cs.addsms(to, "01025782093", message)
+    cs.addsms(to, sms_sender, message)
     # 예약 전송시
     # cs.addsms("01025782093", "0212341234", "80바이트 이내로 문자내용을 입력하세요. 80바이트 이후의 내용은 자동으로 잘립니다.", "YYYYMMDDhhmm")
     # cs.addsms 메소드를 계속 호출하여 메시지를 추가 할 수 있음.

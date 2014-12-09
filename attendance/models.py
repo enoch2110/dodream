@@ -15,7 +15,8 @@ class Attendance(models.Model):
 
     def __unicode__(self):
         datetime = self.datetime.astimezone(tz.tzlocal())
-        return str(datetime.date().isoformat()) + " " + str(datetime.time().isoformat()) + " " +self.profile.user.username + " (" + self.get_status() + ")"
+        username = self.profile.user.username if self.profile.user else "No username"
+        return str(datetime.date().isoformat()) + " " + str(datetime.time().isoformat()) + " " + username + " (" + self.get_status() + ")"
 
     def get_status(self):
         import datetime

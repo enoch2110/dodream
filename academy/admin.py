@@ -6,8 +6,16 @@ from django.contrib import admin
 from academy.forms import StaffForm
 from academy.models import *
 
+
+class GuardianInline(admin.TabularInline):
+    model = Guardian
+    extra = 0
+
+
 class StudentModelAdmin(admin.ModelAdmin):
     search_fields = ('name', 'contact')
+    inlines = (GuardianInline,)
+    list_display = ['name', 'birthday', 'registered_date', 'gender', 'use_sms', 'contact']
 
     def formfield_for_foreignkey(self, db_field, request=None, **kwargs):
         if db_field.name == "user":
@@ -44,7 +52,6 @@ class SettingAdmin(admin.ModelAdmin):
 admin.site.register(Academy)
 admin.site.register(Student, StudentModelAdmin)
 admin.site.register(Staff, StaffAdmin)
-admin.site.register(Guardian)
 admin.site.register(Course)
 admin.site.register(CourseCategory)
 admin.site.register(Profile)

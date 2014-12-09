@@ -1,5 +1,6 @@
 from django.conf.urls import patterns, include, url
 from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.views import login, logout
 from django.views.generic import TemplateView
 from academy.views import *
 from dodream.helpers import decorated_includes
@@ -24,5 +25,8 @@ urlpatterns = patterns('website.views',
     url(r'^schedule', TemplateView.as_view(template_name="website/schedule.html"), name="schedule"),
     url(r'^communication', TemplateView.as_view(template_name="website/communication.html"), name="communication"),
     url(r'^QnA', TemplateView.as_view(template_name="website/QnA.html"), name="QnA"),
+
+    url(r'^login/$', login, {'template_name': 'website/login.html'}, name="web-login"),
+    url(r'^logout/$', logout, {'template_name': 'website/logout.html'}, name="web-logout"),
 )
 

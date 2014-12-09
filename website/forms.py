@@ -12,3 +12,9 @@ class EntryAddForm(forms.ModelForm):
     class Meta:
         model = Entry
         exclude = ['number', 'date']
+
+
+class EntryCommentForm(forms.ModelForm):
+    class Meta:
+        model = EntryComment
+        exclude = ['writer', 'entry', 'datetime']

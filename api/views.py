@@ -1,5 +1,8 @@
+# -*- coding: utf-8 -*-
+
 from base64 import b64decode
 import uuid
+import datetime
 from django.conf import settings
 
 from django.contrib.auth import authenticate, login
@@ -90,12 +93,16 @@ class AttendanceCreateAPI(generics.CreateAPIView):
     serializer_class = AttendanceSerializer
 
     def create(self, request, *args, **kwargs):
+
+
         academy = self.request.user.profile.staff.academy
         serializer = self.get_serializer(data=request.DATA)
 
         if serializer.is_valid():
             nfc_id = serializer.data['nfc_id']
-            image_base64 = request.DATA.get("image_base64")
+            image_base64 = request.DATA.get("image_base64")#.replace("\n", "").replace("\r", "").replace(" ", "")
+            image = None
+            print image_base64
             if image_base64:
                 image = ContentFile(b64decode(image_base64))
 
@@ -112,18 +119,22 @@ class AttendanceCreateAPI(generics.CreateAPIView):
                     "data": serializer.data,
                     "message": "success",
                     "result": self.object.get_status(),
-                    "image": self.object.image.url,
-                    "student": StudentSerializer(profile.student).data
+                    "image": self.object.image.url if image else "no image",
+                    "student": StudentSerializer(profile.student).data,
                 }
+                import sys
+                reload(sys)
+                sys.setdefaultencoding('utf-8')
 
-                # message = ""
-                # to = request.GET.get('to').encode('ascii')
-                # if message and to:
-                #     send_sms(message, to)
-                #     sms_result = 'sms sent'
-                # else:d
-                #     sms_result = 'sms could not be sent'
-                # result.update({"sms": sms_result})
+                sms_result = 'sms not sent'
+                if profile.student:
+                    if profile.student.use_sms and profile.student.contact:
+                        now = datetime.datetime.now()
+                        message = str(unicode(str(now) + " " + profile.student.name + " " + self.object.get_status()))
+                        send_sms(message, profile.student.contact)
+                        sms_result = 'sms sent'
+
+                result.update({"sms": sms_result})
 
                 return Response(result, headers=headers)
         return Response(serializer.errors)
@@ -134,7 +145,6 @@ class CardRegisterAPI(APIView):
 
     def post(self, request, *args, **kwargs):
         academy = self.request.user.profile.staff.academy
-
         student_id = request.POST.get("student_id")
         nfc_id = request.POST.get("nfc_id")
         force_set = True if request.POST.get("force_set") == "true" else False

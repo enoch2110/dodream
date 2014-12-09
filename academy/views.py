@@ -219,7 +219,7 @@ class CourseCategoryCreate(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(CourseCategoryCreate, self).get_context_data(**kwargs)
-        context.update({'category__root_categories': CourseCategory.objects.filter(parent=None)})
+        context.update({'root_categories': CourseCategory.objects.filter(parent=None)})
         return context
 
 
@@ -306,15 +306,15 @@ class LectureUpdate(UpdateView):
         lecture = form.instance
         students = form.cleaned_data['students']
         price = self.request.POST.get('lecture-price')
-        datetime_string = self.request.POST.get('datetime')
-        datetimes = datetime_string.split(" - ")
+        # datetime_string = self.request.POST.get('datetime')
+        # datetimes = datetime_string.split(" - ")
         for student in students:
             student_lecture, created = StudentLecture.objects.get_or_create(lecture=lecture, student=student)
-            print "why"
             student_lecture.fee = price
-            for (counter, datetime) in enumerate(datetimes):
-                student_lecture.date = datetime.split(" ")
-                student_lecture.save()
+            student_lecture.save()
+            # for (counter, datetime) in enumerate(datetimes):
+            #     student_lecture.date = datetime.split(" ")
+            #     student_lecture.save()
 
         return super(ModelFormMixin, self).form_valid(form)
 
@@ -374,8 +374,6 @@ class UnpaidList(ListView):
         if self.request.GET.get('date'):
             date_begin = datetime.datetime.strptime(self.request.GET.get('date').split(" - ")[0], "%Y-%m-%d")
             date_end = datetime.datetime.strptime(self.request.GET.get('date').split(" - ")[1], "%Y-%m-%d")
-            print date_begin
-            print date_end
             daterange = [date_begin, date_end]
             queryset = StudentLecture.objects.filter(student__academy=self.request.user.profile.staff.academy, date__range=daterange)
         else:

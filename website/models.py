@@ -40,3 +40,10 @@ def get_entryfile_upload_path(instance, filename):
 class EntryFile(models.Model):
     file = models.FileField(upload_to=get_entryfile_upload_path)
     entry = models.ForeignKey("Entry")
+
+
+class EntryComment(models.Model):
+    content = models.TextField()
+    writer = models.ForeignKey(User)
+    datetime = models.DateTimeField(auto_now_add=True)
+    entry = models.ForeignKey("Entry", related_name="comments")

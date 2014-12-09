@@ -1,10 +1,31 @@
 {% extends "website/_layouts/_base.html" %}
+{% load web_extras %}
 
 {% block content %}
-    <form method="post" action="{% url 'django.contrib.auth.views.login' %}">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button class="btn btn-primary" type="submit">로그인</button>
-        <input type="hidden" name="next" value="/main"/>
-    </form>
+    <section id="contact" class="color1 pt40 pb40">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 mb40 text-center">
+                    <h1>로그인</h1>
+                    <h2 class="subTitle">Keep in touch with us</h2>
+                </div>
+                <div class="col-sm-6 col-sm-offset-3"  data-nekoanim="fadeInUp" data-nekodelay="100">
+                    <div class="boxFocus color0">
+                        <form method="post" action="{% url 'web-login' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="next" value="/website"/>
+
+                            {% for field in form %}
+                            <div class="form-group">
+                                <label for="name">{{ field.label }}</label>
+                                {% add_attr field class="form-control" placeholder=field.label %}
+                            </div>
+                            {% endfor %}
+                            <button type="submit" class="btn btn-primary">로그인</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 {% endblock %}

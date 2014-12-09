@@ -203,6 +203,8 @@ class CourseCategory(models.Model):
     parent = models.ForeignKey("self", blank=True, null=True)
 
     def __unicode__(self):
+        if self.parent == self:
+            return self.name + " (incorrect parent)"
         return self.parent.__unicode__()+" > "+self.name if self.parent else self.name
 
     def children(self):
