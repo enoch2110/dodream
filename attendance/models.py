@@ -46,13 +46,14 @@ class Attendance(models.Model):
 
 
 class AttendanceManager(models.Model):
-    profile = models.OneToOneField(Profile, blank=True, null=True)
+    profile = models.OneToOneField(Profile, null=True)
     group = models.OneToOneField(Group, blank=True, null=True)
     policy = models.ForeignKey("AttendancePolicy", blank=True, null=True)
     nfc_id = models.CharField(max_length=50, blank=True, null=True)
 
     def __unicode__(self):
-        return self.profile.__unicode__() + " --- " + (self.nfc_id if self.nfc_id else "no nfc card")
+        profile_name = self.profile.__unicode__() if self.profile else "No Profile"
+        return profile_name + " --- " + (self.nfc_id if self.nfc_id else "no nfc card")
 
     def set_nfc(self, nfc_id, force_set=False):
         #TODO academy specific
