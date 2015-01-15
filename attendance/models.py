@@ -46,7 +46,7 @@ class Attendance(models.Model):
 
 
 class AttendanceManager(models.Model):
-    profile = models.OneToOneField(Profile, blank=True, null=True)
+    profile = models.OneToOneField(Profile, null=True)
     group = models.OneToOneField(Group, blank=True, null=True)
     policy = models.ForeignKey("AttendancePolicy", blank=True, null=True)
     nfc_id = models.CharField(max_length=50, blank=True, null=True)

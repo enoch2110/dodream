@@ -3,8 +3,24 @@ from django.conf import settings
 from django.contrib import admin
 
 # Register your models here.
+from django.contrib.auth.admin import UserAdmin
 from academy.forms import StaffForm
 from academy.models import *
+from attendance.models import AttendanceManager
+
+admin.site.unregister(User)
+
+
+class AttendanceManagerInline(admin.StackedInline):
+    model = AttendanceManager
+
+
+class UserProfileInline(admin.StackedInline):
+    model = Profile
+
+
+class UserProfileAdmin(UserAdmin):
+    inlines = [UserProfileInline]
 
 
 class GuardianInline(admin.TabularInline):
@@ -14,7 +30,7 @@ class GuardianInline(admin.TabularInline):
 
 class StudentModelAdmin(admin.ModelAdmin):
     search_fields = ('name', 'contact')
-    inlines = (GuardianInline,)
+    inlines = (GuardianInline, )
     list_display = ['name', 'birthday', 'registered_date', 'gender', 'use_sms', 'contact']
 
     def formfield_for_foreignkey(self, db_field, request=None, **kwargs):
@@ -49,12 +65,12 @@ class SettingAdmin(admin.ModelAdmin):
     list_display = ['name', 'value', 'academy']
 
 
+admin.site.register(User, UserProfileAdmin)
 admin.site.register(Academy)
 admin.site.register(Student, StudentModelAdmin)
 admin.site.register(Staff, StaffAdmin)
 admin.site.register(Course)
 admin.site.register(CourseCategory)
-admin.site.register(Profile)
 admin.site.register(Payment)
 admin.site.register(Lecture, LectureAdmin)
 admin.site.register(StudentLecture)

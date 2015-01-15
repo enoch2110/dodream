@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django_summernote.admin import SummernoteModelAdmin
+from website.forms import EntryAdminForm
 from website.models import Entry, EntryFile, EntryComment
 
 
@@ -16,7 +17,8 @@ class EntryCommentInline(admin.StackedInline):
 class EntryAdmin(SummernoteModelAdmin):
     list_display = ['type', 'title', 'datetime']
     list_filter = ['type']
-    inlines = (EntryFileInline, EntryCommentInline)
+    #form = EntryAdminForm
+    inlines = (EntryFileInline, EntryCommentInline,)
 
 
 admin.site.register(Entry, EntryAdmin)
