@@ -3,3 +3,17 @@
     list-style: none;
     width: 100px;
 }
+.navbar-nav > li.button .menu {
+  padding: 0;
+  min-width: 260px;
+  max-width: 280px;
+}
+
+.navbar-default .navbar-nav > li.button .menu li ul > li > a {
+    font-weight: 300;
+    color: #444;
+    padding: 11px 10px;
+    padding-left: 33px;
+    border-bottom: 1px solid #ececec;
+    position: relative;
+}

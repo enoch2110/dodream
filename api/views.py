@@ -15,7 +15,7 @@ from rest_framework.filters import SearchFilter
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from academy.models import Student, Profile
+from academy.models import Student, Profile, Guardian
 from api.serializer import UserSerializer, StudentSerializer, LoginSerializer, AttendanceSerializer, CardSerializer
 from attendance.models import AttendanceManager
 from dodream import settings
@@ -149,10 +149,14 @@ class CardRegisterAPI(APIView):
         nfc_id = request.POST.get("nfc_id")
         force_set = True if request.POST.get("force_set") == "true" else False
 
-        attendance_manager = AttendanceManager.objects.get_or_create(profile__student__id=student_id)[0]
-        success, message = attendance_manager.set_nfc(nfc_id, force_set)
+        if Profile.objects.filter(student__id=student_id).exists():
+            profile = Profile.objects.get(student__id=student_id)
+            attendance_manager = AttendanceManager.objects.get_or_create(profile=profile)[0]
+            success, message = attendance_manager.set_nfc(nfc_id, force_set)
+            return Response({"success": success, "message": message})
+        else:
+            return Response({"success": False, "message": "&해당학생은 존재하지 않습니다."})
 
-        return Response({"success": success, "message": message})
 
 
 class CardDetailAPI(APIView):
@@ -162,5 +166,29 @@ class CardDetailAPI(APIView):
         academy = self.request.user.profile.staff.academy
         nfc_id = request.POST.get("nfc_id")
         student = Student.objects.filter(profile__attendancemanager__nfc_id=nfc_id, academy=academy).first()
-        student_data = StudentSerializer(student).data if student else None
-        return Response({"student": student_data})
+
+        if Profile.objects.filter(student=student).exists():
+            student_data = StudentSerializer(student).data
+            return Response({"student": student_data})
+        else:
+            return  Response({"message": "&정보가 안 받아져용 ㅠㅠ"})
+
+
+class PhoneRegisterAPI(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request, *args, **kwargs):
+        academy = self.request.user.profile.staff.academy
+        phone_id = request.POST.get("phone_id")
+        phone_number = request.POST.get("phone_number")
+        force_set = True if request.POST.get("force_set") == "true" else False
+
+        if Guardian.objects.filter(contact=phone_number).all().exists():
+            guardians = Guardian.objects.filter(contact=phone_number).all()
+            for guardian in guardians:
+                student_id = guardian.student.id
+                attendance_manager = AttendanceManager.objects.filter(profile__student__id=student_id)
+                success, message = attendance_manager.set_phone(phone_id, force_set)
+                return Response({"success": success, "message": message})
+        else:
+            return Response({"success": False, "message": "&해당 학부모 휴대폰 번호가 존재하지 않습니다. 폴리니 음악학원에 문의하여 학부모 휴대폰 번호를 등록하세요."})

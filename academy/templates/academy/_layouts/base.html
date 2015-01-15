@@ -70,13 +70,8 @@
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right user-nav">
-                <li class="dropdown profile_menu">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% if request.user.staff.image %}<img src="{{ request.user.staff.image.url }}" width="30" height="30"/>{% endif %}<span style="padding:0px 20px;">{{ request.user.staff.name }}</span> <b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">My Account</a></li>
-                        <li><a href="#">Profile</a></li>
-                        <li><a href="#">Messages</a></li>
-                        <li class="divider"></li>
+                <li>
+                    <ul class="menu" style="list-style: none;">
                         <li><a href="/logout">Sign Out</a></li>
                     </ul>
                 </li>
