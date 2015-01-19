@@ -157,6 +157,8 @@ class CardRegisterAPI(APIView):
         else:
             return Response({"success": False, "message": "&해당학생은 존재하지 않습니다."})
 
+        return Response({"success": success, "message": message})
+
 
 class CardDetailAPI(APIView):
     permission_classes = (IsAuthenticated,)
@@ -165,8 +167,12 @@ class CardDetailAPI(APIView):
         academy = self.request.user.profile.staff.academy
         nfc_id = request.POST.get("nfc_id")
         student = Student.objects.filter(profile__attendancemanager__nfc_id=nfc_id, academy=academy).first()
-        student_data = StudentSerializer(student).data if student else None
-        return Response({"student": student_data})
+
+        if Profile.objects.filter(student=student).exists():
+            student_data = StudentSerializer(student).data
+            return Response({"student": student_data})
+        else:
+            return  Response({"message": "&정보가 안 받아져용 ㅠㅠ"})
 
 
 class PhoneRegisterAPI(APIView):
@@ -187,19 +193,3 @@ class PhoneRegisterAPI(APIView):
                 return Response({"success": success, "message": message})
         else:
             return Response({"success": False, "message": "&해당 학부모 휴대폰 번호가 존재하지 않습니다. 폴리니 음악학원에 문의하여 학부모 휴대폰 번호를 등록하세요."})
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

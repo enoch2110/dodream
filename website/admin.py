@@ -4,6 +4,8 @@ from django.contrib.auth.models import User
 from django_summernote.admin import SummernoteModelAdmin
 from website.forms import UserCreateForm
 from website.models import Entry, EntryFile, EntryComment, CarouselItem
+from website.forms import EntryAdminForm
+from website.models import Entry, EntryFile, EntryComment
 
 
 class EntryFileInline(admin.StackedInline):
@@ -19,7 +21,8 @@ class EntryCommentInline(admin.StackedInline):
 class EntryAdmin(SummernoteModelAdmin):
     list_display = ['type', 'title', 'datetime']
     list_filter = ['type']
-    inlines = (EntryFileInline, EntryCommentInline)
+    #form = EntryAdminForm
+    inlines = (EntryFileInline, EntryCommentInline,)
 
 
 class CarouselItemAdmin(SummernoteModelAdmin):
