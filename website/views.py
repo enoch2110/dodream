@@ -4,8 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 
 # Create your views here.
-from django.views.generic import CreateView, ListView, DetailView
-from website.forms import EntryAddForm, EntryCommentForm
+from django.views.generic import CreateView, ListView
+from website.forms import EntryAddForm, EntryCommentForm, UserCreateForm
 from website.models import *
 
 
@@ -60,3 +60,18 @@ class EntryDetail(CreateView):
 
     def get_success_url(self):
         return self.request.path
+
+
+class CarouselItemView(ListView):
+    model = CarouselItem
+    template_name = "website/index.html"
+    context_object_name = "carousel_items"
+
+    def get_queryset(self):
+        return CarouselItem.objects.all()
+
+
+class UserCreateView(CreateView):
+    template_name = "website/join.html"
+    model = User
+    form_class = UserCreateForm

@@ -1,19 +1,39 @@
 {% load static from staticfiles %}
+{% load web_extras %}
 
 <footer id="footerWrapper" class="footer2">
     <section id="mainFooter">
         <div class="container">
             <div class="row">
                 <div class="col-md-4 col-sm-6">
-                    <div class="footerWidget">
-                        <h4>한 줄 명언</h4>
-                            <p>음악은 인간의 마음속에 존재하는 위대한 가능성을 인간에게 보이는 것이라고 한다.</p>
-                            <p>- 랠프 월도 에머슨 (미국 시인)</p>
-                    </div>
+                    {% if not request.user.profile %}
+                        <div class="footerWidget">
+                            <form method="post" action="{% url 'web-login' %}">
+                                {% csrf_token %}
+                                {% for field in form %}
+                                    <div class="form-group" style="margin-right: 10%">
+                                        <label for="name">{{ field.label }}</label>
+                                        {% add_attr field class="form-control" placeholder=field.label%}
+                                    </div>
+                                {% endfor %}
+                                <button type="submit" class="btn btn-primary">로그인</button>
+                                <input type="hidden" name="next" value="/website"/>
+                                <a class="btn btn-primary" href="/website/join">회원가입</a>
+                            </form>
+                        </div>
+                    {% else %}
+                        <div class="footerWidget">
+                            <a class="btn btn-primary" href="/website/logout">로그아웃</a>
+                        </div>
+                        <div class="footerWidget">
+                            <div class="info">
+                                <a href="#">{{ request.user.profile }}</a>  {# .get_name이 왜 안될까? #}
+                            </div>
+                        </div>
+                    {% endif %}
                 </div>
                 <div class="col-md-4 col-sm-6">
                     <div class="footerWidget">
-
                         <h3>간략 안내</h3>
                         <ul class="list-unstyled iconList">
                             <li><a href="#"> 매달 마지막주 토요 연주회가 열립니다.</a></li>
@@ -25,7 +45,6 @@
                 </div>
                 <div class="col-md-4 col-sm-6">
                     <div class="footerWidget">
-
                         <h3>폴리니 음악학원</h3>
                         <address>
                             <p>

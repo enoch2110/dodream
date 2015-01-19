@@ -1,0 +1,30 @@
+{% extends "website/_layouts/_base.html" %}
+{% load web_extras %}
+
+{% block content %}
+    <section id="contact" class="color1 pt40 pb40">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 mb40 text-center">
+                    <h1>회원가입</h1>
+                    <h2 class="subTitle">Keep in touch with us</h2>
+                </div>
+                <div class="col-md-5 col-sm-8"  data-nekoanim="fadeInUp" data-nekodelay="100">
+                    <div class="boxFocus color0">
+                        <form method="post" action="{% url "join" %}">
+                            {% csrf_token %}
+                            {% for field in form %}
+                                <div class="form-group">
+                                    <label for="name">{{ field.label }}</label>
+                                    {% add_attr field class="form-control" placeholder=field.label %}
+                                </div>
+                            {% endfor %}
+                            <button type="submit" class="btn btn-primary">가입</button>
+                            <input type="hidden" name="next" value="/website"/>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

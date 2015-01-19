@@ -4,10 +4,10 @@ from django.contrib.auth.views import login, logout
 from django.views.generic import TemplateView
 from academy.views import *
 from dodream.helpers import decorated_includes
-from website.views import EntryAdd, EntryList, EntryDetail
+from website.views import EntryAdd, EntryList, EntryDetail, CarouselItemView, UserCreateView
 
 urlpatterns = patterns('website.views',
-    url(r'^$', TemplateView.as_view(template_name="website/index.html")),
+    url(r'^$', CarouselItemView.as_view(template_name="website/index.html"), name="website"),
     url(r'^academy-introduction$', TemplateView.as_view(template_name="website/academy-introduction.html"), name="academy-introduction"),
     url(r'^academy-facilities$', TemplateView.as_view(template_name="website/academy-facilities.html"), name="academy-facilities"),
     url(r'^headmaster-introduction$', TemplateView.as_view(template_name="website/headmaster-introduction.html"), name="headmaster-introduction"),
@@ -25,8 +25,8 @@ urlpatterns = patterns('website.views',
     url(r'^schedule', TemplateView.as_view(template_name="website/schedule.html"), name="schedule"),
     url(r'^communication', TemplateView.as_view(template_name="website/communication.html"), name="communication"),
     url(r'^QnA', TemplateView.as_view(template_name="website/QnA.html"), name="QnA"),
+    url(r'^join', UserCreateView.as_view(template_name="website/join.html"), name="join"),
 
     url(r'^login/$', login, {'template_name': 'website/login.html'}, name="web-login"),
     url(r'^logout/$', logout, {'template_name': 'website/logout.html'}, name="web-logout"),
 )
-

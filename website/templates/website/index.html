@@ -2,64 +2,120 @@
 {% load static from staticfiles %}
 
 {% block content %}
-{#    <header class="page-header" style="padding:5px 0px;">#}
-{#        <div class="container">#}
-{#            {% if request.user.is_authenticated %}#}
-{#                <li><a href="{% url "logout" %}">logout</a></li>#}
-{#            {% else %}#}
-{#                <form method="post" action="{% url 'django.contrib.auth.views.login' %}">#}
-{#                    {% csrf_token %}#}
-{#                    {{ form.as_p }}#}
-{#                    <button class="btn btn-primary" style="float: right;" type="submit">로그인</button>#}
-{#                    <input type="hidden" name="next" value="/website"/>#}
-{#                </form>#}
-{#            {% endif %}#}
-{#        </div>#}
-{#    </header>#}
+    {#    <header class="page-header" style="padding:5px 0px;">#}
+    {#        <div class="container">#}
+    {#            {% if request.user.is_authenticated %}#}
+    {#                <li><a href="{% url "logout" %}">logout</a></li>#}
+    {#            {% else %}#}
+    {#                <form method="post" action="{% url 'django.contrib.auth.views.login' %}">#}
+    {#                    {% csrf_token %}#}
+    {#                    {{ form.as_p }}#}
+    {#                    <button class="btn btn-primary" style="float: right;" type="submit">로그인</button>#}
+    {#                    <input type="hidden" name="next" value="/website"/>#}
+    {#                </form>#}
+    {#            {% endif %}#}
+    {#        </div>#}
+    {#    </header>#}
 
     <section id="homeFlex">
         <div class="flexslider flexFullScreen" >
             <ul class="slides sliderWrapper">
-                <li class="slideN0">
-                    <img src="{% static "website/images/carousel/carousel6.jpg" %}" alt="pic 1"/>
-                    <div class="caption left">
-                        <div class="element1-1" data-animation="fadeInRightBig">
-                            <h1>아이의 정서발달에 좋은 음악</h1>
+                {% if carousel_items.count >= 1 %}
+                    <li class="slideN0">
+                        <img src="{{ carousel_items.0.image.url }}"/>
+                        <div class="caption left">
+                            <div class="element1-1" data-animation="fadeInRightBig">
+                                <h1>{{ carousel_items.0.title }}</h1>
+                            </div>
+                            <div class="element1-2" data-animation="fadeInRightBig">
+                                <h2>{{ carousel_items.0.subtitle }}</h2>
+                            </div>
+                            <div class="element1-3  hidden-xs" data-animation="fadeInRightBig">
+                                <p>{{ carousel_items.0.content }}</p>
+                            </div>
                         </div>
-                        <div class="element1-2" data-animation="fadeInRightBig">
-                            <h2>피아노로 아이의 정서 발달에 도움을 주세요!</h2>
-                        </div>
-                        <div class="element1-3  hidden-xs" data-animation="fadeInRightBig">
-                            <p>아이의 정서 발달에 피아노로 어느 정도의 효과를 얻을 수 있을까?<br>관련 정보를 보시려면 아래의 버튼을 누르세요</p>
-                        </div>
-                        <div class="element1-4" data-animation="fadeInRightBig"><a href="#" class="btn btn-primary">관련정보 보기</a></div>
-                    </div>
-                </li>
-                <li class="slideN1">
-                    <img src="{% static "website/images/carousel/carousel4.jpg" %}" alt="pic 3"/>
-                    <div class="caption left">
-                        <div class="element3-1" data-animation="fadeInLeftBig">
-                            <h1>클래식 감상회</h1>
-                        </div>
-                        <div class="element3-2" data-animation="fadeInLeftBig">
-                            <h2>클래식 감상회에 초청합니다! 오셔서 아름다운 피아노의 선율을 온 몸으로 느껴보세요!</h2>
-                        </div>
-                        <div class="element3-3" data-animation="fadeInRightBig"><a href="#" class="btn btn-primary">상세일정 알아보기</a></div>
-                    </div>
-                </li>
-                <li class="slideN2">
-                    <img src="{% static "website/images/carousel/carousel5.jpg" %}" alt="pic 1"/>
-                    <div class="caption left">
-                        <div class="element1-1" data-animation="bounceInDown">
-                            <h1>정기 연주회 및 콩쿨 일정 안내</h1>
-                        </div>
-                        <div class="element1-2" data-animation="fadeInLeftBig">
-                            <h2>오는 12월 학원 정기 연주회와 경상북도가 주최하는 콩쿨이 열립니다.</br> 아래 버튼을 눌러 자세한 정보를 확인하세요</h2>
-                        </div>
-                        <div class="element1-3" data-animation="fadeInRightBig"><a href="#" class="btn btn-primary">상세일정 알아보기</a></div>
-
-                    </div>
-                </li>
+                    </li>
+                    {% if carousel_items.count >= 2 %}
+                        <li class="slideN1">
+                            <img src="{{ carousel_items.1.image.url }}"/>
+                            <div class="caption left">
+                                <div class="element3-1" data-animation="fadeInLeftBig">
+                                    <h1>{{ carousel_items.1.title }}</h1>
+                                </div>
+                                <div class="element3-2" data-animation="fadeInLeftBig">
+                                    <h2>{{ carousel_items.1.subtitle }}</h2>
+                                </div>
+                                <div class="element1-3  hidden-xs" data-animation="fadeInRightBig">
+                                    <p>{{ carousel_items.1.content }}</p>
+                                </div>
+                            </div>
+                        </li>
+                        {% if carousel_items.count >= 3 %}
+                            <li class="slideN2">
+                                <img src="{{ carousel_items.2.image.url }}"/>
+                                <div class="caption left">
+                                    <div class="element1-1" data-animation="bounceInDown">
+                                        <h1>{{ carousel_items.2.title }}</h1>
+                                    </div>
+                                    <div class="element1-2" data-animation="fadeInLeftBig">
+                                        <h2>{{ carousel_items.2.subtitle }}</h2>
+                                    </div>
+                                    <div class="element1-3  hidden-xs" data-animation="fadeInRightBig">
+                                        <p>{{ carousel_items.2.content }}</p>
+                                    </div>
+                                </div>
+                            </li>
+                            {% if carousel_items.count >= 4 %}
+                                <li class="slideN3">
+                                    <img src="{{ carousel_items.3.image.url }}"/>
+                                    <div class="caption left">
+                                        <div class="element1-1" data-animation="fadeInRightBig">
+                                            <h1>{{ carousel_items.3.title }}</h1>
+                                        </div>
+                                        <div class="element1-2" data-animation="fadeInRightBig">
+                                            <h2>{{ carousel_items.3.subtitle }}</h2>
+                                        </div>
+                                        <div class="element1-3  hidden-xs" data-animation="fadeInRightBig">
+                                            <p>{{ carousel_items.3.content }}</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                {% if carousel_items.count >= 5 %}
+                                    <li class="slideN4">
+                                        <img src="{{ carousel_items.4.image.url }}"/>
+                                        <div class="caption left">
+                                            <div class="element3-1" data-animation="fadeInLeftBig">
+                                                <h1>{{ carousel_items.4.title }}</h1>
+                                            </div>
+                                            <div class="element3-2" data-animation="fadeInLeftBig">
+                                                <h2>{{ carousel_items.4.subtitle }}</h2>
+                                            </div>
+                                            <div class="element1-3  hidden-xs" data-animation="fadeInRightBig">
+                                                <p>{{ carousel_items.4.content }}</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    {% if carousel_items.count >= 6 %}
+                                        <li class="slideN5">
+                                            <img src="{{ carousel_items.5.image.url }}"/>
+                                            <div class="caption left">
+                                                <div class="element1-1" data-animation="bounceInDown">
+                                                    <h1>{{ carousel_items.5.title }}</h1>
+                                                </div>
+                                                <div class="element1-2" data-animation="fadeInLeftBig">
+                                                    <h2>{{ carousel_items.5.subtitle }}</h2>
+                                                </div>
+                                                <div class="element1-3  hidden-xs" data-animation="fadeInRightBig">
+                                                    <p>{{ carousel_items.5.content }}</p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    {% endif %}
+                                {% endif %}
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
+                {% endif %}
             </ul>
         </div>
     </section>

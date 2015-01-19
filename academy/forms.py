@@ -13,6 +13,7 @@ class AcademyForm(forms.ModelForm):
 
     class Meta:
         model = Academy
+        fields = '__all__'
 
     def __init__(self, *args, **kwargs):
         super(AcademyForm, self).__init__(*args, **kwargs)
@@ -21,6 +22,7 @@ class AcademyForm(forms.ModelForm):
 
 class UserCreateMixin(object):
     class Meta:
+        fields = '__all__'
         exclude = ['profile']
 
     def clean_username(self):
@@ -40,6 +42,7 @@ class UserCreateMixin(object):
 class StudentCreateForm(forms.ModelForm):
     class Meta:
         model = Student
+        fields = '__all__'
         exclude = ['profile', 'academy']
 
     def clean_contact(self):
@@ -61,6 +64,7 @@ class StudentFilterForm(forms.Form):
 class StaffForm(forms.ModelForm):
     class Meta:
         model = Staff
+        fields = '__all__'
         exclude = ['profile', 'academy']
 
     def clean_contact(self):
@@ -86,6 +90,7 @@ class GuardianForm(forms.ModelForm):
 
     class Meta:
         model = Guardian
+        fields = '__all__'
         exclude = ['student', 'profile']
 
     def clean_contact(self):
@@ -105,6 +110,7 @@ class CourseForm(forms.ModelForm):
 
     class Meta:
         model = Course
+        fields = '__all__'
         exclude = ['is_active', 'academy']
 
 
@@ -117,12 +123,14 @@ class CourseCategoryForm(forms.ModelForm):
 
     class Meta:
         model = CourseCategory
+        fields = '__all__'
 
 
 class LectureForm(forms.ModelForm):
 
     class Meta:
         model = Lecture
+        fields = '__all__'
         widgets = {
             'weekday': CheckboxSelectMultiple,
         }
@@ -141,6 +149,7 @@ class LectureRegistrationForm(forms.ModelForm):
 
     class Meta:
         model = Lecture
+        fields = '__all__'
         exclude = ['code', 'course', 'staff', 'is_online', 'weekday', 'is_active']
 
     def __init__(self, *args, **kwargs):
@@ -156,3 +165,4 @@ class PaymentForm(forms.ModelForm):
 
     class Meta:
         model = Payment
+        fields = '__all__'

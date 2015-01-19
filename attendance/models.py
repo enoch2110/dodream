@@ -50,6 +50,7 @@ class AttendanceManager(models.Model):
     group = models.OneToOneField(Group, blank=True, null=True)
     policy = models.ForeignKey("AttendancePolicy", blank=True, null=True)
     nfc_id = models.CharField(max_length=50, blank=True, null=True)
+    phone_id = models.CharField(max_length=50, blank=True, null=True)
 
     def __unicode__(self):
         return self.profile.__unicode__() + " --- " + (self.nfc_id if self.nfc_id else "no nfc card")
@@ -73,6 +74,19 @@ class AttendanceManager(models.Model):
             self.save()
             success = True
             message += "&등록 되었습니다."
+        return success, message
+
+    def set_phone(self, phone_id, force_set=False):
+
+        message = ""
+        success = False
+        if not phone_id:
+            message += "&휴대폰 단말기 ID를 확인하세요."
+        if phone_id:
+            self.phone_id = phone_id
+            self.save()
+            success = True
+            message += self.profile.student.name + "& 학생의 출석 알람을 받아보실 수 있습니다."
         return success, message
 
     def get_stu_id(self, nfc):

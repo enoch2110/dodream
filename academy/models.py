@@ -34,6 +34,7 @@ class Setting(models.Model):
 
 class Profile(models.Model):
     user = models.OneToOneField(User, blank=True, null=True)
+    contact = models.CharField(max_length=20, blank=True, null=True)
 
     def __unicode__(self):
         instance = self.get_instance()
@@ -80,7 +81,7 @@ class Student(models.Model):
     name = models.CharField(max_length=100)
     email = models.EmailField(blank=True, null=True)
     image = models.ImageField(upload_to="academy/student", default="defaults/avatar.png")
-    gender = models.BooleanField(choices=GENDER_CHOICES)
+    gender = models.BooleanField(choices=GENDER_CHOICES, default=False)
     birthday = models.DateField(blank=True, null=True)
     address = models.CharField(max_length=200, blank=True, null=True)
     contact = models.CharField(max_length=20, blank=True, null=True)
@@ -252,7 +253,7 @@ class Lecture(models.Model):
     course = models.ForeignKey("Course")
     staffs = models.ManyToManyField("Staff")
     students = models.ManyToManyField("Student")
-    is_online = models.BooleanField()
+    is_online = models.BooleanField(default=False)
 
     def __unicode__(self):
         return self.course.name

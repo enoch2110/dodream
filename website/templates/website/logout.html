@@ -1,6 +1,23 @@
-{% extends "website/_layouts/_base.html" %}
+{% extends "website/_layouts/_base_logout.html" %}
+{% load web_extras %}
 
 {% block content %}
-    <h1>성공적으로 로그아웃 되었습니다.</h1>
-    <p><a href="{% url "website" %}">메인페이지로</a></p>
+
+    <section id="contact" class="color1 pt40 pb40">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6 col-sm-offset-3"  data-nekoanim="fadeInUp" data-nekodelay="100">
+                    <div class="col-md-12 mb40 text-center">
+                        <div class="boxFocus color0">
+                            <h4>로그아웃 되었습니다.</h4>
+                            <div class="foot">
+                                <a href="{% url "website" %}" class="btn btn-default">메인 페이지로</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
 {% endblock %}

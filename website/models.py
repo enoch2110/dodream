@@ -3,7 +3,7 @@ import os
 import uuid
 from django.contrib.auth.models import User
 from django.db import models
-import datetime
+
 
 def get_filename(filename):
     ext = filename.split('.')[-1].lower()
@@ -47,3 +47,19 @@ class EntryComment(models.Model):
     writer = models.ForeignKey(User)
     datetime = models.DateTimeField(auto_now_add=True)
     entry = models.ForeignKey("Entry", related_name="comments")
+
+
+def get_carousel_image_upload_path(instance, filename):
+    return os.path.join('main', 'carousel', get_filename(filename))
+
+
+class CarouselItem(models.Model):
+    title = models.CharField(max_length=200, blank=True)
+    subtitle = models.CharField(max_length=200, blank=True)
+    content = models.CharField(max_length=200, blank=True)
+    image = models.ImageField(upload_to=get_carousel_image_upload_path)
+
+    def __unicode__(self):
+        return self.title
+
+
