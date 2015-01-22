@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.db import models
 
 
+
 def get_filename(filename):
     ext = filename.split('.')[-1].lower()
     filename = "%s.%s" % (uuid.uuid4(), ext)

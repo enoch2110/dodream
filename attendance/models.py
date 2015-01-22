@@ -34,13 +34,13 @@ class Attendance(models.Model):
             leave_time = (datetime.datetime(2000, 1, 1, attend_time.hour, attend_time.minute, attend_time.second) + datetime.timedelta(hours=1)).time()
 
         if is_first and current_datetime.time() <= attend_time:
-            result = "attend"
+            result = "&출석했습니다."
         elif is_first and current_datetime.time() > attend_time:
-            result = "late"
+            result = "&지각했습니다."
         elif not is_first and current_datetime.time() < leave_time:
-            result = "early leave"
+            result = "&조퇴했습니다."
         elif not is_first and current_datetime.time() >= leave_time:
-            result = "leave"
+            result = "&퇴실했습니다."
 
         return result
 
@@ -77,26 +77,6 @@ class AttendanceManager(models.Model):
             message += "&등록 되었습니다."
         return success, message
 
-    # def set_phone(self, phone_id, force_set=False):
-    #
-    #     message = ""
-    #     success = False
-    #     if not phone_id:
-    #         message += "&휴대폰 단말기 ID를 확인하세요."
-    #     if phone_id:
-    #         self.phone_id = phone_id
-    #         self.save()
-    #         success = True
-    #         message += self.profile.student.name + "& 학생의 출석 알람을 받아보실 수 있습니다."
-    #     return success, message
-    #
-    # def get_stu_id(self, nfc):
-    #     user = self.user
-    #     while user:
-    #         if user.nfc == nfc:
-    #             return user.id
-    #         else:
-    #             return 0
     #
     # def set_phone(self, phone_id, force_set=False):
     #
@@ -110,12 +90,20 @@ class AttendanceManager(models.Model):
     #         success = True
     #         message += self.profile.student.name + "& 학생의 출석 알람을 받아보실 수 있습니다."
     #     return success, message
-    #
-    # def get_attend_time(self):
-    #     return self.policy.attend_time
-    #
-    # def get_leave_time(self):
-    #     return self.policy.leave_time
+    # 
+    def get_stu_id(self, nfc):
+        user = self.user
+        while user:
+            if user.nfc == nfc:
+                return user.id
+            else:
+                return 0
+
+    def get_attend_time(self):
+        return self.policy.attend_time
+
+    def get_leave_time(self):
+        return self.policy.leave_time
 
 
 class AttendancePolicy(models.Model):

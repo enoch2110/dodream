@@ -25,7 +25,7 @@
                             <a href="{% url "academy-introduction" %}" class="firstLevel hasSubMenu" >학원 안내</a>
                             <ul class="subMenu">
                                 <li><a href="{% url "academy-introduction" %}">학원 소개</a></li>
-                                <li><a href="{% url "staff-introduction" %}">원장 소개</a></li>
+                                <li><a href="{% url "headmaster-introduction" %}">원장 소개</a></li>
                                 <li><a href="{% url "academy-facilities" %}">학원 시설</a></li>
                                 <li><a href="{% url "academy-directions" %}">오시는 길</a></li>
                             </ul>
@@ -43,21 +43,16 @@
                         </li>
                         <li class="sep"></li>
                         <li class="primary">
-                            <a href="{% url "entry-list" %}?type=gallery" class="firstLevel hasSubMenu">자료실</a>
-                            <ul class="subMenu">
-                                <li><a href="{% url "entry-list" %}?type=gallery">학원소식</a></li>
-                                <li class="last"><a href="{% url "entry-list" %}?type=reference">기타자료</a></li>
-                            </ul>
-                        </li>
-                        <li class="sep"></li>
-                        <li class="primary">
                             <a href="{% url "entry-list" %}?type=notice" class="firstLevel hasSubMenu">커뮤니티</a>
                             <ul class="subMenu">
                                 <li><a href="{% url "entry-list" %}?type=notice">공지 사항</a></li>
 {#                                <li><a href="{% url "schedule" %}">학사 일정</a></li>#}
-                                <li class="last"><a href="{% url "QnA" %}">Q&A</a></li>
+                                <li><a href="{% url "entry-list" %}?type=gallery">학원소식</a></li>
+                                <li><a href="{% url "entry-list" %}?type=reference">기타자료</a></li>
+                                <li><a href="{% url "QnA" %}">Q&A</a></li>
                             </ul>
                         </li>
+                        <li class="sep"></li>
                         <li class="primary">
                             {% if not request.user.is_authenticated %}
                                 <a href="{% url "web-login" %}?type=notice" class="firstLevel login"><b>로그인</b></a>

@@ -42,7 +42,9 @@ INSTALLED_APPS = (
     'django_summernote',
     'academy',
     'attendance',
-    'website'
+    'website',
+    'gcm'
+    # 'tastypie'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -128,3 +130,6 @@ COOLSMS_ID = "enoch2110"
 COOLSMS_PW = "tip177"
 COOLSMS_SENDER = "0000"
 USE_COOLSMS = True
+
+# GCM_APIKEY = 'AIzaSyC3LGruJQLdsco3ptkbDkgEJzEswwh9sQU'
+# # GCM_DEVICE_MODEL = 'api.models.MyDevice'

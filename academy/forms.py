@@ -42,7 +42,6 @@ class UserCreateMixin(object):
 class StudentCreateForm(forms.ModelForm):
     class Meta:
         model = Student
-        fields = '__all__'
         exclude = ['profile', 'academy']
 
     def clean_contact(self):
@@ -158,7 +157,6 @@ class LectureRegistrationForm(forms.ModelForm):
         #students.filter(~Q(id__in=self.instance.students.all()))
 
         self.fields['students'].queryset = Student.objects.filter(~Q(id__in=self.instance.students.all()))
-        model = Lecture
 
 
 class PaymentForm(forms.ModelForm):

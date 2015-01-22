@@ -6,20 +6,17 @@ from multiupload.fields import MultiFileField
 from website.models import *
 
 
-# class PhotoAddForm(forms.ModelForm):
-#     class Meta:
-#         model = Photo
-#
-#
 class EntryAddForm(forms.ModelForm):
     class Meta:
         model = Entry
+        fields = '__all__'
         exclude = ['number', 'date']
 
 
 class EntryCommentForm(forms.ModelForm):
     class Meta:
         model = EntryComment
+        fields = '__all__'
         exclude = ['writer', 'entry', 'datetime']
     
 
@@ -28,6 +25,7 @@ class EntryAdminForm(forms.ModelForm):
 
     class Meta:
         model = Entry
+        fields = '__all__'
 
     def save(self, commit=True):
         super(EntryAdminForm, self).save(commit=commit)

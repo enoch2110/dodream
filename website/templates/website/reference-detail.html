@@ -20,7 +20,7 @@
         <section id="content">
             <section class="pt30 pb30">
                 <div class="container clearfix">
-                    <div class="col-sm-12">
+                    <div class="col-xs-12">
                         <table class="table">
                             <thead>
                             <tr>
@@ -34,12 +34,11 @@
                                 <th class="text-right">Date   {{ object.datetime|date:"Y-m-d" }}</th>
                             </tr>
                             </thead>
-                            <tbody>
-                            <tr>
-                                <td>{{ object.content|safe }}</td>
-                            </tr>
-                            </tbody>
                         </table>
+                        <div>
+                            <div class="col-xs-1"></div>
+                            <div class="col-xs-10">{{ object.content|safe }}</div>
+                        </div>
                     </div>
                     <div class="col-sm-12" style="text-align: center;">
                         <a class="btn btn-default" href="{% url 'entry-list' %}?type=reference">List</a>
