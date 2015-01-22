@@ -175,21 +175,21 @@ class CardDetailAPI(APIView):
             return  Response({"message": "&정보가 안 받아져용 ㅠㅠ"})
 
 
-class PhoneRegisterAPI(APIView):
-    permission_classes = (IsAuthenticated,)
-
-    def post(self, request, *args, **kwargs):
-        academy = self.request.user.profile.staff.academy
-        phone_id = request.POST.get("phone_id")
-        phone_number = request.POST.get("phone_number")
-        force_set = True if request.POST.get("force_set") == "true" else False
-
-        if Guardian.objects.filter(contact=phone_number).all().exists():
-            guardians = Guardian.objects.filter(contact=phone_number).all()
-            for guardian in guardians:
-                student_id = guardian.student.id
-                attendance_manager = AttendanceManager.objects.filter(profile__student__id=student_id)
-                success, message = attendance_manager.set_phone(phone_id, force_set)
-                return Response({"success": success, "message": message})
-        else:
-            return Response({"success": False, "message": "&해당 학부모 휴대폰 번호가 존재하지 않습니다. 폴리니 음악학원에 문의하여 학부모 휴대폰 번호를 등록하세요."})
+# class PhoneRegisterAPI(APIView):
+#     permission_classes = (IsAuthenticated,)
+#
+#     def post(self, request, *args, **kwargs):
+#         academy = self.request.user.profile.staff.academy
+#         phone_id = request.POST.get("phone_id")
+#         phone_number = request.POST.get("phone_number")
+#         force_set = True if request.POST.get("force_set") == "true" else False
+#
+#         if Guardian.objects.filter(contact=phone_number).all().exists():
+#             guardians = Guardian.objects.filter(contact=phone_number).all()
+#             for guardian in guardians:
+#                 student_id = guardian.student.id
+#                 attendance_manager = AttendanceManager.objects.filter(profile__student__id=student_id)
+#                 success, message = attendance_manager.set_phone(phone_id, force_set)
+#                 return Response({"success": success, "message": message})
+#         else:
+#             return Response({"success": False, "message": "&해당 학부모 휴대폰 번호가 존재하지 않습니다. 폴리니 음악학원에 문의하여 학부모 휴대폰 번호를 등록하세요."})

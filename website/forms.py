@@ -47,6 +47,7 @@ class UserCreateForm(UserCreationForm):
     def save(self, commit=True):
         user = super(UserCreateForm, self).save(commit=False)
         user.email = self.cleaned_data["email"]
+        user.save()
         user_profile = Profile(user=user, contact=self.cleaned_data['contact'])
         user_profile.save()
-        return user, user_profile 
+        return user

@@ -65,6 +65,7 @@ class SettingAdmin(admin.ModelAdmin):
     list_display = ['name', 'value', 'academy']
 
 
+admin.site.register(Profile)
 admin.site.register(User, UserProfileAdmin)
 admin.site.register(Academy)
 admin.site.register(Student, StudentModelAdmin)

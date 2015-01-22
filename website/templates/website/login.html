@@ -7,7 +7,7 @@
             <div class="row">
                 <div class="col-md-12 mb40 text-center">
                     <h1>로그인</h1>
-                    <h2 class="subTitle">Keep in touch with us</h2>
+                    <h2 class="subTitle">폴리니 홈페이지 방문을 환영합니다!</h2>
                 </div>
                 <div class="col-sm-6 col-sm-offset-3"  data-nekoanim="fadeInUp" data-nekodelay="100">
                     <div class="boxFocus color0">
@@ -16,14 +16,34 @@
                             <input type="hidden" name="next" value="/website"/>
 
                             {% for field in form %}
-                            <div class="form-group">
-                                <label for="name">{{ field.label }}</label>
-                                {% add_attr field class="form-control" placeholder=field.label %}
-                            </div>
+                                <div class="form-group">
+                                    <label for="name">{{ field.label }}</label>
+                                    {% add_attr field class="form-control" placeholder=field.label %}
+                                    {#                                    {% if field.label.name == username %}#}
+                                    {#                                        {% for error in form.username.errors %}#}
+                                    {#                                            <p class="text-danger">{{ error }}</p>#}
+                                    {#                                        {% endfor %}#}
+                                    {#                                    {% elif field.label.name == password %}#}
+                                    {#                                        {% for error in form.password.errors %}#}
+                                    {#                                            <p class="text-danger">{{ error }}</p>#}
+                                    {#                                        {% endfor %}#}
+                                    {#                                    {% endif %}#}
+                                    {% for error in form.non_field_errors %}
+                                        <p class="text-danger">{{ error }}</p>
+                                    {% endfor %}
+                                    {% for error in form.username.errors %}
+                                        <p class="text-danger">{{ error }}</p>
+                                    {% endfor %}
+                                </div>
                             {% endfor %}
-                            <button type="submit" class="btn btn-primary">로그인</button>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary btn-lg">로그인</button>
+                            </div>
                         </form>
                     </div>
+                </div>
+                <div class="col-sm-6 col-sm-offset-3 text-center"  data-nekoanim="fadeInUp" data-nekodelay="100">
+                    <h2 class="subTitle">아직 회원이 아니신가요? <a  href="{% url "join"%}">회원가입</a></h2>
                 </div>
             </div>
         </div>

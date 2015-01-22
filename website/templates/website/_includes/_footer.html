@@ -6,31 +6,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-4 col-sm-6">
-                    {% if not request.user.profile %}
-                        <div class="footerWidget">
-                            <form method="post" action="{% url 'web-login' %}">
-                                {% csrf_token %}
-                                {% for field in form %}
-                                    <div class="form-group" style="margin-right: 10%">
-                                        <label for="name">{{ field.label }}</label>
-                                        {% add_attr field class="form-control" placeholder=field.label%}
-                                    </div>
-                                {% endfor %}
-                                <button type="submit" class="btn btn-primary">로그인</button>
-                                <input type="hidden" name="next" value="/website"/>
-                                <a class="btn btn-primary" href="/website/join">회원가입</a>
-                            </form>
-                        </div>
-                    {% else %}
-                        <div class="footerWidget">
-                            <a class="btn btn-primary" href="/website/logout">로그아웃</a>
-                        </div>
-                        <div class="footerWidget">
-                            <div class="info">
-                                <a href="#">{{ request.user.profile }}</a>  {# .get_name이 왜 안될까? #}
-                            </div>
-                        </div>
-                    {% endif %}
+                    <p>{{ request.user.profile }}</p>
                 </div>
                 <div class="col-md-4 col-sm-6">
                     <div class="footerWidget">

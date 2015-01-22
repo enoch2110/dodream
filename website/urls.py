@@ -28,5 +28,5 @@ urlpatterns = patterns('website.views',
     url(r'^join', UserCreateView.as_view(template_name="website/join.html"), name="join"),
 
     url(r'^login/$', login, {'template_name': 'website/login.html'}, name="web-login"),
-    url(r'^logout/$', logout, {'template_name': 'website/logout.html'}, name="web-logout"),
+    url(r'^logout/$', logout, {'template_name': 'website/index.html'}, name="web-logout"),
 )

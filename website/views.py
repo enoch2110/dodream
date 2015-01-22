@@ -1,5 +1,6 @@
 # -*- coding: utf8 -*-
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ImproperlyConfigured
 
 from django.shortcuts import render
 
@@ -75,3 +76,4 @@ class UserCreateView(CreateView):
     template_name = "website/join.html"
     model = User
     form_class = UserCreateForm
+    success_url = "/website"

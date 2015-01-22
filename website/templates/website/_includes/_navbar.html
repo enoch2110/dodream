@@ -57,6 +57,14 @@
 {#                                <li><a href="{% url "schedule" %}">학사 일정</a></li>#}
                                 <li class="last"><a href="{% url "QnA" %}">Q&A</a></li>
                             </ul>
+                        </li>
+                        <li class="primary">
+                            {% if not request.user.is_authenticated %}
+                                <a href="{% url "web-login" %}?type=notice" class="firstLevel login"><b>로그인</b></a>
+                            {% else %}
+                                <a href="{% url "web-logout" %}?type=notice" class="firstLevel login"><b>로그아웃</b></a>
+                            {% endif %}
+                        </li>
                     </ul>
                 </div>
             </nav>

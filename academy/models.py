@@ -37,14 +37,25 @@ class Profile(models.Model):
     contact = models.CharField(max_length=20, blank=True, null=True)
 
     def __unicode__(self):
-        instance = self.get_instance()
-        username = self.user.username if self.user else "no user"
-        name = instance.__class__.__name__ +": "+instance.name if instance else "No name"
-
-        return name + "'s profile (" + username + ")"
+        username = self.get_username()
+        name = self.get_name()
+        return name + "(" + username + ")"
 
     def get_name(self):
-        return self.user.last_name+" "+self.user.first_name
+        instance = self.get_instance()
+        user = self.user
+        if instance:
+            name = instance.__class__.__name__ +": "+instance.name
+        elif user:
+            user_fullname = user.last_name + user.first_name
+            name = user_fullname if user_fullname else "no name"
+        else:
+            name = "no name"
+        return name
+
+    def get_username(self):
+        username = self.user.username if self.user else "no user"
+        return username
 
     def can_use_admin(self):
         return Staff.objects.filter(profile__user=self.user).exists()
@@ -164,6 +175,7 @@ class Guardian(models.Model):
     relation = models.CharField(max_length=100)
     student = models.ForeignKey(Student)
     profile = models.OneToOneField(Profile)
+    # phone_id = models.CharField(max_length=50, blank=True, null=True)
 
 
 class LectureDateTime(models.Model):
@@ -271,7 +283,7 @@ class Lecture(models.Model):
 class Payment(models.Model):
     student = models.ForeignKey(Student)
     amount = models.IntegerField()
-    datetime = models.DateTimeField(default=datetime.datetime.today())
+    datetime = models.DateTimeField(auto_now=True)
     receipt_number = models.CharField(max_length=100, blank=True, null=True)
 
     def __unicode__(self):
