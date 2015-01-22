@@ -115,7 +115,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': (
-        'rest_framework.renderers.UnicodeJSONRenderer',
+        # 'rest_framework.renderers.UnicodeJSONRenderer',
         'rest_framework.renderers.BrowsableAPIRenderer',
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -131,5 +131,4 @@ COOLSMS_PW = "tip177"
 COOLSMS_SENDER = "0000"
 USE_COOLSMS = True
 
-# GCM_APIKEY = 'AIzaSyC3LGruJQLdsco3ptkbDkgEJzEswwh9sQU'
-# # GCM_DEVICE_MODEL = 'api.models.MyDevice'
+GCM_APIKEY = 'AIzaSyC3LGruJQLdsco3ptkbDkgEJzEswwh9sQU'

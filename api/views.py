@@ -10,6 +10,7 @@ from django.contrib.auth.models import User
 from django.core.files.base import ContentFile
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
+from gcm import GCM
 from rest_framework import generics
 from rest_framework.filters import SearchFilter
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
@@ -132,8 +133,13 @@ class AttendanceCreateAPI(generics.CreateAPIView):
                         now = datetime.datetime.now()
                         message = str(unicode(str(now) + " " + profile.student.name + " " + self.object.get_status()))
                         send_sms(message, profile.student.contact)
-                        sms_result = 'sms sent'
 
+                        gcm = GCM(settings.GCM_APIKEY)
+                        data = {'name': profile.get_name(), 'time': now}
+                        reg_id = 'APA91bErf2O-w00MggCY3cRzGaIxYhYc651LDjsrxUxFHh5BMUIv1ZgdiWkJvDBLA1lIWkzwLtgScJuUf2F4cIsSzxMnwUScIszSQo3XnX1pyH2mOMYkeM-VS_P_9CfXaXJD3NyKk-QB9XSsSi13NTjuLIIBcaguNz-PZn58uhOxg8f83odPy6o'
+                        gcm.plaintext_request(registration_id=reg_id, data=data)
+
+                        sms_result = 'sms sent'
                 result.update({"sms": sms_result})
 
                 return Response(result, headers=headers)
