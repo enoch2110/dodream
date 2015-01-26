@@ -55,9 +55,9 @@
                         <li class="sep"></li>
                         <li class="primary">
                             {% if not request.user.is_authenticated %}
-                                <a href="{% url "web-login" %}?type=notice" class="firstLevel login"><b>로그인</b></a>
+                                <a href="{% url "web-login" %}" class="firstLevel login"><b>로그인</b></a>
                             {% else %}
-                                <a href="{% url "web-logout" %}?type=notice" class="firstLevel login"><b>로그아웃</b></a>
+                                <a href="{% url "web-logout" %}" class="firstLevel login"><b>로그아웃</b></a>
                             {% endif %}
                         </li>
                     </ul>
