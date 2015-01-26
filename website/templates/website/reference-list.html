@@ -9,9 +9,12 @@
                     <div class="col-md-12">
                         <h1>기타자료</h1>
                         <ul class="breadcrumb visible-md visible-lg">
-                            <li><a href="{% url "entry-list" %}?type=gallery">학원소식</a></li>
-                            <li class="active">기타자료</li>
-                        </ul>
+                            <li><a href="{% url "entry-list" %}?type=notice">공지 사항</a></li>
+{#                            <li><a href="{% url "schedule" %}">학사 일정</a></li>#}
+                            <li><a href="{% url "entry-list" %}?type=gallery">학원 소식</a></li>
+                            <li class="active">기타 자료</li>
+                            <li><a href="{% url "QnA" %}">Q&A</a></li>
+                         </ul>
                     </div>
                 </div>
             </div>
