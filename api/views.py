@@ -94,8 +94,6 @@ class AttendanceCreateAPI(generics.CreateAPIView):
     serializer_class = AttendanceSerializer
 
     def create(self, request, *args, **kwargs):
-
-
         academy = self.request.user.profile.staff.academy
         serializer = self.get_serializer(data=request.DATA)
 
@@ -138,14 +136,14 @@ class AttendanceCreateAPI(generics.CreateAPIView):
                         alert_result = 'alert sent'
 
                         gcm = GCM(settings.GCM_APIKEY)
-                        data = {'name': profile.get_name(), 'time': now}
-                        reg_id = Student.guardian.profile.phone_id
-                        # reg_id = 'APA91bErf2O-w00MggCY3cRzGaIxYhYc651LDjsrxUxFHh5BMUIv1ZgdiWkJvDBLA1lIWkzwLtgScJuUf2F4cIsSzxMnwUScIszSQo3XnX1pyH2mOMYkeM-VS_P_9CfXaXJD3NyKk-QB9XSsSi13NTjuLIIBcaguNz-PZn58uhOxg8f83odPy6o'
-                        gcm.json_request(registration_id=reg_id, data=data)
+                        data = {'name': profile.get_name(), 'time': now.strftime("%H:%M:%S")}
+                        reg_ids = []
+                        for guardian in profile.student.guardian_set.all():
+                            if guardian.profile.phone_id:
+                                reg_ids.append(guardian.profile.phone_id)
 
-                        # result.update({"sms": sms_result})
-                        result.update({"alert": alert_result})
-
+                        gcm.json_request(registration_ids=reg_ids, data=data)
+                        result.update({"alert": alert_result, "reg_id": reg_ids})
                         return Response(result, headers=headers)
                     return Response(serializer.errors)
 
@@ -185,33 +183,8 @@ class CardDetailAPI(APIView):
             return  Response({"message": "Error! No data"})
 
 
-# class PhoneRegisterAPI(APIView):
-#     permission_classes = (IsAuthenticated,)
-#
-#     def post(self, request, *args, **kwargs):
-#         academy = self.request.user.profile.staff.academy
-#         phone_id = request.POST.get("phone_id")
-#         phone_number = request.POST.get("phone_number")
-#         force_set = True if request.POST.get("force_set") == "true" else False
-#
-#         if Guardian.objects.filter(contact=phone_number).all().exists():
-#             guardians = Guardian.objects.filter(contact=phone_number).all()
-#             for guardian in guardians:
-#                 student_id = guardian.student.id
-#                 attendance_manager = AttendanceManager.objects.filter(profile__student__id=student_id)
-#                 success, message = attendance_manager.set_phone(phone_id, force_set)
-#                 return Response({"success": success, "message": message})
-#         else:
-#             return Response({"success": False, "message": "&해당 학부모 휴대폰 번호가 존재하지 않습니다. 폴리니 음악학원에 문의하여 학부모 휴대폰 번호를 등록하세요."})
-#
-#
 class PhoneRegisterAPI(APIView):
 
-    # def get(self, request):
-    #     result = {"code": "", "message": ""}
-    #     result['code'] = 4
-    #     result['message'] = "get request not allowed"
-    #     return Response(result)
     def post(self, request, *args, **kwargs):
         phone_id = request.POST.get("phone_id")
         phone_number = request.POST.get("phone_number")
@@ -220,7 +193,7 @@ class PhoneRegisterAPI(APIView):
             guardians = Guardian.objects.filter(contact=phone_number)
             for guardian in guardians:
                 guardian.profile.phone_id = phone_id
+                guardian.profile.save()
             return Response({"success": "Success", "message": "&기기가 등록 되었습니다. 이제부터 알람을 받아보실 수 있습니다."})
-
         else:
             return Response({"success": "Fail", "message": "&해당 학부모 휴대폰 번호가 존재하지 않습니다. 폴리니 음악학원에 문의하여 학부모 휴대폰 번호를 등록하세요."})
