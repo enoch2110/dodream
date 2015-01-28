@@ -34,7 +34,7 @@ class Setting(models.Model):
 
 class Profile(models.Model):
     user = models.OneToOneField(User, blank=True, null=True)
-    contact = models.CharField(max_length=20, blank=True, null=True)
+    phone_id = models.CharField(max_length=500, blank=True, null=True)
 
     def __unicode__(self):
         username = self.get_username()
@@ -173,6 +173,7 @@ class Guardian(models.Model):
     email = models.EmailField(blank=True)
     contact = models.CharField(max_length=20, blank=True, null=True)
     relation = models.CharField(max_length=100)
+    # student = models.ManyToManyField(Student)
     student = models.ForeignKey(Student)
     profile = models.OneToOneField(Profile)
     # phone_id = models.CharField(max_length=50, blank=True, null=True)

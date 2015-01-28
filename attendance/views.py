@@ -8,7 +8,7 @@ class AttendanceList(ListView):
     context_object_name = "attendances"
 
     def get_queryset(self):
-        queryset = super(AttendanceList, self).get_queryset()
+        queryset = super(AttendanceList, self).get_queryset(self, datetime)
         import datetime
         if self.request.GET.get('date'):
             date_begin = datetime.datetime.strptime(self.request.GET.get('date').split(" - ")[0], "%Y-%m-%d")

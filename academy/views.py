@@ -15,7 +15,7 @@ from academy.admin import StudentModelAdmin, PaymentModelAdmin
 from academy.filters import StudentFilter
 from academy.forms import *
 from academy.models import *
-from dodream.coolsms import send_sms
+# from dodream.coolsms import send_sms
 
 
 class AcademySetting(UpdateView):
@@ -404,11 +404,11 @@ class UnpaidDetail(DetailView):
     model = Student
 
 
-def sms(request):
-    message = "신대호는 바보"#request.GET.get('message').encode('utf-8', 'ignore')
-    to = request.GET.get('to').encode('ascii')
-    if message and to:
-        send_sms(message, to)
-        return HttpResponse('sms sent')
-    else:
-        return HttpResponse('sms could not be sent')
+# def sms(request):
+#     message = "신대호는 바보"#request.GET.get('message').encode('utf-8', 'ignore')
+#     to = request.GET.get('to').encode('ascii')
+#     if message and to:
+#         send_sms(message, to)
+#         return HttpResponse('sms sent')
+#     else:
+#         return HttpResponse('sms could not be sent')
