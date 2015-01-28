@@ -132,7 +132,7 @@ class AttendanceCreateAPI(generics.CreateAPIView):
                 if profile.student:
                     if profile.student.use_sms and profile.student.contact:
                         now = datetime.datetime.now()
-                        message = str(unicode(str(now) + " " + profile.student.name + " " + self.object.get_status()))
+                        # message = str(unicode(str(now) + " " + profile.student.name + " " + self.object.get_status()))
                         # send_sms(message, profile.student.contact)
                         # sms_result = 'sms sent'
                         alert_result = 'alert sent'
