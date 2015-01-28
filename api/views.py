@@ -212,15 +212,14 @@ class PhoneRegisterAPI(APIView):
     #     result['code'] = 4
     #     result['message'] = "get request not allowed"
     #     return Response(result)
-
     def post(self, request, *args, **kwargs):
         phone_id = request.POST.get("phone_id")
         phone_number = request.POST.get("phone_number")
 
-        if Guardian.objects.filter(contact=phone_number).exist():
-            guardians = Guardian.objects.filter(contact=phone_number).all()
+        if Guardian.objects.filter(contact=phone_number).exists():
+            guardians = Guardian.objects.filter(contact=phone_number)
             for guardian in guardians:
-                guardian.Profile.phone_id = phone_id
+                guardian.profile.phone_id = phone_id
             return Response({"success": "Success", "message": "&기기가 등록 되었습니다. 이제부터 알람을 받아보실 수 있습니다."})
 
         else:
