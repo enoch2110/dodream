@@ -144,8 +144,8 @@ class AttendanceCreateAPI(generics.CreateAPIView):
 
                         gcm.json_request(registration_ids=reg_ids, data=data)
                         result.update({"alert": alert_result, "reg_id": reg_ids})
-                        return Response(result, headers=headers)
-                    return Response(serializer.errors)
+            return Response(result, headers=headers)
+        return Response(serializer.errors)
 
 
 class CardRegisterAPI(APIView):
