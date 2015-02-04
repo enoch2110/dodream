@@ -10,7 +10,6 @@ from attendance.models import AttendanceManager
 
 admin.site.unregister(User)
 
-
 class AttendanceManagerInline(admin.StackedInline):
     model = AttendanceManager
 

@@ -30,8 +30,9 @@
                         {#                                <a href="" class="btn btn-default" data-filter=".video">비디오</a>#}
                         {#                            </div>#}
                         {#                        </nav>#}
-                        <div class="portfolio-items  isotopeWrapper clearfix imgHover" id="3">
+                        <div class="portfolio-items  isotopeWrapper clearfix imgHover">
                             {% for gallery in object_list %}
+{#                                if gallery 갯수가 4개가 넘어가면 div class row를 새로 주도록#}
                                 <article class="col-sm-3 isotopeItem women">
                                     <div class="imgBorder">
                                         <img alt="" src="{{ gallery.get_main_image.url }}" class="img-responsive imgBorder">

@@ -137,9 +137,22 @@ REST_FRAMEWORK = {
 
 LOGIN_REDIRECT_URL = "/"
 
-COOLSMS_ID = "enoch2110"
-COOLSMS_PW = "tip177"
-COOLSMS_SENDER = "0000"
-USE_COOLSMS = True
+# COOLSMS_ID = "enoch2110"
+# COOLSMS_PW = "tip177"
+# COOLSMS_SENDER = "0000"
+# USE_COOLSMS = True
 
 GCM_APIKEY = 'AIzaSyC3LGruJQLdsco3ptkbDkgEJzEswwh9sQU'
+
+# CKEDITOR_UPLOAD_PATH = ''
+# CKEDITOR_UPLOAD_URL = 'website/'
+# CKEDITOR_IMAGE_BACKEND = "pillow"
+# CKEDITOR_JQUERY_URL = '//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js'
+#
+# CKEDITOR_CONFIGS = {
+#     'default': {
+#         'toolbar': 'full',
+#         'height': 400,
+#         'width': 800,
+#     },
+# }

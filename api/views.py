@@ -138,11 +138,14 @@ class AttendanceCreateAPI(generics.CreateAPIView):
                         gcm = GCM(settings.GCM_APIKEY)
                         data = {'name': profile.get_name(), 'time': now.strftime("%H:%M:%S")}
                         reg_ids = []
+
                         for guardian in profile.student.guardian_set.all():
                             if guardian.profile.phone_id:
                                 reg_ids.append(guardian.profile.phone_id)
 
-                        gcm.json_request(registration_ids=reg_ids, data=data)
+                        if reg_ids:
+                            gcm.json_request(registration_ids=reg_ids, data=data)
+
                         result.update({"alert": alert_result, "reg_id": reg_ids})
             return Response(result, headers=headers)
         return Response(serializer.errors)
@@ -161,7 +164,7 @@ class CardRegisterAPI(APIView):
             profile = Profile.objects.get(student__id=student_id)
             attendance_manager = AttendanceManager.objects.get_or_create(profile=profile)[0]
             success, message = attendance_manager.set_nfc(nfc_id, force_set)
-            return Response({"success": success, "message": message})
+            return Response({"success": success, "message": "&등록되었습니다."})
         else:
             return Response({"success": False, "message": "&해당학생은 존재하지 않습니다."})
 
