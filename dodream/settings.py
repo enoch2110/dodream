@@ -43,7 +43,8 @@ INSTALLED_APPS = (
     'academy',
     'attendance',
     'website',
-    'gcm'
+    'gcm',
+    'ckeditor'
     # 'tastypie'
 )
 
@@ -113,17 +114,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.contrib.messages.context_processors.messages"
 )
 
-# REST_FRAMEWORK = {
-#     'DEFAULT_RENDERER_CLASSES': (
-#         # 'rest_framework.renderers.UnicodeJSONRenderer',
-#         'rest_framework.renderers.BrowsableAPIRenderer',
-#     ),
-#     'DEFAULT_AUTHENTICATION_CLASSES': (
-#         # 'rest_framework.authentication.SessionAuthentication',
-#         'rest_framework.authentication.TokenAuthentication',
-#     )
-# }
-
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',
@@ -144,15 +134,11 @@ LOGIN_REDIRECT_URL = "/"
 
 GCM_APIKEY = 'AIzaSyC3LGruJQLdsco3ptkbDkgEJzEswwh9sQU'
 
-# CKEDITOR_UPLOAD_PATH = ''
-# CKEDITOR_UPLOAD_URL = 'website/'
-# CKEDITOR_IMAGE_BACKEND = "pillow"
-# CKEDITOR_JQUERY_URL = '//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js'
-#
-# CKEDITOR_CONFIGS = {
-#     'default': {
-#         'toolbar': 'full',
-#         'height': 400,
-#         'width': 800,
-#     },
-# }
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'full',
+        'extraPlugins': 'youtube'
+    },
+}
+
+CKEDITOR_UPLOAD_PATH = "uploads/"
