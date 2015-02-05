@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from ckeditor.widgets import CKEditorWidget
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from academy.models import Profile
@@ -21,6 +22,7 @@ class EntryCommentForm(forms.ModelForm):
     
 
 class EntryAdminForm(forms.ModelForm):
+    content = forms.CharField(widget=CKEditorWidget())
     files = MultiFileField(max_num=10, min_num=0, max_file_size=1024*1024*5, required=False)
 
     class Meta:

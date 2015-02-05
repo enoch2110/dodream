@@ -10,3 +10,6 @@ urlpatterns = patterns('',
     url(r'^card-detail', CardDetailAPI.as_view()),
     # url(r'^phone-register', PhoneRegisterAPI.as_view())
 )
+
+# auth token : Token e327d6ecff6814ec6bbe37435e8ef3547b76ccbb
+# ji-u nfc_id : DBD94755

@@ -12,7 +12,7 @@
                         {#                        <p>Along with all the Bootstraps components,<br /> we added some extra shortcode to help you customize your website.</p>#}
                         <ul class="breadcrumb visible-md visible-lg">
                             <li class="active">공지 사항</li>
-{#                            <li><a href="{% url "schedule" %}">학사 일정</a></li>#}
+                            {#                            <li><a href="{% url "schedule" %}">학사 일정</a></li>#}
                             <li><a href="{% url "entry-list" %}?type=gallery">학원 소식</a></li>
                             <li><a href="{% url "entry-list" %}?type=reference">기타 자료</a></li>
                             <li><a href="{% url "QnA" %}">Q&A</a></li>
@@ -25,22 +25,20 @@
             <section class="pt30 pb30">
                 <div class="container clearfix">
                     <div class="col-sm-12">
-                        <table class="table">
+                        <table class="table" >
                             <thead>
                             <tr>
                                 <th class="text-info">{{ object.title }}</th>
                                 <th></th>
                             </tr>
-                            </thead>
-                            <thead>
                             <tr>
-                                <th>Writer:   {{ object.writer }}</th>
-                                <th class="text-right">Date   {{ object.datetime|date:"Y-m-d" }}</th>
+                                <th  class="col-xs-10">Writer:   {{ object.writer }}</th>
+                                <th class="col-xs-2 text-right">Date   {{ object.datetime|date:"Y-m-d" }}</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr>
-                                <td>{{ object.content|safe }}</td>
+                                <td colspan="2" class="entry-detail">{{ object.content|safe }}</td>
                             </tr>
                             </tbody>
                         </table>
@@ -80,15 +78,15 @@
                                     {% for field in form %}
                                         <div class="form-group">
                                             <label for="comment">댓글</label>
-                                            {% add_attr field class="form-control" rows="3" placeholder=field.label %}
+                                            {% add_attr field class="form-control" rows="5" placeholder=field.label %}
                                         </div>
                                     {% endfor %}
                                     <button class="btn btn-primary" type="submit">댓글달기</button>
                                 </form>
                             {% else %}
-                            <div class="text-center">
-                                <a href="{% url "web-login" %}">댓글을 다시려면 로그인하시기 바랍니다.</a>
-                            </div>
+                                <div class="text-center">
+                                    <a href="{% url "web-login" %}">댓글을 다시려면 로그인하시기 바랍니다.</a>
+                                </div>
                             {% endif %}
 
                         </div>

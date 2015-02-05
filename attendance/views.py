@@ -1,5 +1,6 @@
 from django.views.generic import ListView
 from attendance.models import Attendance
+import datetime
 
 
 class AttendanceList(ListView):
@@ -9,7 +10,6 @@ class AttendanceList(ListView):
 
     def get_queryset(self):
         queryset = super(AttendanceList, self).get_queryset()
-        import datetime
         if self.request.GET.get('date'):
             date_begin = datetime.datetime.strptime(self.request.GET.get('date').split(" - ")[0], "%Y-%m-%d")
             date_end = datetime.datetime.strptime(self.request.GET.get('date').split(" - ")[1], "%Y-%m-%d")

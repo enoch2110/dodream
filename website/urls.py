@@ -29,4 +29,5 @@ urlpatterns = patterns('website.views',
 
     url(r'^login/$', login, {'template_name': 'website/login.html'}, name="web-login"),
     url(r'^logout/$', logout, {'template_name': 'website/index.html'}, name="web-logout"),
+    # url(r'^logout/$', logout, CarouselItemView.as_view(template_name="website/index.html"), name="web-logout"),
 )

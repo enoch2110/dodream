@@ -10,7 +10,7 @@ from django.contrib.auth.models import User
 from django.core.files.base import ContentFile
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
-from gcm import GCM
+from gcm import *
 from rest_framework import generics
 from rest_framework.filters import SearchFilter
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
@@ -20,7 +20,7 @@ from academy.models import Student, Profile, Guardian
 from api.serializer import UserSerializer, StudentSerializer, LoginSerializer, AttendanceSerializer, CardSerializer
 from attendance.models import AttendanceManager
 from dodream import settings
-from dodream.coolsms import send_sms
+# from dodream.coolsms import send_sms
 
 
 def get_filename(filename):
@@ -94,8 +94,6 @@ class AttendanceCreateAPI(generics.CreateAPIView):
     serializer_class = AttendanceSerializer
 
     def create(self, request, *args, **kwargs):
-
-
         academy = self.request.user.profile.staff.academy
         serializer = self.get_serializer(data=request.DATA)
 
@@ -127,22 +125,29 @@ class AttendanceCreateAPI(generics.CreateAPIView):
                 reload(sys)
                 sys.setdefaultencoding('utf-8')
 
-                sms_result = 'sms not sent'
+                # sms_result = 'sms not sent'
+                alert_result = 'alert not sent'
                 if profile.student:
                     if profile.student.use_sms and profile.student.contact:
                         now = datetime.datetime.now()
-                        message = str(unicode(str(now) + " " + profile.student.name + " " + self.object.get_status()))
-                        send_sms(message, profile.student.contact)
+                        # message = str(unicode(str(now) + " " + profile.student.name + " " + self.object.get_status()))
+                        # send_sms(message, profile.student.contact)
+                        # sms_result = 'sms sent'
+                        alert_result = 'alert sent'
 
                         gcm = GCM(settings.GCM_APIKEY)
-                        data = {'name': profile.get_name(), 'time': now}
-                        reg_id = 'APA91bErf2O-w00MggCY3cRzGaIxYhYc651LDjsrxUxFHh5BMUIv1ZgdiWkJvDBLA1lIWkzwLtgScJuUf2F4cIsSzxMnwUScIszSQo3XnX1pyH2mOMYkeM-VS_P_9CfXaXJD3NyKk-QB9XSsSi13NTjuLIIBcaguNz-PZn58uhOxg8f83odPy6o'
-                        gcm.plaintext_request(registration_id=reg_id, data=data)
+                        data = {'name': profile.get_name(), 'time': now.strftime("%H:%M:%S")}
+                        reg_ids = []
 
-                        sms_result = 'sms sent'
-                result.update({"sms": sms_result})
+                        for guardian in profile.student.guardian_set.all():
+                            if guardian.profile.phone_id:
+                                reg_ids.append(guardian.profile.phone_id)
 
-                return Response(result, headers=headers)
+                        if reg_ids:
+                            gcm.json_request(registration_ids=reg_ids, data=data)
+
+                        result.update({"alert": alert_result, "reg_id": reg_ids})
+            return Response(result, headers=headers)
         return Response(serializer.errors)
 
 
@@ -159,7 +164,7 @@ class CardRegisterAPI(APIView):
             profile = Profile.objects.get(student__id=student_id)
             attendance_manager = AttendanceManager.objects.get_or_create(profile=profile)[0]
             success, message = attendance_manager.set_nfc(nfc_id, force_set)
-            return Response({"success": success, "message": message})
+            return Response({"success": success, "message": "&등록되었습니다."})
         else:
             return Response({"success": False, "message": "&해당학생은 존재하지 않습니다."})
 
@@ -178,24 +183,20 @@ class CardDetailAPI(APIView):
             student_data = StudentSerializer(student).data
             return Response({"student": student_data})
         else:
-            return  Response({"message": "&정보가 안 받아져용 ㅠㅠ"})
+            return  Response({"message": "Error! No data"})
 
 
-# class PhoneRegisterAPI(APIView):
-#     permission_classes = (IsAuthenticated,)
-#
-#     def post(self, request, *args, **kwargs):
-#         academy = self.request.user.profile.staff.academy
-#         phone_id = request.POST.get("phone_id")
-#         phone_number = request.POST.get("phone_number")
-#         force_set = True if request.POST.get("force_set") == "true" else False
-#
-#         if Guardian.objects.filter(contact=phone_number).all().exists():
-#             guardians = Guardian.objects.filter(contact=phone_number).all()
-#             for guardian in guardians:
-#                 student_id = guardian.student.id
-#                 attendance_manager = AttendanceManager.objects.filter(profile__student__id=student_id)
-#                 success, message = attendance_manager.set_phone(phone_id, force_set)
-#                 return Response({"success": success, "message": message})
-#         else:
-#             return Response({"success": False, "message": "&해당 학부모 휴대폰 번호가 존재하지 않습니다. 폴리니 음악학원에 문의하여 학부모 휴대폰 번호를 등록하세요."})
+class PhoneRegisterAPI(APIView):
+
+    def post(self, request, *args, **kwargs):
+        phone_id = request.POST.get("phone_id")
+        phone_number = request.POST.get("phone_number")
+
+        if Guardian.objects.filter(contact=phone_number).exists():
+            guardians = Guardian.objects.filter(contact=phone_number)
+            for guardian in guardians:
+                guardian.profile.phone_id = phone_id
+                guardian.profile.save()
+            return Response({"success": "Success", "message": "&기기가 등록 되었습니다. 이제부터 알람을 받아보실 수 있습니다."})
+        else:
+            return Response({"success": "Fail", "message": "&해당 학부모 휴대폰 번호가 존재하지 않습니다. 폴리니 음악학원에 문의하여 학부모 휴대폰 번호를 등록하세요."})
