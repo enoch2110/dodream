@@ -43,7 +43,8 @@ INSTALLED_APPS = (
     'academy',
     'attendance',
     'website',
-    'gcm'
+    'gcm',
+    'ckeditor'
     # 'tastypie'
 )
 
@@ -113,17 +114,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.contrib.messages.context_processors.messages"
 )
 
-# REST_FRAMEWORK = {
-#     'DEFAULT_RENDERER_CLASSES': (
-#         # 'rest_framework.renderers.UnicodeJSONRenderer',
-#         'rest_framework.renderers.BrowsableAPIRenderer',
-#     ),
-#     'DEFAULT_AUTHENTICATION_CLASSES': (
-#         # 'rest_framework.authentication.SessionAuthentication',
-#         'rest_framework.authentication.TokenAuthentication',
-#     )
-# }
-
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',
@@ -137,9 +127,18 @@ REST_FRAMEWORK = {
 
 LOGIN_REDIRECT_URL = "/"
 
-COOLSMS_ID = "enoch2110"
-COOLSMS_PW = "tip177"
-COOLSMS_SENDER = "0000"
-USE_COOLSMS = True
+# COOLSMS_ID = "enoch2110"
+# COOLSMS_PW = "tip177"
+# COOLSMS_SENDER = "0000"
+# USE_COOLSMS = True
 
 GCM_APIKEY = 'AIzaSyC3LGruJQLdsco3ptkbDkgEJzEswwh9sQU'
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'full',
+        'extraPlugins': 'youtube'
+    },
+}
+
+CKEDITOR_UPLOAD_PATH = "uploads/"
