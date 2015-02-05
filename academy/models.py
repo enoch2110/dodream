@@ -185,21 +185,24 @@ class Guardian(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
+    academy = models.ForeignKey(Academy)
 
     def __unicode__(self):
         return self.name
+
+    def get_subjects(self):
+        return Subject.objects.filter(category=self)
 
 
 class Subject(models.Model):
     name = models.CharField(max_length=100)
     category = models.ForeignKey("Category")
-    price = models.ImageField()
+    price = models.IntegerField()
     information = models.TextField(blank=True, null=True)
     is_active = models.BooleanField(default=True)
-    academy = models.ForeignKey(Academy)
 
     def __unicode__(self):
-        return "(" + self.category.name + ")" + self.name
+        return "(" + self.category.name + ") " + self.name
 
 
 class StudentSubject(models.Model):

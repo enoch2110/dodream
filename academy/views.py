@@ -192,6 +192,15 @@ class StaffDelete(DeleteView):
     success_url = "/staff-list"
 
 
+class SubjectList(ListView):
+    template_name = "academy/subject-list.html"
+    context_object_name = "categories"
+
+    def get_queryset(self):
+        return Category.objects.filter(academy=self.request.user.profile.staff.academy)
+
+
+########################################################################################################################
 class CourseCategoryList(ListView):
     template_name = "academy/course-list.html"
     context_object_name = "root_categories"

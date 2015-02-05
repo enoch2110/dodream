@@ -97,6 +97,14 @@ class GuardianForm(forms.ModelForm):
         return data.replace('-', "")
 
 
+class SubjectForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(SubjectForm, self).__init__(*args, **kwargs)
+
+
+
+########################################################################################################################
 class CourseForm(forms.ModelForm):
 
     def __init__(self,  *args, **kwargs):

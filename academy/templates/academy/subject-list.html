@@ -1,10 +1,56 @@
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
+{% extends "academy/_layouts/base.html" %}
+{% load static from staticfiles %}
+{% load my_extras %}
 
-</body>
-</html>
+{% block content %}
+    <div class="page-head">
+        <h2>Subjects</h2>
+    </div>
+    <div class="cl-mcont">
+        <div class="row">
+
+            <div class="col-sm-12">
+                <div class="tab-container">
+                    <ul class="nav nav-tabs">
+                        {% for category in categories %}
+                            <li {% if forloop.counter == 1 %}class="active"{% endif %}><a href="#category-{{ root_category.id }}" data-toggle="tab">{{ category.name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                    <div class="tab-content">
+                        {% for category in categories %}
+                            <div id="category-{{ category.id }}" class="tab-pane cont {% if forloop.first %}active{% endif %}">
+                                <table>
+                                    <thead>
+                                    <tr>
+                                        <th>카테고리</th>
+                                        <th>과목명</th>
+                                        <th>기본수강료</th>
+                                        <th width="130"></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for subject in category.get_subjects %}
+                                        <tr>
+                                            <td>{{ subject.category }}</td>
+                                            <td>{{ subject.name }}</td>
+                                            <td>{{ subject.price }}</td>
+                                            <td class="center">
+{#                                                <a class="btn btn-primary btn-xs" href="{% url "subject-update" subject.id %}" data-original-title="Edit" data-toggle="tooltip"><i class="fa fa-pencil"></i></a>#}
+{#                                                <a class="btn btn-danger btn-xs" href="{% url "subject-delete" subject.id %}" data-original-title="Remove" data-toggle="tooltip"><i class="fa fa-times"></i></a>#}
+                                            </td>
+                                        </tr>
+                                    {% empty %}
+                                        <tr>
+                                            <td colspan="5">해당 카테고리에 존재하는 과목이 없습니다.</td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

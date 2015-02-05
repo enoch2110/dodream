@@ -39,20 +39,16 @@
 {#                            <li><a href="{% url "attendance-list" %}">출석 조회</a></li>#}
 {#                        </ul>#}
                     </li>
+                    <li>
+                        <a href="{% url "subject-list" %}"><i class="fa fa-sitemap nav-icon"></i><span>과목관리</span></a>
+                    </li>
 {#                    <li><a href="#"><i class="fa fa-sitemap nav-icon"></i><span>과목관리</span></a>#}
 {#                        <ul class="sub-menu">#}
-{#                            <li><a href="{% url "subject-list" %}">과목 조회</a></li>#}
-{#                            <li><a href="{% url "subject-add" %}">과목 추가</a></li>#}
-{#                            <li><a href="{% url "subject-category" %}">과목 카테고리</a></li>#}
+{#                            <li><a href="{% url "course-list" %}">과목 조회</a></li>#}
+{#                            <li><a href="{% url "course-add" %}">과목 추가</a></li>#}
+{#                            <li><a href="{% url "course-category" %}">과목 카테고리</a></li>#}
 {#                        </ul>#}
 {#                    </li>#}
-                    <li><a href="#"><i class="fa fa-sitemap nav-icon"></i><span>과목관리</span></a>
-                        <ul class="sub-menu">
-                            <li><a href="{% url "course-list" %}">과목 조회</a></li>
-                            <li><a href="{% url "course-add" %}">과목 추가</a></li>
-                            <li><a href="{% url "course-category" %}">과목 카테고리</a></li>
-                        </ul>
-                    </li>
                     <li><a href="#"><i class="fa fa-book nav-icon"></i><span>강의관리</span></a>
                         <ul class="sub-menu">
                             <li><a href="{% url "lecture-list" %}">강의 조회</a></li>
