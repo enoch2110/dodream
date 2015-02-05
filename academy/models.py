@@ -37,9 +37,7 @@ class Profile(models.Model):
     phone_id = models.CharField(max_length=500, blank=True, null=True)
 
     def __unicode__(self):
-        username = self.get_username()
-        name = self.get_name()
-        return name + "(" + username + ")"
+        return self.get_name() + "(" + self.get_username() + ")"
 
     def get_name(self):
         instance = self.get_instance()
@@ -83,7 +81,12 @@ class Profile(models.Model):
         else:
             academy = None
         return academy
-    
+
+
+# class Textbook(models.Model):
+#     name = models.CharField(max_length=100)
+#     is_paid = models.BooleanField(default=False)
+
 
 class Student(models.Model):
     GENDER_CHOICES = [(True, "남"), (False, "여")]
@@ -103,6 +106,8 @@ class Student(models.Model):
     information = models.TextField(blank=True, null=True)
     profile = models.OneToOneField(Profile)
     academy = models.ForeignKey(Academy)
+    textbook = models.CharField(max_length=100, null=True, blank=True)
+    # textbook = models.OneToOneField(Textbook, null=True, blank=True)
 
     def __unicode__(self):
         return self.name
@@ -173,7 +178,6 @@ class Guardian(models.Model):
     email = models.EmailField(blank=True)
     contact = models.CharField(max_length=20, blank=True, null=True)
     relation = models.CharField(max_length=100)
-    # student = models.ManyToManyField(Student)
     student = models.ForeignKey(Student)
     profile = models.OneToOneField(Profile)
     # phone_id = models.CharField(max_length=50, blank=True, null=True)

@@ -42,7 +42,7 @@ class UserCreateMixin(object):
 class StudentCreateForm(forms.ModelForm):
     class Meta:
         model = Student
-        exclude = ['profile', 'academy']
+        exclude = ['profile', 'academy', 'textbook']
 
     def clean_contact(self):
         data = self.cleaned_data['contact']
@@ -164,3 +164,9 @@ class PaymentForm(forms.ModelForm):
     class Meta:
         model = Payment
         fields = '__all__'
+
+
+class TextbookForm(forms.ModelForm):
+    class Meta:
+        model = Student
+        fields = ("name", "textbook")

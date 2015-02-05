@@ -113,20 +113,9 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.contrib.messages.context_processors.messages"
 )
 
-# REST_FRAMEWORK = {
-#     'DEFAULT_RENDERER_CLASSES': (
-#         # 'rest_framework.renderers.UnicodeJSONRenderer',
-#         'rest_framework.renderers.BrowsableAPIRenderer',
-#     ),
-#     'DEFAULT_AUTHENTICATION_CLASSES': (
-#         # 'rest_framework.authentication.SessionAuthentication',
-#         'rest_framework.authentication.TokenAuthentication',
-#     )
-# }
-
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': (
-        'rest_framework.renderers.JSONRenderer',
+        # 'rest_framework.renderers.UnicodeJSONRenderer',
         'rest_framework.renderers.BrowsableAPIRenderer',
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
