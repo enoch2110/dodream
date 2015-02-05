@@ -183,6 +183,38 @@ class Guardian(models.Model):
     # phone_id = models.CharField(max_length=50, blank=True, null=True)
 
 
+class Category(models.Model):
+    name = models.CharField(max_length=100)
+
+    def __unicode__(self):
+        return self.name
+
+
+class Subject(models.Model):
+    name = models.CharField(max_length=100)
+    category = models.ForeignKey("Category")
+    price = models.ImageField()
+    information = models.TextField(blank=True, null=True)
+    is_active = models.BooleanField(default=True)
+    academy = models.ForeignKey(Academy)
+
+    def __unicode__(self):
+        return "(" + self.category.name + ")" + self.name
+
+
+class StudentSubject(models.Model):
+    subject = models.ForeignKey("Subject")
+    student = models.ForeignKey("Student")
+    fee = models.IntegerField(null=True, blank=True)
+
+    def __unicode__(self):
+        return self.subject + "-" + self.student
+
+    def get_fee(self):
+        return self.fee
+
+
+########################################################################################################################
 class LectureDateTime(models.Model):
     """
     type

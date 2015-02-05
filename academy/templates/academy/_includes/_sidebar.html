@@ -32,6 +32,13 @@
                             <li><a href="{% url "attendance-list" %}">출석 조회</a></li>
                         </ul>
                     </li>
+{#                    <li><a href="#"><i class="fa fa-sitemap nav-icon"></i><span>과목관리</span></a>#}
+{#                        <ul class="sub-menu">#}
+{#                            <li><a href="{% url "subject-list" %}">과목 조회</a></li>#}
+{#                            <li><a href="{% url "subject-add" %}">과목 추가</a></li>#}
+{#                            <li><a href="{% url "subject-category" %}">과목 카테고리</a></li>#}
+{#                        </ul>#}
+{#                    </li>#}
                     <li><a href="#"><i class="fa fa-sitemap nav-icon"></i><span>과목관리</span></a>
                         <ul class="sub-menu">
                             <li><a href="{% url "course-list" %}">과목 조회</a></li>
@@ -50,11 +57,6 @@
                             <li><a href="{% url "unpaid-list" %}">미납 내역</a></li>
                             <li><a href="{% url "payment-list" %}">지불 내역</a></li>
                             <li><a href="{% url "payment-add" %}">지불 내역 추가</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="#"><i class="fa fa-credit-card"></i><span>교재 관리</span></a>
-                        <ul class="sub-menu">
-                            <li><a href="{% url "textbook-update" %}">교재 내역</a></li>
                         </ul>
                     </li>
                     <li><a href="{% url "academy-setting" %}"><i class="fa fa-cogs nav-icon"></i><span>학원정보관리</span></a></li>
