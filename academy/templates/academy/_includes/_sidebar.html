@@ -5,32 +5,39 @@
         <div class="menu-space">
             <div class="content">
                 <div class="side-user">
-                    <div class="avatar"><img src="{% if request.user.profile.staff.academy.image %}{{ request.user.profile.staff.academy.image.url }}{% endif %}" alt="Avatar" height="40"/></div>
+                    <div class="avatar" style="height: 40px; width: 40px; overflow: hidden; vertical-align: middle">
+                        <img src="{% static "academy/logo.png" %}
+{#                        {% if request.user.profile.staff.academy.image %}#}
+{#                                {{ request.user.profile.staff.academy.image.url }}#}
+{#                            {% endif %}#}
+                            " alt="Avatar" height="40"/>
+                    </div>
                     <div class="info">
                         <a href="#">{{ request.user.profile.staff.academy.name }}</a>
-                        <img src="{% static "academy/_core/images/state_online.png" %}" alt="Status" /> <span>온라인</span>
+                        <img src="{% static "academy/_core/images/state_online.png" %}" alt="Status" />
+                        <span>온라인</span>
                     </div>
                 </div>
                 <ul class="cl-vnavigation">
 {#                    <li><a href="/"><i class="fa fa-home"></i><span>메인화면</span></a>#}
                     </li>
-                    <li><a href="#"><i class="fa fa-smile-o"></i><span>수강생관리</span></a>
-                        <ul class="sub-menu">
-                            <li><a href="/student-list">수강생 조회</a></li>
-                            <li><a href="{% url "student-registration" %}">수강생 추가</a></li>
-                        </ul>
+                    <li><a href="/student-list"><i class="fa fa-smile-o"></i><span>수강생관리</span></a>
+{#                        <ul class="sub-menu">#}
+{#                            <li><a href="/student-list">수강생 조회</a></li>#}
+{#                            <li><a href="{% url "student-registration" %}">수강생 추가</a></li>#}
+{#                        </ul>#}
                     </li>
-                    <li><a href="#"><i class="fa fa-users"></i><span>직원관리</span></a>
-                        <ul class="sub-menu">
-                            <li><a href="{% url "staff-list" %}">직원 조회</a></li>
-                            <li><a href="{% url "staff-add" %}">직원 추가</a></li>
-                        </ul>
+                    <li><a href="{% url "staff-list" %}"><i class="fa fa-users"></i><span>직원관리</span></a>
+{#                        <ul class="sub-menu">#}
+{#                            <li><a href="{% url "staff-list" %}">직원 조회</a></li>#}
+{#                            <li><a href="{% url "staff-add" %}">직원 추가</a></li>#}
+{#                        </ul>#}
                     </li>
                     <li>
-                        <a href="#"><i class="fa  fa-bullhorn"></i><span>출석관리</span></a>
-                        <ul class="sub-menu">
-                            <li><a href="{% url "attendance-list" %}">출석 조회</a></li>
-                        </ul>
+                        <a href="{% url "attendance-list" %}"><i class="fa  fa-bullhorn"></i><span>출석관리</span></a>
+{#                        <ul class="sub-menu">#}
+{#                            <li><a href="{% url "attendance-list" %}">출석 조회</a></li>#}
+{#                        </ul>#}
                     </li>
 {#                    <li><a href="#"><i class="fa fa-sitemap nav-icon"></i><span>과목관리</span></a>#}
 {#                        <ul class="sub-menu">#}
