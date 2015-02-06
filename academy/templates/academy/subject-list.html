@@ -18,7 +18,7 @@
                 <div class="tab-container">
                     <ul class="nav nav-tabs">
                         {% for category in categories %}
-                            <li {% if forloop.counter == 1 %}class="active"{% endif %}><a href="#category-{{ root_category.id }}" data-toggle="tab">{{ category.name }}</a></li>
+                            <li {% if forloop.counter == 1 %}class="active"{% endif %}><a href="#category-{{ category.id }}" data-toggle="tab">{{ category.name }}</a></li>
                         {% endfor %}
                     </ul>
                     <div class="tab-content">
