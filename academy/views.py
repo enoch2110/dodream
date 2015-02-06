@@ -192,6 +192,13 @@ class StaffDelete(DeleteView):
     success_url = "/staff-list"
 
 
+class CategoryCreate(CreateView):
+    template_name = "academy/category-add.html"
+    model = Category
+    form_class = CategoryCreateForm
+    success_url = "/subject-list"
+
+
 class SubjectList(ListView):
     template_name = "academy/subject-list.html"
     context_object_name = "categories"

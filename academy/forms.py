@@ -97,6 +97,12 @@ class GuardianForm(forms.ModelForm):
         return data.replace('-', "")
 
 
+class CategoryCreateForm(forms.ModelForm):
+    class Meta:
+        model = Category
+        fields = '__all__'
+
+
 class SubjectForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
