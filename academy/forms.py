@@ -111,7 +111,7 @@ class SubjectForm(forms.ModelForm):
         super(SubjectForm, self).__init__(*args, **kwargs)
 
 
-class SubjectCreateForm(forms.ModelForm):
+class SubjectForm(forms.ModelForm):
     class Meta:
         model = Subject
         fields = '__all__'

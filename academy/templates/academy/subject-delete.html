@@ -1,0 +1,18 @@
+{% extends "academy/_layouts/base.html" %}
+{% load static from staticfiles %}
+
+{% block content %}
+    <div class="cl-mcont">
+        <div class="row">
+            <div class="col-sm-12" style="text-align: center;">
+                <p>Are you sure you want to delete "{{ object }}"?</p>
+                <form action="{% url "subject-delete" subject.id %}" method="post">
+                    {% csrf_token %}
+{#                    <input type="submit" value="삭제"  class="btn btn-primary"/>#}
+                    <button type="submit" class="btn btn-primary">삭제</button>
+                    <a href="{% url "staff-list" %}" class="btn btn-default">취소</a>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

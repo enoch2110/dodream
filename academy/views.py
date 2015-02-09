@@ -206,7 +206,21 @@ class CategoryCreate(CreateView):
 class SubjectCreate(CreateView):
     template_name = "academy/subject-add.html"
     model = Subject
-    form_class = SubjectCreateForm
+    form_class = SubjectForm
+    success_url = "/subject-list"
+
+
+class SubjectUpdate(UpdateView):
+    template_name = "academy/subject-update.html"
+    model = Subject
+    form_class = SubjectForm
+    success_url = "/subject-list"
+
+
+class SubjectDelete(DeleteView):
+    template_name = "academy/subject-delete.html"
+    model = Subject
+    form_class = SubjectForm
     success_url = "/subject-list"
 
 

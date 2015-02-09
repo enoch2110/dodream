@@ -19,7 +19,6 @@
                             <li {% if forloop.counter == 1 %}class="active"{% endif %}><a href="#category-{{ category.id }}" data-toggle="tab">{{ category.name }}</a></li>
                         {% endfor %}
                         <li><a href="{% url "category-add" %}" class="adder btn btn-success md-trigger" data-modal="form-primary">+</a></li>
-{#
                     </ul>
                     <div class="tab-content">
                         {% for category in categories %}
@@ -37,9 +36,10 @@
                                     {% for subject in category.get_subjects %}
                                         <tr>
                                             <td>{{ subject.category }}</td>
-                                            <td>{{ subject.name }}</td>
+                                            <td><a href="{% url "subject-update" subject.id %}">{{ subject.name }}</a></td>
                                             <td>{{ subject.price }}</td>
-                                            <td class="center">                                           <a class="btn btn-danger btn-xs" href="{% url "subject-delete" subject.id %}" data-original-title="Remove" data-toggle="tooltip"><i class="fa fa-times"></i></a>#}
+                                            <td class="center">
+                                                <a class="btn btn-danger btn-xs" href="{% url "subject-delete" subject.id %}" data-original-title="삭제" data-toggle="tooltip"><i class="fa fa-times"></i></a>
                                             </td>
                                         </tr>
                                     {% empty %}
