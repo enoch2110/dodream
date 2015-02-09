@@ -3,7 +3,7 @@ from ckeditor.widgets import CKEditorWidget
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from academy.models import Profile
-from multiupload.fields import MultiFileField
+# from multiupload.fields import MultiFileField
 from website.models import *
 
 
@@ -23,7 +23,7 @@ class EntryCommentForm(forms.ModelForm):
 
 class EntryAdminForm(forms.ModelForm):
     content = forms.CharField(widget=CKEditorWidget())
-    files = MultiFileField(max_num=10, min_num=0, max_file_size=1024*1024*5, required=False)
+    # files = MultiFileField(max_num=10, min_num=0, max_file_size=1024*1024*5, required=False)
 
     class Meta:
         model = Entry
@@ -35,7 +35,7 @@ class EntryAdminForm(forms.ModelForm):
             entry_file = EntryFile(entry=self.instance, file=file)
             entry_file.save()
         return self.instance
-    
+
 
 class UserCreateForm(UserCreationForm):
     contact = forms.CharField(max_length=20, required=True)

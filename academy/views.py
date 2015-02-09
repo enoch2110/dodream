@@ -203,6 +203,13 @@ class CategoryCreate(CreateView):
         return super(CategoryCreate, self).form_valid(form)
 
 
+class SubjectCreate(CreateView):
+    template_name = "academy/subject-add.html"
+    model = Subject
+    form_class = SubjectCreateForm
+    success_url = "/subject-list"
+
+
 class SubjectList(ListView):
     template_name = "academy/subject-list.html"
     context_object_name = "categories"
