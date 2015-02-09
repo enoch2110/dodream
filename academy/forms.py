@@ -98,9 +98,11 @@ class GuardianForm(forms.ModelForm):
 
 
 class CategoryCreateForm(forms.ModelForm):
+
     class Meta:
         model = Category
         fields = '__all__'
+        exclude = ['academy']
 
 
 class SubjectForm(forms.ModelForm):

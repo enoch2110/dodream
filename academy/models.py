@@ -191,7 +191,7 @@ class Category(models.Model):
         return self.name
 
     def get_subjects(self):
-        return Subject.objects.filter(category=self)
+        return Subject.objects.filter(category=self, is_active=True)
 
 
 class Subject(models.Model):

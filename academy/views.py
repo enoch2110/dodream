@@ -198,6 +198,10 @@ class CategoryCreate(CreateView):
     form_class = CategoryCreateForm
     success_url = "/subject-list"
 
+    def form_valid(self, form):
+        form.instance.academy = self.request.user.profile.staff.academy
+        return super(CategoryCreate, self).form_valid(form)
+
 
 class SubjectList(ListView):
     template_name = "academy/subject-list.html"

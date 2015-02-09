@@ -7,9 +7,9 @@
         <button class="adder btn btn-success btn-lg pull-right md-trigger" style="margin-top:10px;" data-modal="form-primary">추가</button>
         <h2>Subjects</h2>
     </div>
-    <div class="md-modal colored-header custom-width md-effect-9" id="form-primary">
-        {% include "academy/category-add.html" %}
-    </div>
+{#    <div class="md-modal colored-header custom-width md-effect-9" id="form-primary">#}
+{#        {% include "academy/category-add.html" %}#}
+{#    </div>#}
     <div class="md-overlay"></div>
     <div class="cl-mcont">
         <div class="row">
@@ -20,6 +20,12 @@
                         {% for category in categories %}
                             <li {% if forloop.counter == 1 %}class="active"{% endif %}><a href="#category-{{ category.id }}" data-toggle="tab">{{ category.name }}</a></li>
                         {% endfor %}
+{#                        <div>#}
+                        <li><a href="{% url "category-add" %}" class="adder btn btn-success md-trigger" data-modal="form-primary">+</a></li>
+{#                        </div>#}
+{#                        <div class="md-modal colored-header custom-width md-effect-9" id="form-primary">#}
+{#                            {% include "academy/category-add.html" %}#}
+{#                        </div>#}
                     </ul>
                     <div class="tab-content">
                         {% for category in categories %}
@@ -40,8 +46,8 @@
                                             <td>{{ subject.name }}</td>
                                             <td>{{ subject.price }}</td>
                                             <td class="center">
-{#                                                <a class="btn btn-primary btn-xs" href="{% url "subject-update" subject.id %}" data-original-title="Edit" data-toggle="tooltip"><i class="fa fa-pencil"></i></a>#}
-{#                                                <a class="btn btn-danger btn-xs" href="{% url "subject-delete" subject.id %}" data-original-title="Remove" data-toggle="tooltip"><i class="fa fa-times"></i></a>#}
+                                                {#                                                <a class="btn btn-primary btn-xs" href="{% url "subject-update" subject.id %}" data-original-title="Edit" data-toggle="tooltip"><i class="fa fa-pencil"></i></a>#}
+                                                {#                                                <a class="btn btn-danger btn-xs" href="{% url "subject-delete" subject.id %}" data-original-title="Remove" data-toggle="tooltip"><i class="fa fa-times"></i></a>#}
                                             </td>
                                         </tr>
                                     {% empty %}
