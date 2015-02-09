@@ -232,6 +232,31 @@ class SubjectList(ListView):
         return Category.objects.filter(academy=self.request.user.profile.staff.academy)
 
 
+class StudentSubjectList(ListView):
+    template_name = "academy/student-subject-list.html"
+    queryset = Student.objects.all()
+    context_object_name = "students"
+    paginate_by = 100
+
+
+class StudentSubjectCreate(CreateView):
+    template_name = "academy/student-subject-add.html"
+    model = StudentSubject
+    form_class = StudentSubjectForm
+    success_url = "/student-subject-list"
+
+
+class StudentSubjectUpdate(UpdateView):
+    template_name = "academy/student-subject-update.html"
+    model = Student
+    form_class = StudentSubjectForm
+    success_url = "/student-subject-list"
+
+    # def form_valid(self, form):
+    #     form.instance.academy = self.request.user.profile.staff.academy
+    #     return super(StaffCreate, self).form_valid(form)
+
+
 ########################################################################################################################
 class CourseCategoryList(ListView):
     template_name = "academy/course-list.html"

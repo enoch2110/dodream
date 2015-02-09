@@ -117,6 +117,12 @@ class SubjectForm(forms.ModelForm):
         fields = '__all__'
 
 
+class StudentSubjectForm(forms.ModelForm):
+    class Meta:
+        model = StudentSubject
+        fields = '__all__'
+
+
 ########################################################################################################################
 class CourseForm(forms.ModelForm):
 

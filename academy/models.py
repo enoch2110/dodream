@@ -112,44 +112,47 @@ class Student(models.Model):
     def __unicode__(self):
         return self.name
 
-    def get_total_fees(self):
-        total_fees = 0
-        for lecture in StudentLecture.objects.filter(student=self):
-            total_fees += lecture.get_fee()
-        return total_fees
+    def get_subjects(self):
+        return StudentSubject.objects.filter(student=self)
 
-    def get_total_payments(self):
-        total_payments = self.payment_set.aggregate(total_payments=Sum('amount'))['total_payments']
-        if not total_payments:
-            total_payments = 0
-        return total_payments
-
-    def is_paid(self):
-        return self.get_total_fees() - self.get_total_payments() <= 0
-
-    def get_total_unpaid_amount(self):
-        return self.get_total_fees() - self.get_total_payments()
-
-    def get_total_unpaid_entries(self):
-        if not self.is_paid():
-            total_unpaid_amount = self.get_total_unpaid_amount()
-            lectures = StudentLecture.objects.filter(student=self).order_by('-date', '-fee')      #descending(최신순), descending(큰금액순)
-            total_unpaid_entries = []
-            for lecture in lectures:
-                lecture_price = lecture.get_fee()
-                if total_unpaid_amount > 0:
-                    total_unpaid_amount -= lecture_price
-                    status = 'unpaid' if total_unpaid_amount >= 0 else 'partially paid'
-                    unpaid_amount = lecture_price if total_unpaid_amount >= 0 else lecture_price + total_unpaid_amount
-                    total_unpaid_entries.append({'lecture': lecture.lecture, 'date': lecture.date, 'fee': lecture.fee,
-                                                 'status': status, 'amount': unpaid_amount})
-            total_unpaid_entries.reverse()      #unpaid-detail에서 오래된 순으로 출력하기 위해서
-        return total_unpaid_entries
-
-    def get_last_unpaid_lecture(self):
-        total_unpaid_entries = self.get_total_unpaid_entries()
-        print total_unpaid_entries.index[total_unpaid_entries.count()-1]
-        return total_unpaid_entries.index[total_unpaid_entries.count()-1]
+    # def get_total_fees(self):
+    #     total_fees = 0
+    #     for lecture in StudentLecture.objects.filter(student=self):
+    #         total_fees += lecture.get_fee()
+    #     return total_fees
+    #
+    # def get_total_payments(self):
+    #     total_payments = self.payment_set.aggregate(total_payments=Sum('amount'))['total_payments']
+    #     if not total_payments:
+    #         total_payments = 0
+    #     return total_payments
+    #
+    # def is_paid(self):
+    #     return self.get_total_fees() - self.get_total_payments() <= 0
+    #
+    # def get_total_unpaid_amount(self):
+    #     return self.get_total_fees() - self.get_total_payments()
+    #
+    # def get_total_unpaid_entries(self):
+    #     if not self.is_paid():
+    #         total_unpaid_amount = self.get_total_unpaid_amount()
+    #         lectures = StudentLecture.objects.filter(student=self).order_by('-date', '-fee')      #descending(최신순), descending(큰금액순)
+    #         total_unpaid_entries = []
+    #         for lecture in lectures:
+    #             lecture_price = lecture.get_fee()
+    #             if total_unpaid_amount > 0:
+    #                 total_unpaid_amount -= lecture_price
+    #                 status = 'unpaid' if total_unpaid_amount >= 0 else 'partially paid'
+    #                 unpaid_amount = lecture_price if total_unpaid_amount >= 0 else lecture_price + total_unpaid_amount
+    #                 total_unpaid_entries.append({'lecture': lecture.lecture, 'date': lecture.date, 'fee': lecture.fee,
+    #                                              'status': status, 'amount': unpaid_amount})
+    #         total_unpaid_entries.reverse()      #unpaid-detail에서 오래된 순으로 출력하기 위해서
+    #     return total_unpaid_entries
+    #
+    # def get_last_unpaid_lecture(self):
+    #     total_unpaid_entries = self.get_total_unpaid_entries()
+    #     print total_unpaid_entries.index[total_unpaid_entries.count()-1]
+    #     return total_unpaid_entries.index[total_unpaid_entries.count()-1]
 
 
 class Staff(models.Model):
@@ -211,7 +214,7 @@ class StudentSubject(models.Model):
     fee = models.IntegerField(null=True, blank=True)
 
     def __unicode__(self):
-        return self.subject + "-" + self.student
+        return self.subject.__unicode__() + "-" + self.student.__unicode__()
 
     def get_fee(self):
         return self.fee
