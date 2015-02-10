@@ -17,6 +17,11 @@ from academy.forms import *
 from academy.models import *
 from dodream.coolsms import send_sms
 
+from django.http import *
+from django.template import RequestContext
+import socket
+import json
+
 
 class AcademySetting(UpdateView):
     template_name = "academy/academy-setting.html"
@@ -201,6 +206,17 @@ class CategoryCreate(CreateView):
     def form_valid(self, form):
         form.instance.academy = self.request.user.profile.staff.academy
         return super(CategoryCreate, self).form_valid(form)
+
+
+def subject_fee(request):
+    if request.POST.has_key('id_subject'):
+        sub_id = request.POST['id_subject']
+        response_dict = {}
+        response_dict.update({'fee': Subject.objects.get(id=sub_id).price})
+        return HttpResponse(json.dumps(response_dict), content_type='application/json')
+    else:
+        return render_to_response('academy/student-subject-list.html', context_instance=RequestContext(request))
+
 
 
 class SubjectCreate(CreateView):

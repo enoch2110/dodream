@@ -25,7 +25,6 @@ urlpatterns = patterns('academy.views',
     url(r'^student-subject-detail/(?P<pk>\d+)$', StudentSubjectDetail.as_view(), name="student-subject-detail"),
     url(r'^student-subject-add/(?P<pk>\d+)$', StudentSubjectCreate.as_view(), name="student-subject-add"),
     url(r'^student-subject-update/(?P<pk>\d+)$', StudentSubjectUpdate.as_view(), name="student-subject-update"),
-
     url(r'^course-list$', CourseCategoryList.as_view(), name="course-list"),
     url(r'^course-add', CourseCreate.as_view(), name="course-add"),
     url(r'^course-category', CourseCategoryCreate.as_view(), name="course-category"),
@@ -53,4 +52,7 @@ urlpatterns = patterns('',
         user_passes_test(lambda u: u.is_authenticated() and u.profile.can_use_admin(), login_url='/login'),
         include(urlpatterns))
     ),
+    # url(r'^ajaxexample$', 'academy.views.main'),
+    # url(r'^ajaxexample_json$', 'academy.views.ajax'),
+    url(r'^subject-fee$', 'academy.views.subject_fee'),
 )

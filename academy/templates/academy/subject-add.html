@@ -22,7 +22,11 @@
                                         <div class="form-group">
                                             <label class="col-sm-3 control-label">{{ field.label }}</label>
                                             <div class="col-sm-6">
-                                                {{ field|addattr:"class=form-control" }}
+                                                {% if field.label == "Is active" %}
+                                                    {{ field|addattr:"class=switch" }}
+                                                {% else %}
+                                                    {{ field|addattr:"class=form-control" }}
+                                                {% endif%}
                                                 {% for error in field.errors %}
                                                     <span class="label label-danger">{{ error }}</span>
                                                 {% endfor %}
