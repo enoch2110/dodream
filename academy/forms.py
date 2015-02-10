@@ -121,6 +121,7 @@ class StudentSubjectForm(forms.ModelForm):
     class Meta:
         model = StudentSubject
         fields = '__all__'
+        exclude = ['student']
 
 
 ########################################################################################################################

@@ -236,7 +236,19 @@ class StudentSubjectList(ListView):
     template_name = "academy/student-subject-list.html"
     queryset = Student.objects.all()
     context_object_name = "students"
-    paginate_by = 100
+
+
+class StudentSubjectDetail(ListView):
+    template_name = "academy/student-subject-detail.html"
+    context_object_name = "subjects"
+
+    def get_queryset(self):
+        return StudentSubject.objects.filter(student__id=self.kwargs['pk'])
+
+    def get_context_data(self, **kwargs):
+        context = super(StudentSubjectDetail, self).get_context_data(**kwargs)
+        context.update({"student": Student.objects.get(id=self.kwargs['pk'])})
+        return context
 
 
 class StudentSubjectCreate(CreateView):
@@ -245,12 +257,23 @@ class StudentSubjectCreate(CreateView):
     form_class = StudentSubjectForm
     success_url = "/student-subject-list"
 
+    def get_context_data(self, **kwargs):
+        context = super(StudentSubjectCreate, self).get_context_data(**kwargs)
+        context.update({"student": Student.objects.get(id=self.kwargs['pk'])})
+        return context
 
-class StudentSubjectUpdate(UpdateView):
+    def form_valid(self, form):
+        form.instance.student = Student.objects.get(id=self.kwargs['pk'])
+        return super(StudentSubjectCreate, self).form_valid(form)
+
+
+class StudentSubjectUpdate(ListView):
     template_name = "academy/student-subject-update.html"
-    model = Student
-    form_class = StudentSubjectForm
-    success_url = "/student-subject-list"
+    context_object_name = "subjects"
+
+    def get_queryset(self):
+        subjects = StudentSubject.objects.filter(student__id=self.kwargs['pk'])
+        return subjects
 
     # def form_valid(self, form):
     #     form.instance.academy = self.request.user.profile.staff.academy

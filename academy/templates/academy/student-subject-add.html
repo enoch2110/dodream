@@ -7,7 +7,7 @@
     </div>
     <div class="cl-mcont">
         <div class="row">
-            <form class="form-horizontal group-border-dashed" action="{% url "student-subject-add" %}" method="post" enctype="multipart/form-data">
+            <form class="form-horizontal group-border-dashed" action="{% url "student-subject-add" student.id %}" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="col-md-12">
 
@@ -15,7 +15,7 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="header">
-                                    <h3>Student Subject Add</h3>
+                                    <h3>{{ student }} 학생</h3>
                                 </div>
                                 <div class="content">
                                     {% for field in form %}

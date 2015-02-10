@@ -1,0 +1,47 @@
+{% extends "academy/_layouts/base.html" %}
+{% load static from staticfiles %}
+
+{% block content %}
+    <div class="page-head">
+        <a href="{% url "student-subject-add" student.id %}" class="adder btn btn-success btn-lg pull-right" style="margin-top:10px;">수강 등록</a>
+        <h2 style="width: auto !important;">수강 리스트</h2>
+    </div>
+    <div class="cl-mcont">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="block-flat">
+                    <div class="header">
+                        <h3>{{ student }} 학생</h3>
+                    </div>
+                    <div class="content">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="datatable-icons" >
+                                <thead>
+                                <tr>
+                                    <th>수강과목</th>
+                                    <th>수강료</th>
+                                    <th>지불여부</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for subject in subjects %}
+                                    <tr class="odd gradeX">
+                                        <td class="center">{{ subject.subject }}</td>
+                                        {#                                        <td class="center">{{ student }}</td>#}
+                                        <td class="center">{{ subject.fee }}
+                                            {#                                            <a class="btn btn-default btn-xs" href="{% url "staff-detail" staff.id %}" data-original-title="Open" data-toggle="tooltip"><i class="fa fa-file"></i></a>#}
+                                            {#                                            <a class="btn btn-primary btn-xs" href="{% url "staff-update" staff.id %}" data-original-title="Edit" data-toggle="tooltip"><i class="fa fa-pencil"></i></a>#}
+                                            {#                                            <a class="btn btn-danger btn-xs" href="{% url "staff-delete" staff.id %}" data-original-title="Remove" data-toggle="tooltip"><i class="fa fa-times"></i></a>#}
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
