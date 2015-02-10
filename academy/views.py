@@ -234,7 +234,7 @@ class SubjectList(ListView):
 
 class StudentSubjectList(ListView):
     template_name = "academy/student-subject-list.html"
-    queryset = Student.objects.all()
+    queryset = Student.objects.all().order_by()
     context_object_name = "students"
 
 

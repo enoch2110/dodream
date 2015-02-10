@@ -18,34 +18,57 @@
                                     <th>이름</th>
                                     <th>수강과목</th>
                                     <th>수강료</th>
-                                    <th>지불여부</th>
-                                    <th></th>
+                                    <th>수정/삭제</th>
+                                    <th>추가</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 {% for student in students %}
                                     <tr class="odd gradeX">
-                                        <td><a href="{% url "student-subject-detail" student.id %}">{{ student.name }}</a></td>
-                                        <td>
-                                            {% for subject in student.get_subjects %}
-                                                <p>{{ subject.subject }}</p>
-                                            {% endfor %}
-                                        </td>
-                                        <td>
-                                            {% for subject in student.get_subjects %}
-                                                <p>{{ subject.fee }}</p>
-                                            {% endfor %}
-                                        </td>
-                                        <td></td>
-                                        <td>
-                                            {% for subject in student.get_subjects %}
-                                                <p>
-                                                    <a class="btn btn-success btn-xs" href="{% url "student-subject-add" student.id %}" data-original-title="Add" data-toggle="tooltip"><i class="fa fa-plus"></i></a>
-                                                    <a class="btn btn-primary btn-xs" href="{% url "student-subject-update" subject.id %}" data-original-title="Edit" data-toggle="tooltip"><i class="fa fa-pencil"></i></a>
-                                                    <a class="btn btn-danger btn-xs" href="{% url "student-subject-delete" subject.id %}" data-original-title="Remove" data-toggle="tooltip"><i class="fa fa-times"></i></a>
-                                                </p>
-                                            {% endfor %}
-                                        </td>
+                                        <td>{{ student.name }}</td>
+                                        {% if not student.get_subjects %}
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td><a class="btn btn-success btn-xs" href="{% url "student-subject-add" student.id %}" data-original-title="Add" data-toggle="tooltip"><i class="fa fa-plus"></i></a></td>
+                                        {% endif %}
+                                        {% for subject in student.get_subjects %}
+                                            {% if forloop.counter > 1 %}
+                                                <tr></tr><td></td>
+                                            {% endif %}
+                                            <td>{{ subject.subject }}</td>
+                                            <td>{{ subject.fee }}</td>
+                                            <td>
+                                                <a class="btn btn-primary btn-xs" href="{% url "student-subject-update" subject.id %}" data-original-title="Edit" data-toggle="tooltip"><i class="fa fa-pencil"></i></a>
+                                                <a class="btn btn-danger btn-xs" href="{% url "student-subject-delete" subject.id %}" data-original-title="Remove" data-toggle="tooltip"><i class="fa fa-times"></i></a>
+                                            </td>
+                                            <td>
+                                                {% if forloop.last %}
+                                                <a class="btn btn-success btn-xs" href="{% url "student-subject-add" student.id %}" data-original-title="Add" data-toggle="tooltip"><i class="fa fa-plus"></i></a>
+                                                {% endif %}
+                                            </td>
+                                        {% endfor %}
+                                    {#                                        <td>{{ student.name }}</td>#}
+                                    {#                                        <td>#}
+                                    {#                                            {% for subject in student.get_subjects %}#}
+                                    {#                                                <p>{{ subject.subject }}</p>#}
+                                    {#                                            {% endfor %}#}
+                                    {#                                        </td>#}
+                                    {#                                        <td>#}
+                                    {#                                            {% for subject in student.get_subjects %}#}
+                                    {#                                                <p>{{ subject.fee }}</p>#}
+                                    {#                                            {% endfor %}#}
+                                    {#                                        </td>#}
+                                    {#                                        <td></td>#}
+                                    {#                                        <td>#}
+                                    {#                                            {% for subject in student.get_subjects %}#}
+                                    {#                                                <p>#}
+                                    {#                                                    <a class="btn btn-success btn-xs" href="{% url "student-subject-add" student.id %}" data-original-title="Add" data-toggle="tooltip"><i class="fa fa-plus"></i></a>#}
+                                    {#                                                    <a class="btn btn-primary btn-xs" href="{% url "student-subject-update" subject.id %}" data-original-title="Edit" data-toggle="tooltip"><i class="fa fa-pencil"></i></a>#}
+                                    {#                                                    <a class="btn btn-danger btn-xs" href="{% url "student-subject-delete" subject.id %}" data-original-title="Remove" data-toggle="tooltip"><i class="fa fa-times"></i></a>#}
+                                    {#                                                </p>#}
+                                    {#                                            {% endfor %}#}
+                                    {#                                        </td>#}
                                     </tr>
                                 {% endfor %}
                                 </tbody>
