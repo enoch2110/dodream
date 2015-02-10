@@ -41,8 +41,8 @@
                                             {% for subject in student.get_subjects %}
                                                 <p>
                                                     <a class="btn btn-success btn-xs" href="{% url "student-subject-add" student.id %}" data-original-title="Add" data-toggle="tooltip"><i class="fa fa-plus"></i></a>
-                                                    <a class="btn btn-primary btn-xs" href="#" data-original-title="Edit" data-toggle="tooltip"><i class="fa fa-pencil"></i></a>
-                                                    <a class="btn btn-danger btn-xs" href="#" data-original-title="Remove" data-toggle="tooltip"><i class="fa fa-times"></i></a>
+                                                    <a class="btn btn-primary btn-xs" href="{% url "student-subject-update" subject.id %}" data-original-title="Edit" data-toggle="tooltip"><i class="fa fa-pencil"></i></a>
+                                                    <a class="btn btn-danger btn-xs" href="{% url "student-subject-delete" subject.id %}" data-original-title="Remove" data-toggle="tooltip"><i class="fa fa-times"></i></a>
                                                 </p>
                                             {% endfor %}
                                         </td>

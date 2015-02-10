@@ -3,7 +3,7 @@
 
 {% block content %}
     <div class="page-head">
-        <h2>학생 수강 등록</h2>
+        <h2>수강 수정</h2>
     </div>
     <div class="cl-mcont">
         <div class="row">
@@ -13,10 +13,10 @@
                         <form class="form-horizontal group-border-dashed" action="{% url "student-subject-update" object.id %}" method="post">
                             <div class="col-sm-12">
                                 <div class="header">
-                                    <h3>Staff Profile</h3>
+                                    <h3>{{ object.student }} 학생</h3>
                                 </div>
                                 <div class="content">
-                                    <form class="form-horizontal group-border-dashed" action="{% url "staff-update" object.id %}" method="post" enctype="multipart/form-data">
+                                    <form class="form-horizontal group-border-dashed" action="{% url "student-subject-update" object.id %}" method="post" enctype="multipart/form-data">
                                         {% csrf_token %}
                                         {% for field in form %}
                                             <div class="form-group">
@@ -32,7 +32,7 @@
                                         <div class="row">
                                             <div class="col-sm-12" style="text-align: center;">
                                                 <button type="submit" class="btn btn-primary">저장</button>
-                                                <a href="{% url "staff-list" %}" class="btn btn-default">취소</a>
+                                                <a href="{% url "student-subject-list" %}" class="btn btn-default">취소</a>
                                             </div>
                                         </div>
                                     </form>

@@ -267,17 +267,17 @@ class StudentSubjectCreate(CreateView):
         return super(StudentSubjectCreate, self).form_valid(form)
 
 
-class StudentSubjectUpdate(ListView):
+class StudentSubjectUpdate(UpdateView):
     template_name = "academy/student-subject-update.html"
-    context_object_name = "subjects"
+    model = StudentSubject
+    form_class = StudentSubjectForm
+    success_url = "/student-subject-list"
 
-    def get_queryset(self):
-        subjects = StudentSubject.objects.filter(student__id=self.kwargs['pk'])
-        return subjects
 
-    # def form_valid(self, form):
-    #     form.instance.academy = self.request.user.profile.staff.academy
-    #     return super(StaffCreate, self).form_valid(form)
+class StudentSubjectDelete(DeleteView):
+    template_name = "academy/student-subject-delete.html"
+    model = StudentSubject
+    success_url = "/student-subject-list"
 
 
 ########################################################################################################################
