@@ -247,8 +247,8 @@ class StudentSubject(models.Model):
 #         return self.lecture.__unicode__()+self.lecture.staff.__unicode__()
 #
 #
-# class Course(models.Model):
-#     name = models.CharField(max_length=100)
+class Course(models.Model):
+    name = models.CharField(max_length=100)
 #     category = models.ForeignKey("CourseCategory")
 #     price = models.IntegerField()
 #     price_info = models.TextField(blank=True, null=True)

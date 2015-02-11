@@ -32,8 +32,8 @@
                                             {#                                            <td>{{ student.textbook }}</td>#}
                                             <td style="display: block;">
                                                 <input type="text">
-                                                <a class="btn btn-success btn-xs" href="#" data-original-title="저장" data-toggle="tooltip" value="{{ stduent.textbook }}">
-                                                    <i class="fa fa-check"></i></a>
+                                                <button id="textbook-save" class="btn btn-success btn-xs" href="#" data-original-title="저장" data-toggle="tooltip" value="{{ stduent.textbook }}">
+                                                    <i class="fa fa-check"></i></button>
                                             </td>
                                             <td>
                                                 <a class="btn btn-success btn-xs" href="{% url "student-subject-add" student.id %}" data-original-title="Add" data-toggle="tooltip"><i class="fa fa-plus"></i></a>
@@ -48,9 +48,9 @@
                                         <td>{{ ss.fee }}</td>
                                         {#                                        <td>{{ ss.student.textbook }}</td>#}
                                         <td style="display: block;">
-                                            <input type="text">
-                                            <a class="btn btn-success btn-xs" href="#" data-original-title="저장" data-toggle="tooltip" value="{{ stduent.textbook }}">
-                                                <i class="fa fa-check"></i></a>
+                                            <input type="text"/>
+                                            <button id="textbook-save" class="btn btn-success btn-xs" data-original-title="저장" data-toggle="tooltip" value="{{ ss.student.textbook }}">
+                                                <i class="fa fa-check"></i></button>
                                         </td>
                                         <td>
                                             <a class="btn btn-success btn-xs" href="{% url "student-subject-add" ss.student.id %}" data-original-title="Add" data-toggle="tooltip"><i class="fa fa-plus"></i></a>
@@ -141,6 +141,11 @@
 
             //Horizontal Icons dataTable
             $('#datatable-icons').dataTable();
+
+            $('#textbook-save').each(function (index, value) {
+                $()
+               alert('click : '+index);
+            });
         });
     </script>
 {% endblock %}
