@@ -125,76 +125,76 @@ class StudentSubjectForm(forms.ModelForm):
 
 
 ########################################################################################################################
-class CourseForm(forms.ModelForm):
-
-    def __init__(self,  *args, **kwargs):
-        super(CourseForm, self).__init__(*args, **kwargs)
-        leaves = []
-        for course_category in CourseCategory.objects.all():
-            if course_category.is_leaf():
-                leaves.append(course_category.id)
-        self.fields['category'] = forms.ModelChoiceField(queryset=CourseCategory.objects.filter(id__in=leaves))
-
-    class Meta:
-        model = Course
-        fields = '__all__'
-        exclude = ['is_active', 'academy']
-
-
-class CourseCategoryForm(forms.ModelForm):
-
-    def __init__(self, *args, **kwargs):
-        academy = self.self.request.user.profile.staff.academy
-        super(CourseCategoryForm, self).__init__(*args, **kwargs)
-        self.category['parent'].queryset = academy.get_parents()
-
-    class Meta:
-        model = CourseCategory
-        fields = '__all__'
-
-
-class LectureForm(forms.ModelForm):
-
-    class Meta:
-        model = Lecture
-        fields = '__all__'
-        widgets = {
-            'weekday': CheckboxSelectMultiple,
-        }
-        exclude = ['students', 'is_active']
-        unique_together = ("code", "course__academy")
-
-    def __init__(self, *args, **kwargs):
-        academy = kwargs.pop("academy")
-        super(LectureForm, self).__init__(*args, **kwargs)
-        self.fields['staffs'].queryset = academy.get_staffs()
-        self.fields['course'].queryset = academy.get_courses()
-
-
-class LectureRegistrationForm(forms.ModelForm):
-    students = forms.ModelMultipleChoiceField(queryset=Student.objects.none())
-
-    class Meta:
-        model = Lecture
-        fields = '__all__'
-        exclude = ['code', 'course', 'staff', 'is_online', 'weekday', 'is_active']
-
-    def __init__(self, *args, **kwargs):
-        super(LectureRegistrationForm, self).__init__(*args, **kwargs)
-        #TODO academy specific
-        #students.filter(~Q(id__in=self.instance.students.all()))
-
-        self.fields['students'].queryset = Student.objects.filter(~Q(id__in=self.instance.students.all()))
-
-
-class PaymentForm(forms.ModelForm):
-
-    class Meta:
-        model = Payment
-        fields = '__all__'
-
-
-class TextbookForm(forms.ModelForm):
-    class Meta:
-        model = Student
-        fields = ("name", "textbook")
+# class CourseForm(forms.ModelForm):
+#
+#     def __init__(self,  *args, **kwargs):
+#         super(CourseForm, self).__init__(*args, **kwargs)
+#         leaves = []
+#         for course_category in CourseCategory.objects.all():
+#             if course_category.is_leaf():
+#                 leaves.append(course_category.id)
+#         self.fields['category'] = forms.ModelChoiceField(queryset=CourseCategory.objects.filter(id__in=leaves))
+#
+#     class Meta:
+#         model = Course
+#         fields = '__all__'
+#         exclude = ['is_active', 'academy']
+#
+#
+# class CourseCategoryForm(forms.ModelForm):
+#
+#     def __init__(self, *args, **kwargs):
+#         academy = self.self.request.user.profile.staff.academy
+#         super(CourseCategoryForm, self).__init__(*args, **kwargs)
+#         self.category['parent'].queryset = academy.get_parents()
+#
+#     class Meta:
+#         model = CourseCategory
+#         fields = '__all__'
+#
+#
+# class LectureForm(forms.ModelForm):
+#
+#     class Meta:
+#         model = Lecture
+#         fields = '__all__'
+#         widgets = {
+#             'weekday': CheckboxSelectMultiple,
+#         }
+#         exclude = ['students', 'is_active']
+#         unique_together = ("code", "course__academy")
+#
+#     def __init__(self, *args, **kwargs):
+#         academy = kwargs.pop("academy")
+#         super(LectureForm, self).__init__(*args, **kwargs)
+#         self.fields['staffs'].queryset = academy.get_staffs()
+#         self.fields['course'].queryset = academy.get_courses()
+#
+#
+# class LectureRegistrationForm(forms.ModelForm):
+#     students = forms.ModelMultipleChoiceField(queryset=Student.objects.none())
+#
+#     class Meta:
+#         model = Lecture
+#         fields = '__all__'
+#         exclude = ['code', 'course', 'staff', 'is_online', 'weekday', 'is_active']
+#
+#     def __init__(self, *args, **kwargs):
+#         super(LectureRegistrationForm, self).__init__(*args, **kwargs)
+#         #TODO academy specific
+#         #students.filter(~Q(id__in=self.instance.students.all()))
+#
+#         self.fields['students'].queryset = Student.objects.filter(~Q(id__in=self.instance.students.all()))
+#
+#
+# class PaymentForm(forms.ModelForm):
+#
+#     class Meta:
+#         model = Payment
+#         fields = '__all__'
+#
+#
+# class TextbookForm(forms.ModelForm):
+#     class Meta:
+#         model = Student
+#         fields = ("name", "textbook")

@@ -22,8 +22,11 @@ class Academy(models.Model):
     def get_staffs(self):
         return Staff.objects.filter(academy=self)
 
-    def get_courses(self):
-        return Course.objects.filter(academy=self)
+    def get_subjects(self):
+        return Subject.objects.filter(academy=self)
+
+    # def get_courses(self):
+    #     return Course.objects.filter(academy=self)
 
 
 class Setting(models.Model):
@@ -107,7 +110,6 @@ class Student(models.Model):
     profile = models.OneToOneField(Profile)
     academy = models.ForeignKey(Academy)
     textbook = models.CharField(max_length=100, null=True, blank=True)
-    # textbook = models.OneToOneField(Textbook, null=True, blank=True)
 
     def __unicode__(self):
         return self.name
@@ -163,7 +165,8 @@ class Staff(models.Model):
     address = models.CharField(max_length=200, blank=True, null=True)
     contact = models.CharField(max_length=20, blank=True, null=True)
     group = models.ForeignKey(Group)
-    main_course = models.ForeignKey("Course", blank=True, null=True)
+    # main_course = models.ForeignKey("Course", blank=True, null=True)
+    main_subject = models.ForeignKey("Subject", blank=True, null=True)
     specs = models.TextField(max_length=100, blank=True, null=True)
     registered_date = models.DateField(default=datetime.date.today())
     profile = models.OneToOneField(Profile)
@@ -219,115 +222,121 @@ class StudentSubject(models.Model):
     def get_fee(self):
         return self.fee
 
+    # def is_first_subject(self):
+    #     return self.subject == self.student.get_subjects()
+    #
+    # def is_last_subject(self):
+    #     return self.subject == self.student.get_subjects()[1]
+
 
 ########################################################################################################################
-class LectureDateTime(models.Model):
-    """
-    type
-    1: begin
-    2: end
-    0: exceptional
-    """
-    type = models.IntegerField()
-    value = models.CharField(max_length=20)
-    date = models.DateField()
-    time = models.TimeField()
-    lecture = models.ForeignKey("Lecture")
-
-    def __unicode__(self):
-        return self.lecture.__unicode__()+self.lecture.staff.__unicode__()
-
-
-class Course(models.Model):
-    name = models.CharField(max_length=100)
-    category = models.ForeignKey("CourseCategory")
-    price = models.IntegerField()
-    price_info = models.TextField(blank=True, null=True)
-    syllabus = models.TextField(blank=True, null=True)
-    is_active = models.BooleanField(default=True)
-    academy = models.ForeignKey(Academy)
-
-    def __unicode__(self):
-        return self.name
-
-    def get_lectures(self):
-        return Lecture.objects.filter(course=self)
-
-
-class CourseCategory(models.Model):
-    name = models.CharField(max_length=100)
-    parent = models.ForeignKey("self", blank=True, null=True)
-
-    def __unicode__(self):
-        if self.parent == self:
-            return self.name + " (incorrect parent)"
-        return self.parent.__unicode__()+" > "+self.name if self.parent else self.name
-
-    def children(self):
-        return CourseCategory.objects.filter(parent=self)
-
-    def is_leaf(self):
-        return not CourseCategory.objects.filter(parent=self).exists()
-
-    def belongs_to(self, ancestor):
-        instance = self
-        while instance:
-            if instance == ancestor:
-                return True
-            instance = instance.parent
-        return False
-
-    def get_leaves(self):
-        leaves = []
-        for course_category in CourseCategory.objects.filter(parent=self):
-            if course_category.is_leaf():
-                leaves.append(course_category.id)
-            else:
-                leaves += course_category.get_leaves()
-        return leaves
-
-    def get_courses(self):
-        return Course.objects.filter(category__id__in=self.get_leaves())
-
-
-class StudentLecture(models.Model):
-    lecture = models.ForeignKey("Lecture")
-    student = models.ForeignKey("Student")
-    date = models.DateField(null=True, blank=True)
-    fee = models.IntegerField(null=True, blank=True)
-
-    def __unicode__(self):
-        return self.lecture.__unicode__()+" "+self.student.__unicode__()
-
-    def get_fee(self):
-        return self.fee
-
-
-class Lecture(models.Model):
-    code = models.CharField(max_length=50)
-    course = models.ForeignKey("Course")
-    staffs = models.ManyToManyField("Staff")
-    students = models.ManyToManyField("Student")
-    is_online = models.BooleanField(default=False)
-
-    def __unicode__(self):
-        return self.course.name
-
-    def get_lecture(self):
-        return Lecture.objects.filter(category__id__in=self.get_leaves())
-
-    def get_stu_num(self):
-        return Lecture.objects.filter(course=self.course, number=self.number).count()
-
-    def get_price(self): #TODO course_price 계산법 수정 (할인률, lecture에 따로 할당된 금액 등등)
-        return self.course.price*(1-self.discount/100)
-
-
-class Payment(models.Model):
-    student = models.ForeignKey(Student)
-    amount = models.IntegerField()
-    datetime = models.DateTimeField(auto_now=True)
-    receipt_number = models.CharField(max_length=100, blank=True, null=True)
-
-    def __unicode__(self):
-        return str(self.datetime)+" "+self.student.name +" "+str(self.amount)
+# class LectureDateTime(models.Model):
+#     """
+#     type
+#     1: begin
+#     2: end
+#     0: exceptional
+#     """
+#     type = models.IntegerField()
+#     value = models.CharField(max_length=20)
+#     date = models.DateField()
+#     time = models.TimeField()
+#     lecture = models.ForeignKey("Lecture")
+#
+#     def __unicode__(self):
+#         return self.lecture.__unicode__()+self.lecture.staff.__unicode__()
+#
+#
+# class Course(models.Model):
+#     name = models.CharField(max_length=100)
+#     category = models.ForeignKey("CourseCategory")
+#     price = models.IntegerField()
+#     price_info = models.TextField(blank=True, null=True)
+#     syllabus = models.TextField(blank=True, null=True)
+#     is_active = models.BooleanField(default=True)
+#     academy = models.ForeignKey(Academy)
+#
+#     def __unicode__(self):
+#         return self.name
+#
+#     def get_lectures(self):
+#         return Lecture.objects.filter(course=self)
+#
+#
+# class CourseCategory(models.Model):
+#     name = models.CharField(max_length=100)
+#     parent = models.ForeignKey("self", blank=True, null=True)
+#
+#     def __unicode__(self):
+#         if self.parent == self:
+#             return self.name + " (incorrect parent)"
+#         return self.parent.__unicode__()+" > "+self.name if self.parent else self.name
+#
+#     def children(self):
+#         return CourseCategory.objects.filter(parent=self)
+#
+#     def is_leaf(self):
+#         return not CourseCategory.objects.filter(parent=self).exists()
+#
+#     def belongs_to(self, ancestor):
+#         instance = self
+#         while instance:
+#             if instance == ancestor:
+#                 return True
+#             instance = instance.parent
+#         return False
+#
+#     def get_leaves(self):
+#         leaves = []
+#         for course_category in CourseCategory.objects.filter(parent=self):
+#             if course_category.is_leaf():
+#                 leaves.append(course_category.id)
+#             else:
+#                 leaves += course_category.get_leaves()
+#         return leaves
+#
+#     def get_courses(self):
+#         return Course.objects.filter(category__id__in=self.get_leaves())
+#
+#
+# class StudentLecture(models.Model):
+#     lecture = models.ForeignKey("Lecture")
+#     student = models.ForeignKey("Student")
+#     date = models.DateField(null=True, blank=True)
+#     fee = models.IntegerField(null=True, blank=True)
+#
+#     def __unicode__(self):
+#         return self.lecture.__unicode__()+" "+self.student.__unicode__()
+#
+#     def get_fee(self):
+#         return self.fee
+#
+#
+# class Lecture(models.Model):
+#     code = models.CharField(max_length=50)
+#     course = models.ForeignKey("Course")
+#     staffs = models.ManyToManyField("Staff")
+#     students = models.ManyToManyField("Student")
+#     is_online = models.BooleanField(default=False)
+#
+#     def __unicode__(self):
+#         return self.course.name
+#
+#     def get_lecture(self):
+#         return Lecture.objects.filter(category__id__in=self.get_leaves())
+#
+#     def get_stu_num(self):
+#         return Lecture.objects.filter(course=self.course, number=self.number).count()
+#
+#     def get_price(self): #TODO course_price 계산법 수정 (할인률, lecture에 따로 할당된 금액 등등)
+#         return self.course.price*(1-self.discount/100)
+#
+#
+# class Payment(models.Model):
+#     student = models.ForeignKey(Student)
+#     amount = models.IntegerField()
+#     datetime = models.DateTimeField(auto_now=True)
+#     receipt_number = models.CharField(max_length=100, blank=True, null=True)
+#
+#     def __unicode__(self):
+#         return str(self.datetime)+" "+self.student.name +" "+str(self.amount)

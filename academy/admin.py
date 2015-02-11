@@ -43,21 +43,21 @@ class StaffAdmin(admin.ModelAdmin):
     form = StaffForm
 
 
-class PaymentModelAdmin(admin.ModelAdmin):
-    search_fields = ['student__name']
-
-
-class CourseModelAdmin(admin.ModelAdmin):
-    search_fields = ['name']
-
-
-class LectureDateTimeInline(admin.TabularInline):
-    model = LectureDateTime
-    extra = 0
-
-
-class LectureAdmin(admin.ModelAdmin):
-    inlines = [LectureDateTimeInline]
+# class PaymentModelAdmin(admin.ModelAdmin):
+#     search_fields = ['student__name']
+#
+#
+# class CourseModelAdmin(admin.ModelAdmin):
+#     search_fields = ['name']
+#
+#
+# class LectureDateTimeInline(admin.TabularInline):
+#     model = LectureDateTime
+#     extra = 0
+#
+#
+# class LectureAdmin(admin.ModelAdmin):
+#     inlines = [LectureDateTimeInline]
 
 
 class SettingAdmin(admin.ModelAdmin):
@@ -71,10 +71,10 @@ admin.site.register(Student, StudentModelAdmin)
 admin.site.register(Staff, StaffAdmin)
 admin.site.register(Category)
 admin.site.register(Subject)
-admin.site.register(Course)
-admin.site.register(CourseCategory)
-admin.site.register(Payment)
-admin.site.register(Lecture, LectureAdmin)
-admin.site.register(StudentLecture)
-admin.site.register(LectureDateTime)
+# admin.site.register(Course)
+# admin.site.register(CourseCategory)
+# admin.site.register(Payment)
+# admin.site.register(Lecture, LectureAdmin)
+# admin.site.register(StudentLecture)
+# admin.site.register(LectureDateTime)
 admin.site.register(Setting, SettingAdmin)
