@@ -30,7 +30,7 @@
                                     <th class="col-xs-1 text-center">등원방법</th>
                                     {#                                    <th class="col-xs-2">보호자</th>#}
                                     {#                                    <th class="col-xs-1">납부여부</th>#}
-                                    <th class="col-xs-1 text-center">계정</th>
+{#                                    <th class="col-xs-1 text-center">계정</th>#}
                                     <th class="col-xs-3 text-center">교재 내역</th>
                                     <th class="col-xs-1"></th>
                                 </tr>
@@ -49,13 +49,13 @@
                                         {#                                            {% endfor %}#}
                                         {#                                        </td>#}
                                         {#                                        <td class="center">{{ student.is_paid }}</td>#}
-                                        <td>
-                                            {% if student.profile.user %}
-                                                {{student.profile.user}}
-                                            {% else %}
-                                                <a href="{% url "account-create" type=0 pk=student.id %}" class="btn btn-primary btn-xs">계정추가</a>
-                                            {% endif %}
-                                        </td>
+{#                                        <td>#}
+{#                                            {% if student.profile.user %}#}
+{#                                                {{student.profile.user}}#}
+{#                                            {% else %}#}
+{#                                                <a href="{% url "account-create" type=0 pk=student.id %}" class="btn btn-primary btn-xs">계정추가</a>#}
+{#                                            {% endif %}#}
+{#                                        </td>#}
                                         <td style="display: block;">
                                             <input type="text">
                                             <a class="btn btn-success btn-xs" href="#" data-original-title="저장" data-toggle="tooltip">

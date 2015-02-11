@@ -9,9 +9,9 @@ from django.shortcuts import render, redirect, render_to_response
 from django.views.generic import View, CreateView, ListView, DetailView, UpdateView, DeleteView, FormView
 from django.views.generic.edit import ModelFormMixin
 from rest_framework.filters import SearchFilter
-from academy.admin import StudentModelAdmin, PaymentModelAdmin, CourseModelAdmin
+# from academy.admin import StudentModelAdmin, PaymentModelAdmin, CourseModelAdmin
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from academy.admin import StudentModelAdmin, PaymentModelAdmin
+from academy.admin import StudentModelAdmin
 from academy.filters import StudentFilter
 from academy.forms import *
 from academy.models import *
