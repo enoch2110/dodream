@@ -49,6 +49,7 @@
                                         {#                                        <td>{{ ss.student.textbook }}</td>#}
                                         <td style="display: block;">
                                             <input type="text"/>
+                                            <a href="{% url "textbook-save" ss.student.id %}" class="btn btn-success btn-xs" data-original-title="저장"></a>
                                             <button id="textbook-save" class="btn btn-success btn-xs" data-original-title="저장" data-toggle="tooltip" value="{{ ss.student.textbook }}">
                                                 <i class="fa fa-check"></i></button>
                                         </td>
@@ -141,11 +142,6 @@
 
             //Horizontal Icons dataTable
             $('#datatable-icons').dataTable();
-
-            $('#textbook-save').each(function (index, value) {
-                $()
-               alert('click : '+index);
-            });
         });
     </script>
 {% endblock %}
