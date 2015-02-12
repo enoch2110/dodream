@@ -1,32 +1,9 @@
-.navbar-nav > li > a > i, .navbar-default .navbar-nav > li > a.login {color:#46b0c3;}
-
-
-.flexslider .flex-direction-nav a {
-background: none;
-border-bottom: none;
+.flexslider .caption.left {
+	left: 50px;
+	width: 55%;
+    margin-top:10%;
 }
 
-.flexslider .flex-control-paging li a.flex-active {background:none;}
-
-.flexslider .flex-control-paging li a:hover {background:none;}
-
-.flexslider .flex-control-paging li a {background: none; border: none;}
-
-.flexslider .flex-control-nav {background: none;}
-
-.flexslider h1 {
-    color: #FFFFFF;
-    text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.33);
-    background: rgba(70,176,195,0.75);
-
-}
-
-.flexslider h2 {
-    background-color: rgba(26,26,26,0.75);
-    color: #FFFFFF;
-}
-
-.flexslider .caption p {
-    color: #777777;
-    font-weight: bold;
+table tbody tr td.entry-detail {
+    padding: 5% 5% 4% 5%;
 }

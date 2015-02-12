@@ -9,15 +9,13 @@
                 <div class="row">
                     <div class="col-sm-2">
                         <div class="avatar">
-                            <img src="{% if staff.image %}{{ staff.image.url }}{% endif %}" class="profile-avatar" />
+                            <img src="{% if student.image %}{{ student.image.url }}{% endif %}" class="profile-avatar" />
                         </div>
                     </div>
                     <div class="col-sm-7">
                         <div class="personal">
-                            <h1 class="name">{{ staff.name }}</h1>
-                            <p class="description">{{ staff.group }}<p>
-{#                            <a class="btn btn-primary btn-xs" href="{% url "staff-update" staff.id %}" data-toggle="tooltip"><i class="fa fa-pencil"></i> Edit</a>#}
-{#                            <a class="btn btn-danger btn-xs" href="{% url "staff-delete" staff.id %}" data-toggle="tooltip"><i class="fa fa-times"></i> Delete</a>#}
+                            <h1 class="name">{{ student.name }}</h1>
+                            <p class="description">{{ student.group }}<p>
                         </div>
                     </div>
                 </div>
@@ -40,9 +38,9 @@
                         <td>
                             <table class="no-border no-strip skills">
                                 <tbody class="no-border-x no-border-y">
-                                <tr><td style="width:15%;"><b>이메일</b></td><td>{{ staff.email }}</td></tr>
-                                <tr><td style="width:15%;"><b>주소</b></td><td>{{ staff.address }}</td></tr>
-                                <tr><td style="width:15%;"><b>전화번호</b></td><td>{{ staff.contact }}</td></tr>
+                                <tr><td style="width:15%;"><b>이메일</b></td><td>{{ student.email }}</td></tr>
+                                <tr><td style="width:15%;"><b>주소</b></td><td>{{ student.address }}</td></tr>
+                                <tr><td style="width:15%;"><b>전화번호</b></td><td>{{ student.contact }}</td></tr>
                                 </tbody>
                             </table>
                         </td>
@@ -52,10 +50,12 @@
                         <td>
                             <table class="no-border no-strip skills">
                                 <tbody class="no-border-x no-border-y">
-                                <tr><td style="width:15%;"><b>직위</b></td><td>{{ staff.group }}</td></tr>
-                                <tr><td style="width:15%;"><b>주과목</b></td><td>{{ staff.main_course }}</td></tr>
-                                <tr><td style="width:15%;"><b>등록일</b></td><td>{{ staff.registered_date }}</td></tr>
-                                <tr><td style="width:15%;"><b>스펙</b></td><td>{{ staff.specs }}</td></tr>
+                                <tr><td style="width:15%;"><b>성 별</b></td><td>{{ student.get_gender_display }}</td></tr>
+                                <tr><td style="width:15%;"><b>등원방법</b></td><td>{{ student.get_attend_method_display }}</td></tr>
+                                <tr><td style="width:15%;"><b>등록학교</b></td><td>{{ student.school }}</td></tr>
+                                <tr><td style="width:15%;"><b>출석알림</b></td><td>{% if student.use_sms %}사용{% else %} 미사용{% endif %}</td></tr>
+                                <tr><td style="width:15%;"><b>학습교재</b></td><td>{{ student.textbook }}</td></tr>
+                                <tr><td style="width:15%;"><b>비 고</b></td><td>{{ student.information }}</td></tr>
                                 </tbody>
                             </table>
                         </td>

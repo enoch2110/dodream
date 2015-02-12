@@ -112,6 +112,13 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
+                                        <label class="col-sm-3 control-label">{{ form.textbook.label }}</label>
+                                        <div class="col-sm-6">
+                                            {{ form.textbook|addcss:"form-control" }}
+                                            {% for error in form.textbook.errors %}<p class="color-danger">{{ error }}</p>{% endfor %}
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
                                         <label class="col-sm-3 control-label">{{ form.information.label }}</label>
                                         <div class="col-sm-6">
                                             {{ form.information|addcss:"form-control" }}

@@ -125,7 +125,7 @@ class StudentList(ListView):
     template_name = "academy/student-list.html"
     queryset = Student.objects.all()
     context_object_name = "students"
-    paginate_by = 10
+    paginate_by = 30
 
     def get_context_data(self, **kwargs):
         context = super(StudentList, self).get_context_data(**kwargs)
@@ -156,6 +156,12 @@ class StudentList(ListView):
             students = paginator.page(paginator.num_page)
 
         return render_to_response('academy/student-list.html', {"students": students})
+
+
+class StudentDetail(DetailView):
+    template_name = "academy/student-detail.html"
+    context_object_name = "student"
+    model = Student
 
 
 class StaffList(ListView):
