@@ -255,7 +255,7 @@ class SubjectList(ListView):
 
 class StudentSubjectList(ListView):
     template_name = "academy/student-subject-list.html"
-    queryset = StudentSubject.objects.all()
+    queryset = StudentSubject.objects.filter(is_active=True)
     context_object_name = "ss"
 
     def get_context_data(self, **kwargs):
@@ -313,6 +313,13 @@ def textbook_save(request):
         student = Student.objects.get(id=stu_id)
         student.textbook = textbook
         student.save()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+def student_subject_inactive(request, ss_id):
+    ss = StudentSubject.objects.get(id=ss_id)
+    ss.is_active = False
+    ss.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 

@@ -116,7 +116,7 @@ class Student(models.Model):
         return self.name
 
     def get_subjects(self):
-        return StudentSubject.objects.filter(student=self)
+        return StudentSubject.objects.filter(student=self, is_active=True)
 
     # def get_total_fees(self):
     #     total_fees = 0
@@ -215,7 +215,10 @@ class Subject(models.Model):
 class StudentSubject(models.Model):
     subject = models.ForeignKey("Subject")
     student = models.ForeignKey("Student")
+    discount_per = models.IntegerField(null=True, blank=True)
+    discount_amount = models.IntegerField(null=True, blank=True)
     fee = models.IntegerField(null=True, blank=True)
+    is_active = models.BooleanField(default=True)
 
     def __unicode__(self):
         return self.subject.__unicode__() + "-" + self.student.__unicode__()
