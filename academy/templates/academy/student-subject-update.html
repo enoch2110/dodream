@@ -72,6 +72,7 @@
 {#                                        {% endfor %}#}
                                         <div class="row">
                                             <div class="col-sm-12" style="text-align: center;">
+                                                <input type="hidden" name="{{ form.is_active.name }}" value="true"/>
                                                 <button type="submit" class="btn btn-primary">저장</button>
                                                 <a href="{% url "student-subject-list" %}" class="btn btn-default">취소</a>
                                             </div>
@@ -131,8 +132,8 @@
                     data: {"id_subject":selected},
                     dataType: "json",
                     success: function(json) {
-                        $('#discount_percent').val('');
-                        $('#discount_minus').val('');
+                        $('#discount_per').val('');
+                        $('#discount_amount').val('');
                         $('#original_fee').val(json.fee);
                         $('#fee').val(json.fee);
                     }
