@@ -18,17 +18,58 @@
                                 <div class="content">
                                     <form class="form-horizontal group-border-dashed" action="{% url "student-subject-update" object.id %}" method="post" enctype="multipart/form-data">
                                         {% csrf_token %}
-                                        {% for field in form %}
-                                            <div class="form-group">
-                                                <label class="col-sm-3 control-label">{{ field.label }}</label>
-                                                <div class="col-sm-6">
-                                                    {{ field|addattr:"class=form-control" }}
-                                                    {% for error in field.errors %}
-                                                        <span class="label label-danger">{{ error }}</span>
-                                                    {% endfor %}
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">과목 선택</label>
+                                            <div class="col-sm-6">
+                                                {{ form.subject|addattr:"class=form-control" }}
+                                                {% for error in form.subject.errors %}
+                                                    <span class="label label-danger">{{ error }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">원가</label>
+                                            <div class="col-sm-6">
+                                                <div class="input-group">
+                                                    <input READONLY class="form-control" id="original_fee"/>
+                                                    <span class="input-group-addon">원</span>
                                                 </div>
                                             </div>
-                                        {% endfor %}
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">할인 적용</label>
+                                            <div class="col-sm-6">
+                                                <div class="input-group">
+                                                    <input id="discount_per" name="{{ form.discount_per.name }}" class="form-control" value="{% if form.discount_per.value %} {{ form.discount_per.value }} {% endif %}"/>
+                                                    <span class="input-group-addon">%</span>
+                                                </div>
+                                                <div class="input-group">
+                                                    <input id="discount_amount" name="{{ form.discount_amount.name }}" class="form-control" value="{% if form.discount_amount.value %} {{ form.discount_amount.value }} {% endif %}"/>
+                                                    <span class="input-group-addon">원</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">총</label>
+                                            <div class="col-sm-6">
+                                                <div class="input-group">
+                                                    <input id="fee" name="{{ form.fee.name }}" class="form-control" value="{{ form.fee.value }}" READONLY/>
+                                                    <span class="input-group-addon">원</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+{#                                        {% for field in form %}#}
+{#                                            <div class="form-group">#}
+{#                                                <label class="col-sm-3 control-label">{{ field.label }}</label>#}
+{#                                                <div class="col-sm-6">#}
+{#                                                    {{ field|addattr:"class=form-control" }}#}
+{#                                                    {% for error in field.errors %}#}
+{#                                                        <span class="label label-danger">{{ error }}</span>#}
+{#                                                    {% endfor %}#}
+{#                                                </div>#}
+{#                                            </div>#}
+{#                                        {% endfor %}#}
                                         <div class="row">
                                             <div class="col-sm-12" style="text-align: center;">
                                                 <button type="submit" class="btn btn-primary">저장</button>
@@ -44,4 +85,59 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block script %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var selected = $('#id_subject').val();
+
+            $.ajax({
+                url: "/subject-fee",
+                type: "POST",
+                data: {"id_subject":selected},
+                dataType: "json",
+                success: function(json) {
+                    $('#original_fee').val(json.fee);
+                }
+            });
+
+            $('#discount_per').keyup(function () {
+                var per = $('#discount_per').val();
+                var min = $('#discount_amount').val();
+                var before = $('#original_fee').val();
+                var result;
+
+                result = before * (100 - per) / 100 - min;
+                $('#fee').val(result);
+            });
+
+            $('#discount_amount').keyup(function () {
+                var per = $('#discount_per').val();
+                var min = $('#discount_amount').val();
+                var before = $('#original_fee').val();
+                var result;
+
+                result = before * (100 - per) / 100 - min;
+                $('#fee').val(result);
+            });
+
+            $('#id_subject').change(function() {
+                var selected = $('#id_subject').val();
+
+                $.ajax({
+                    url: "/subject-fee",
+                    type: "POST",
+                    data: {"id_subject":selected},
+                    dataType: "json",
+                    success: function(json) {
+                        $('#discount_percent').val('');
+                        $('#discount_minus').val('');
+                        $('#original_fee').val(json.fee);
+                        $('#fee').val(json.fee);
+                    }
+                });
+            });
+        });
+    </script>
 {% endblock %}

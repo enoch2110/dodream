@@ -31,7 +31,7 @@
                                         <label class="col-sm-3 control-label">원가</label>
                                         <div class="col-sm-6">
                                             <div class="input-group">
-                                                <input id="fee" class="form-control" READONLY/>
+                                                <input id="original_fee" class="form-control" READONLY/>
                                                 <span class="input-group-addon">원</span>
                                             </div>
                                         </div>
@@ -40,11 +40,11 @@
                                         <label class="col-sm-3 control-label">할인 적용</label>
                                         <div class="col-sm-6">
                                             <div class="input-group">
-                                                <input id="discount_percent" type="text" class="form-control"/>
+                                                <input id="discount_percent" class="form-control" name="{{ form.discount_per.name }}"/>
                                                 <span class="input-group-addon">%</span>
                                             </div>
                                             <div class="input-group">
-                                                <input id="discount_minus" type="text" class="form-control"/>
+                                                <input id="discount_amount" type="text" class="form-control" name="{{ form.discount_amount.name }}"/>
                                                 <span class="input-group-addon">원</span>
                                             </div>
                                         </div>
@@ -53,7 +53,7 @@
                                         <label class="col-sm-3 control-label">총</label>
                                         <div class="col-sm-6">
                                             <div class="input-group">
-                                                <input id="result" name="{{ form.fee.name }}" class="form-control" READONLY/>
+                                                <input id="fee" name="{{ form.fee.name }}" class="form-control" READONLY/>
                                                 <span class="input-group-addon">원</span>
                                             </div>
                                         </div>
@@ -77,27 +77,25 @@
 
 {% block script %}
     <script type="text/javascript">
-
-
-   $(document).ready(function () {
+    $(document).ready(function () {
        $('#discount_percent').keyup(function () {
            var per = $('#discount_percent').val();
-           var min = $('#discount_minus').val();
-           var before = $('#fee').val();
+           var min = $('#discount_amount').val();
+           var before = $('#original_fee').val();
            var result;
 
            result = before * (100 - per) / 100 - min;
-           $('#result').val(result);
+           $('#fee').val(result);
        });
 
-       $('#discount_minus').keyup(function () {
+       $('#discount_amount').keyup(function () {
            var per = $('#discount_percent').val();
-           var min = $('#discount_minus').val();
-           var before = $('#fee').val();
+           var min = $('#discount_amount').val();
+           var before = $('#original_fee').val();
            var result;
 
            result = before * (100 - per) / 100 - min;
-           $('#result').val(result);
+           $('#fee').val(result);
        });
 
        $('#id_subject').change(function() {
@@ -110,9 +108,9 @@
                dataType: "json",
                success: function(json) {
                    $('#discount_percent').val('');
-                   $('#discount_minus').val('');
+                   $('#discount_amount').val('');
+                   $('#original_fee').val(json.fee);
                    $('#fee').val(json.fee);
-                   $('#result').val(json.fee);
                }
            });
        });
