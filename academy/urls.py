@@ -26,6 +26,7 @@ urlpatterns = patterns('academy.views',
     url(r'^student-subject-add/(?P<pk>\d+)$', StudentSubjectCreate.as_view(), name="student-subject-add"),
     url(r'^student-subject-update/(?P<pk>\d+)$', StudentSubjectUpdate.as_view(), name="student-subject-update"),
     url(r'^student-subject-delete/(?P<pk>\d+)$', StudentSubjectDelete.as_view(), name="student-subject-delete"),
+
     # url(r'^course-list$', CourseCategoryList.as_view(), name="course-list"),
     # url(r'^course-add', CourseCreate.as_view(), name="course-add"),
     # url(r'^course-category', CourseCategoryCreate.as_view(), name="course-category"),
@@ -54,4 +55,5 @@ urlpatterns = patterns('',
         include(urlpatterns))
     ),
     url(r'^subject-fee$', 'academy.views.subject_fee'),
+    url(r'^textbook-save/(?P<stu_id>\d+)$', 'academy.views.textbook_save')
 )

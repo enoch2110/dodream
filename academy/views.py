@@ -300,6 +300,11 @@ class StudentSubjectDelete(DeleteView):
     success_url = "/student-subject-list"
 
 
+def textbook_save(request, stu_id):
+    Student.objects.filter(id=stu_id).save()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
 ########################################################################################################################
 # class CourseCategoryList(ListView):
 #     template_name = "academy/course-list.html"
