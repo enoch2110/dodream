@@ -1,5 +1,6 @@
 {% extends "academy/_layouts/base.html" %}
 {% load static from staticfiles %}
+{% load my_extras %}
 {% load i18n %}
 
 {% block content %}
@@ -8,8 +9,8 @@
         <h2>수강생 리스트</h2>
     </div>
     <div class="cl-mcont">
-        <div class="row">
-            <div class="col-md-12"></div>
+    <div class="row">
+        <div class="col-md-12">
             <div class="block-flat">
                 <div class="content">
                     {# filter #}
@@ -27,37 +28,54 @@
                                     <th class="col-xs-1 text-center">사진</th>
                                     <th class="col-xs-2 text-center">전화번호</th>
                                     {#                                    <th class="col-xs-2">수강과목</th>#}
-                                    <th class="col-xs-1 text-center">등원방법</th>
+                                    <th class="col-xs-2 text-center">등원방법</th>
                                     {#                                    <th class="col-xs-2">보호자</th>#}
                                     {#                                    <th class="col-xs-1">납부여부</th>#}
-{#                                    <th class="col-xs-1 text-center">계정</th>#}
-                                    <th class="col-xs-1"></th>
+                                    <th class="col-xs-2 text-center">학습과정</th>
+                                    <th class="col-xs-2 text-center">출석알림 사용여부</th>
+                                    {#                                    <th class="col-xs-1 text-center">계정</th>#}
+                                    <th class="col-xs-2"></th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 {% for student in students %}
                                     <tr class="odd gradeX">
-                                        <td>{{ student.name }}</td>
+                                        <td align="center">{{ student.name }}</td>
                                         <td align="center"><img src="{% if student.image %}{{ student.image.url }}{% endif %}" alt="" class="img-circle" width="25" height="25"/></td>
-                                        <td>{{ student.contact }}</td>
+                                        <td align="center">{{ student.contact }}</td>
                                         {#                                        <td class="center">{{ student.get_courses }}</td>#}
-                                        <td class="center">{{ student.get_attend_method_display }}</td>
+                                        <td class="center" align="center">{{ student.get_attend_method_display }}</td>
                                         {#                                        <td class="center">#}
                                         {#                                            {% for guardian in student.guardian_set.all %}#}
                                         {#                                                {{ guardian.name }}<br>#}
                                         {#                                            {% endfor %}#}
                                         {#                                        </td>#}
                                         {#                                        <td class="center">{{ student.is_paid }}</td>#}
-{#                                        <td>#}
-{#                                            {% if student.profile.user %}#}
-{#                                                {{student.profile.user}}#}
-{#                                            {% else %}#}
-{#                                                <a href="{% url "account-create" type=0 pk=student.id %}" class="btn btn-primary btn-xs">계정추가</a>#}
-{#                                            {% endif %}#}
-{#                                        </td>#}
-
-                                        <td class="center">
+                                        <td align="center">
+                                            {% for subject in student.get_subjects %}
+                                                {{ subject.subject }},
+                                            {% endfor %}
+                                        </td>
+                                        <td align="center">
+                                            {% if student.use_sms %}사용
+                                            {% else %} 미사용
+                                            {% endif %}
+                                        </td>
+                                        {#                                        <td align="center">#}
+                                        {#                                            {% if student.profile.user %}#}
+                                        {#                                                {{student.profile.user}}#}
+                                        {#                                            {% else %}#}
+                                        {#                                                <a href="{% url "account-create" type=0 pk=student.id %}" class="btn btn-primary btn-xs">계정추가</a>#}
+                                        {#                                            {% endif %}#}
+                                        {#                                        </td>#}
+                                        {#                                        <td style="display: block;">#}
+                                        {#                                            <input type="text">#}
+                                        {#                                            <a class="btn btn-success btn-xs" href="#" data-original-title="저장" data-toggle="tooltip" value="{{ stduent.textbook }}">#}
+                                        {#                                                <i class="fa fa-check"></i></a>#}
+                                        {#                                        </td>#}
+                                        <td class="center" align="center">
                                             {#                                            <a class="btn btn-default btn-xs" href="#" data-original-title="Open" data-toggle="tooltip"><i class="fa fa-file"></i></a>#}
+                                            <a class="btn btn-default btn-xs" href="{% url "student-detail" student.id %}" data-original-title="Detail" data-toggle="tooltip"><i class="fa fa-file"></i></a>
                                             <a class="btn btn-primary btn-xs" href="{% url "student-update" student.id %}" data-original-title="Edit" data-toggle="tooltip"><i class="fa fa-pencil"></i></a>
                                             {#                                            <a class="btn btn-danger btn-xs" href="#" data-original-title="Remove" data-toggle="tooltip"><i class="fa fa-times"></i></a>#}
                                         </td>

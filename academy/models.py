@@ -110,6 +110,7 @@ class Student(models.Model):
     profile = models.OneToOneField(Profile)
     academy = models.ForeignKey(Academy)
     textbook = models.CharField(max_length=100, null=True, blank=True)
+    # textbook = models.OneToOneField(Textbook, null=True, blank=True)
 
     def __unicode__(self):
         return self.name
@@ -228,7 +229,6 @@ class StudentSubject(models.Model):
     # def is_last_subject(self):
     #     return self.subject == self.student.get_subjects()[1]
 
-
 ########################################################################################################################
 # class LectureDateTime(models.Model):
 #     """
@@ -247,8 +247,8 @@ class StudentSubject(models.Model):
 #         return self.lecture.__unicode__()+self.lecture.staff.__unicode__()
 #
 #
-class Course(models.Model):
-    name = models.CharField(max_length=100)
+# class Course(models.Model):
+#     name = models.CharField(max_length=100)
 #     category = models.ForeignKey("CourseCategory")
 #     price = models.IntegerField()
 #     price_info = models.TextField(blank=True, null=True)

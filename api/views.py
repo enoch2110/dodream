@@ -128,7 +128,7 @@ class AttendanceCreateAPI(generics.CreateAPIView):
                 # sms_result = 'sms not sent'
                 alert_result = 'alert not sent'
                 if profile.student:
-                    if profile.student.use_sms and profile.student.contact:
+                    if profile.student.use_sms:
                         now = datetime.datetime.now()
                         # message = str(unicode(str(now) + " " + profile.student.name + " " + self.object.get_status()))
                         # send_sms(message, profile.student.contact)
@@ -136,10 +136,10 @@ class AttendanceCreateAPI(generics.CreateAPIView):
                         alert_result = 'alert sent'
 
                         gcm = GCM(settings.GCM_APIKEY)
-                        data = {'name': profile.get_name(), 'time': now.strftime("%H:%M:%S")}
+                        data = {'name': profile.get_name(), 'time': now.strftime("%Y년 %m월 %d일 %H:%M:%S"), 'status': "출석 : "}
                         reg_ids = []
 
-                        for guardian in profile.student.guardian_set.all():
+                        for guardian in Guardian.objects.all():
                             if guardian.profile.phone_id:
                                 reg_ids.append(guardian.profile.phone_id)
 

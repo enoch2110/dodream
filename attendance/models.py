@@ -13,6 +13,9 @@ class Attendance(models.Model):
     image = models.ImageField(upload_to="attendance/attendance", blank=True)
     datetime = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        ordering = ['-datetime']
+
     def __unicode__(self):
         datetime = self.datetime.astimezone(tz.tzlocal())
         username = self.profile.user.username if self.profile.user else "No username"
@@ -34,13 +37,13 @@ class Attendance(models.Model):
             leave_time = (datetime.datetime(2000, 1, 1, attend_time.hour, attend_time.minute, attend_time.second) + datetime.timedelta(hours=1)).time()
 
         if is_first and current_datetime.time() <= attend_time:
-            result = "&출석했습니다."
+            result = u"출석했습니다."
         elif is_first and current_datetime.time() > attend_time:
-            result = "&지각했습니다."
+            result = u"지각했습니다."
         elif not is_first and current_datetime.time() < leave_time:
-            result = "&조퇴했습니다."
+            result = u"조퇴했습니다."
         elif not is_first and current_datetime.time() >= leave_time:
-            result = "&퇴실했습니다."
+            result = u"퇴실했습니다."
 
         return result
 

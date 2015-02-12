@@ -137,7 +137,10 @@ GCM_APIKEY = 'AIzaSyC3LGruJQLdsco3ptkbDkgEJzEswwh9sQU'
 CKEDITOR_CONFIGS = {
     'default': {
         'toolbar': 'full',
-        'extraPlugins': 'youtube'
+        'skin': 'bootstrapck',
+        # 'extraPlugins': 'youtube'
+        # 'extraPlugins': ['youtube', 'fastimage']
+        # 'extraPlugins': ['youtube', 'glyphicons', 'image2', 'fastimage', 'symbol', 'oembed', 'quicktable', 'tableresize']
     },
 }
 
