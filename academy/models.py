@@ -118,6 +118,9 @@ class Student(models.Model):
     def get_subjects(self):
         return StudentSubject.objects.filter(student=self, is_active=True)
 
+    def get_inactive_subjects(self):
+        return StudentSubject.objects.filter(student=self, is_active=False)
+
     # def get_total_fees(self):
     #     total_fees = 0
     #     for lecture in StudentLecture.objects.filter(student=self):

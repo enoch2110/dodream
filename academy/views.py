@@ -290,6 +290,7 @@ class StudentSubjectCreate(CreateView):
 
     def form_valid(self, form):
         form.instance.student = Student.objects.get(id=self.kwargs['pk'])
+        form.instance.is_active = True
         return super(StudentSubjectCreate, self).form_valid(form)
 
 
