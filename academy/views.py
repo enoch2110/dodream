@@ -300,8 +300,13 @@ class StudentSubjectDelete(DeleteView):
     success_url = "/student-subject-list"
 
 
-def textbook_save(request, stu_id):
-    Student.objects.filter(id=stu_id).save()
+def textbook_save(request):
+    if 'stu_id' in request.GET and 'textbook_name' in request.GET:
+        stu_id = request.GET['stu_id']
+        textbook = request.GET['textbook_name']
+        student = Student.objects.get(id=stu_id)
+        student.textbook = textbook
+        student.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 

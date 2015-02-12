@@ -29,11 +29,13 @@
                                             <td>{{ student.name }}</td>
                                             <td></td>
                                             <td></td>
-                                            {#                                            <td>{{ student.textbook }}</td>#}
                                             <td style="display: block;">
-                                                <input type="text">
-                                                <button id="textbook-save" class="btn btn-success btn-xs" href="#" data-original-title="저장" data-toggle="tooltip" value="{{ stduent.textbook }}">
-                                                    <i class="fa fa-check"></i></button>
+                                                <form action="{% url "textbook-save" %}" method="get">
+                                                    <input name="stu_id" type="hidden" value="{{ student.id }}"/>
+                                                    <input name="textbook_name" id="textbook" type="text" value="{% if student.textbook %} {{ student.textbook }} {% endif %}"/>
+                                                    <button class="btn btn-success btn-xs" data-original-title="저장" data-toggle="tooltip" onclick="$(this).closest('form').submit()">
+                                                        <i class="fa fa-check"></i></button>
+                                                </form>
                                             </td>
                                             <td>
                                                 <a class="btn btn-success btn-xs" href="{% url "student-subject-add" student.id %}" data-original-title="Add" data-toggle="tooltip"><i class="fa fa-plus"></i></a>
@@ -46,12 +48,13 @@
                                         <td>{{ ss.student.name }}</td>
                                         <td>{{ ss.subject }}</td>
                                         <td>{{ ss.fee }}</td>
-                                        {#                                        <td>{{ ss.student.textbook }}</td>#}
                                         <td style="display: block;">
-                                            <input type="text"/>
-                                            <a href="{% url "textbook-save" ss.student.id %}" class="btn btn-success btn-xs" data-original-title="저장"></a>
-                                            <button id="textbook-save" class="btn btn-success btn-xs" data-original-title="저장" data-toggle="tooltip" value="{{ ss.student.textbook }}">
-                                                <i class="fa fa-check"></i></button>
+                                            <form action="{% url "textbook-save" %}" method="get">
+                                                <input name="stu_id" type="hidden" value="{{ ss.student.id }}"/>
+                                                <input name="textbook_name" id="textbook" type="text" value="{% if ss.student.textbook %} {{ ss.student.textbook }} {% endif %}"/>
+                                                <button class="btn btn-success btn-xs" data-original-title="저장" data-toggle="tooltip" onclick="$(this).closest('form').submit()">
+                                                    <i class="fa fa-check"></i></button>
+                                            </form>
                                         </td>
                                         <td>
                                             <a class="btn btn-success btn-xs" href="{% url "student-subject-add" ss.student.id %}" data-original-title="Add" data-toggle="tooltip"><i class="fa fa-plus"></i></a>

@@ -55,5 +55,5 @@ urlpatterns = patterns('',
         include(urlpatterns))
     ),
     url(r'^subject-fee$', 'academy.views.subject_fee'),
-    url(r'^textbook-save/(?P<stu_id>\d+)$', 'academy.views.textbook_save')
+    url(r'^textbook-save$', 'academy.views.textbook_save', name="textbook-save"),
 )
