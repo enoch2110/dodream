@@ -39,7 +39,7 @@
                                             <td><a href="{% url "subject-update" subject.id %}">{{ subject.name }}</a></td>
                                             <td>{{ subject.price }}</td>
                                             <td class="center">
-                                                <a class="btn btn-danger btn-xs" href="{% url "subject-delete" subject.id %}" data-original-title="삭제" data-toggle="tooltip"><i class="fa fa-times"></i></a>
+                                                <a class="btn btn-danger btn-xs" href="{% url "subject-inactive" subject.id %}" data-original-title="삭제" data-toggle="tooltip"><i class="fa fa-times"></i></a>
                                             </td>
                                         </tr>
                                     {% empty %}

@@ -1,5 +1,6 @@
 from django.views.generic import ListView
 from attendance.models import Attendance
+from datetime import timedelta
 
 
 class AttendanceList(ListView):
@@ -13,6 +14,7 @@ class AttendanceList(ListView):
         if self.request.GET.get('date'):
             date_begin = datetime.datetime.strptime(self.request.GET.get('date').split(" - ")[0], "%Y-%m-%d")
             date_end = datetime.datetime.strptime(self.request.GET.get('date').split(" - ")[1], "%Y-%m-%d")
+            date_end = date_end + timedelta(days=1)
             daterange = [date_begin, date_end]
             queryset = queryset.filter(datetime__range=daterange)
         if self.request.GET.get("q"):

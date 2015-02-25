@@ -68,28 +68,34 @@
                             <table class="no-border no-strip information">
                                 <tbody class="no-border-x no-border-y">
                                 <tr>
-                                    <td style="width:15%"></td>
-                                    <td style="width:25%">과 목</td>
-                                    <td style="width:20%">수강료</td>
-                                    <td style="width:40%"></td>
+                                    <td class="col-xs-2"></td>
+                                    <td class="col-xs-4">과 목</td>
+                                    <td class="col-xs-2">수강료</td>
+                                    <td class="col-xs-4"></td>
                                 </tr>
-                                <tr>
-                                    <td style="width:15%;" class="category"><strong>수강중</strong></td>
-                                    {% for ss in student.get_subjects %}
-                                        <td style="width:25%">{{ ss.subject }}</td>
-                                        <td style="width:20%">{{ ss.fee }}</td>
-                                        <td style="width:40%"></td>
-                                    {% endfor %}
-                                </tr>
-                                <tr>
-                                    <td style="width:10%;" class="category"><strong>HISTORY</strong></td>
-                                    {% for ss in student.get_inactive_subjects %}
-                                        <td style="width:25%">{{ ss.subject }}</td>
-                                        <td style="width:20%">{{ ss.fee }}</td>
-                                        <td style="width:40%"></td>
-
-                                    {% endfor %}
-                                </tr>
+                                {% for ss in student.get_subjects %}
+                                    <tr>
+                                        {% if forloop.first %}
+                                        <td class="category"><strong>수강중</strong></td>
+                                        {% else %}
+                                        <td></td>
+                                        {% endif %}
+                                        <td>{{ ss.subject }}</td>
+                                        <td>{{ ss.fee }}</td>
+                                        <td></td>
+                                    </tr>
+                                {% endfor %}
+                                {% for ss in student.get_inactive_subjects %}
+                                    <tr>
+                                        {% if forloop.first %}
+                                        <td class="category"><strong>HISTORY</strong></td>
+                                        {% else %}
+                                        <td></td>
+                                        {% endif %}<td>{{ ss.subject }}</td>
+                                        <td>{{ ss.fee }}</td>
+                                        <td></td>
+                                    </tr>
+                                {% endfor %}
                                 </tbody>
                             </table>
                         </div>

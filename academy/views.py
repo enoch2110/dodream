@@ -237,6 +237,27 @@ class SubjectUpdate(UpdateView):
     form_class = SubjectForm
     success_url = "/subject-list"
 
+    def form_valid(self, form):
+        subject = form.instance
+        student_subjects = StudentSubject.objects.filter(subject=subject)
+        for ss in student_subjects:
+            ss.is_active = False
+            ss.save()
+            new_ss = ss
+            new_ss.pk = None
+            new_ss.subject = subject
+            new_ss.fee = new_ss.subject.price
+            per = new_ss.discount_per
+            amount = new_ss.discount_amount
+            if per:
+                new_ss.fee = new_ss.fee * (100 - per) / 100
+            if amount:
+                new_ss.fee = new_ss.fee - amount
+            # new_ss.fee = subject.price * (100 - per) / 100 - amount
+            new_ss.is_active = True
+            new_ss.save()
+        return super(SubjectUpdate, self).form_valid(form)
+
 
 class SubjectDelete(DeleteView):
     template_name = "academy/subject-delete.html"
@@ -321,6 +342,13 @@ def student_subject_inactive(request, ss_id):
     ss = StudentSubject.objects.get(id=ss_id)
     ss.is_active = False
     ss.save()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+def subject_inactive(request, subject_id):
+    subject = Subject.objects.get(id=subject_id)
+    subject.is_active = False
+    subject.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
