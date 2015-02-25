@@ -145,3 +145,6 @@ CKEDITOR_CONFIGS = {
 }
 
 CKEDITOR_UPLOAD_PATH = "uploads/"
+
+
+POLLINI_APP_DIR = BASE_DIR + "/website/static/website/app/pollini_com.apk"
