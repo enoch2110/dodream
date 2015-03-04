@@ -6,11 +6,7 @@
             <div class="content">
                 <div class="side-user">
                     <div class="avatar" style="height: 40px; width: 40px; overflow: hidden; vertical-align: middle">
-                        <img src="{% static "academy/logo.png" %}
-{#                        {% if request.user.profile.staff.academy.image %}#}
-{#                                {{ request.user.profile.staff.academy.image.url }}#}
-{#                            {% endif %}#}
-                            " alt="Avatar" height="40"/>
+                        <img src="{{ MEDIA_URL }}academy/logo.png" alt="Avatar" height="40"/>
                     </div>
                     <div class="info">
                         <a href="#">{{ request.user.profile.staff.academy.name }}</a>

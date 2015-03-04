@@ -25,6 +25,9 @@ class Academy(models.Model):
     def get_subjects(self):
         return Subject.objects.filter(academy=self)
 
+    def get_image(self):
+        return self.image if self.image else "academy/defaults/avatar.png"
+
     # def get_courses(self):
     #     return Course.objects.filter(academy=self)
 
