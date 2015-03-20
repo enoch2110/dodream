@@ -3,6 +3,8 @@ from django.contrib.auth.decorators import user_passes_test
 from django.views.generic import TemplateView
 from academy.views import *
 from dodream.helpers import decorated_includes
+from django.conf.urls.static import static
+from dodream import settings
 
 urlpatterns = patterns('academy.views',
     # url(r'^$', TemplateView.as_view(template_name="academy/index.html")),
@@ -61,3 +63,6 @@ urlpatterns = patterns('',
     url(r'^subject-inactive/(?P<subject_id>\d+)$', 'academy.views.subject_inactive', name="subject-inactive"),
 
 )
+
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
