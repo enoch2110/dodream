@@ -1,6 +1,7 @@
 from django.views.generic import ListView
 from attendance.models import Attendance
 from datetime import timedelta
+from academy.models import Student
 
 
 class AttendanceList(ListView):
@@ -9,7 +10,7 @@ class AttendanceList(ListView):
     context_object_name = "attendances"
 
     def get_queryset(self):
-        queryset = super(AttendanceList, self).get_queryset()
+        queryset = super(AttendanceList, self).get_queryset().filter(profile__student__academy=self.request.user.profile.staff.academy)
         import datetime
         if self.request.GET.get('date'):
             date_begin = datetime.datetime.strptime(self.request.GET.get('date').split(" - ")[0], "%Y-%m-%d")
