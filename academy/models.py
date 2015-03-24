@@ -49,7 +49,7 @@ class Profile(models.Model):
         instance = self.get_instance()
         user = self.user
         if instance:
-            name = instance.__class__.__name__ +": "+instance.name
+            name = instance.name
         elif user:
             user_fullname = user.last_name + user.first_name
             name = user_fullname if user_fullname else "no name"

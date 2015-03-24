@@ -28,7 +28,7 @@ class EntryAdd(CreateView):
 
 class EntryList(ListView):
     model = Entry
-    paginate_by = 9
+    paginate_by = 18
 
     def get_queryset(self):
         return Entry.objects.filter(type=self.request.GET.get("type"))

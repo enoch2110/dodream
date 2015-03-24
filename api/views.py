@@ -139,7 +139,7 @@ class AttendanceCreateAPI(generics.CreateAPIView):
                         data = {'name': profile.get_name(), 'time': now.strftime("%Y년 %m월 %d일 %H:%M:%S"), 'status': "출석 : "}
                         reg_ids = []
 
-                        for guardian in Guardian.objects.all():
+                        for guardian in profile.student.guardian_set.all():
                             if guardian.profile.phone_id:
                                 reg_ids.append(guardian.profile.phone_id)
 

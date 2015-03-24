@@ -123,7 +123,6 @@ class StudentUpdate(View):
 
 class StudentList(ListView):
     template_name = "academy/student-list.html"
-    queryset = Student.objects.all()
     context_object_name = "students"
     paginate_by = 30
 
@@ -135,10 +134,12 @@ class StudentList(ListView):
     def get_queryset(self):
         search_param = self.request.GET.get('search')
         attend_method_param = self.request.GET.get('attend_method')
-        is_paid_param = self.request.GET.get('is_paid')
-        course_param = self.request.GET.get('course')
+        # subject_param = self.request.GET.get('subject')
+        # is_paid_param = self.request.GET.get('is_paid')
+        # course_param = self.request.GET.get('course')
 
-        students = StudentModelAdmin(Student, None).get_search_results(self.request, self.queryset, search_param)[0]
+        students = Student.objects.all().filter(academy=self.request.user.profile.staff.academy)
+        students = StudentModelAdmin(Student, None).get_search_results(self.request, students, search_param)[0]
         students = StudentFilter(self.request.GET, queryset=students)
 
         return students
@@ -276,12 +277,15 @@ class SubjectList(ListView):
 
 class StudentSubjectList(ListView):
     template_name = "academy/student-subject-list.html"
-    queryset = StudentSubject.objects.filter(is_active=True)
     context_object_name = "ss"
+
+    def get_queryset(self):
+        queryset = StudentSubject.objects.filter(student__academy=self.request.user.profile.staff.academy, is_active=True)
+        return queryset
 
     def get_context_data(self, **kwargs):
         context = super(StudentSubjectList, self).get_context_data(**kwargs)
-        context.update({"students": Student.objects.all()})
+        context.update({"students": Student.objects.all().filter(academy=self.request.user.profile.staff.academy)})
         return context
 
 

@@ -10,7 +10,7 @@
                         <h1>학원소식</h1>
                         <ul class="breadcrumb visible-md visible-lg">
                             <li><a href="{% url "entry-list" %}?type=notice">공지 사항</a></li>
-{#                            <li><a href="{% url "schedule" %}">학사 일정</a></li>#}
+                            {#                            <li><a href="{% url "schedule" %}">학사 일정</a></li>#}
                             <li class="active">학원 소식</li>
                             <li><a href="{% url "entry-list" %}?type=reference">기타 자료</a></li>
                             <li><a href="{% url "QnA" %}">Q&A</a></li>
@@ -30,25 +30,34 @@
                         {#                                <a href="" class="btn btn-default" data-filter=".video">비디오</a>#}
                         {#                            </div>#}
                         {#                        </nav>#}
-                        <div class="portfolio-items  isotopeWrapper clearfix imgHover">
-                            {% for gallery in object_list %}
-{#                                if gallery 갯수가 4개가 넘어가면 div class row를 새로 주도록#}
-                                <article class="col-sm-3 isotopeItem women">
-                                    <div class="imgBorder">
-                                        <img alt="" src="{{ gallery.get_main_image.url }}" class="img-responsive imgBorder">
-                                        <a href="{% url "entry-detail" gallery.id %}" title="link">
-                                            <div class="mediaHover">
-                                                <div class="mask">
+                        <div class="row-same-height">
+                            <div class="portfolio-items  isotopeWrapper clearfix imgHover">
+                                {% for gallery in object_list %}
+                                    {#                                if gallery 갯수가 4개가 넘어가면 div class row를 새로 주도록#}
+                                    <article class="col-xs-3 isotopeItem women">
+                                        <div class="imgBorder">
+                                            <img alt="" src="{{ gallery.get_main_image.url }}" class="img-responsive imgBorder">
+                                            <a href="{% url "entry-detail" gallery.id %}" title="link">
+                                                <div class="mediaHover">
+                                                    <div class="mask">
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </a>
-                                        <section class="boxContent text-center" style="padding:15px;">
-                                            <h3 style="margin-bottom: 0px;">{{ gallery.title }}<br/><small>{{ gallery.datetime|date:"Y-m-d" }}</small></h3>
-                                        </section>
-                                    </div>
-                                </article>
-                            {% endfor %}
+                                            </a>
+                                            <section class="boxContent text-center" style="padding:15px; width:100%">
+                                                <table style="width:100%;">
+                                                    <tr>
+                                                        <td><h3 style="margin-bottom: 0px;">{{ gallery.title }}</h3></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-center"><h3 style="margin: 0% 0%;"><small>{{ gallery.datetime|date:"Y-m-d" }}</small></h3></td>
+                                                    </tr>
+                                                </table>
+                                            </section>
+                                        </div>
+                                    </article>
+                                {% endfor %}
 
+                            </div>
                         </div>
                         <div class="text-center">
                             {% include "website/_includes/entry_pagination.html" %}

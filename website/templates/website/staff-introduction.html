@@ -7,7 +7,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
-                        <h1>강사 소개</h1>
+                        <h1>원장 소개</h1>
                         {#                        <p>Along with all the Bootstraps components,<br /> we added some extra shortcode to help you customize your website.</p>#}
                         <ul class="breadcrumb visible-md visible-lg">
                             <li><a href="{% url "academy-introduction" %}">학원 소개</a></li>
@@ -21,12 +21,38 @@
         </header>
         <section>
             <div class="container">
+                {#                <table>#}
+                {#                    <tbody>#}
+                {#                    <tr>#}
+                {#                        <td class="col-sm-6">#}
+                {#                            <div class="text-center" data-nekoanim="fadeInLeftBig" data-nekodelay="100">#}
+                {#                                <img src="{% static "website/images/staff/headmaster.jpeg" %}" height="280px"/>#}
+                {#                            </div>#}
+                {#                        </td>#}
+                {#                        <td class="col-sm-6">#}
+                {#                            <div class="mt40 pb40" data-nekoanim="fadeInRightBig" data-nekodelay="100">#}
+                {#                                <h2>원장 </h2>#}
+                {#                                <h1>박 새봄</h1>#}
+                {#                                <br/>#}
+                {#                                <h3>약력</h3>#}
+                {#                                <ul class="list-unstyled iconList">#}
+                {#                                    <li>한양대 음대 피아노과 졸업</li>#}
+                {#                                    <li>동대학원 석사학위 취득</li>#}
+                {#                                    <li>러시아 상트 페테르부르크 국립 음악원 전문 연주자 과정 수료</li>#}
+                {#                                    <li>어드벤쳐 피아노 전임강사</li>#}
+                {#                                    <li>현. 포항예고 출강</li>#}
+                {#                                </ul>#}
+                {#                            </div>#}
+                {#                        </td>#}
+                {#                    </tr>#}
+                {#                    </tbody>#}
+                {#                </table>#}
                 <div class="row">
-                    <div class="col-md-6 pt40 pb40 text-center" data-nekoanim="fadeInLeftBig" data-nekodelay="100">
-                        <img src="{% static "website/images/staff/headmaster.png" %}" width="50%"/>
+                    <div class="col-md-6 mt40 text-center" data-nekoanim="fadeInLeftBig" data-nekodelay="100" style="padding-top: 5%">
+                        <img src="{% static "website/images/staff/headmaster.jpeg" %}" height="200px" style="vertical-align: middle;"/>
                     </div>
-                    <div class="col-md-5 pt30 mt40" data-nekoanim="fadeInRightBig" data-nekodelay="100">
-                        <h2>원장</h2>
+                    <div class="col-md-6 mt40 pb40" data-nekoanim="fadeInRightBig" data-nekodelay="100">
+                        <h2>원장 </h2>
                         <h1>박 새봄</h1>
                         <br/>
                         <h3>약력</h3>
@@ -39,23 +65,21 @@
                         </ul>
                     </div>
                 </div>
-{#                <div class="row">#}
-{#                    <div class="col-md-6 pt40 pb40 text-center" data-nekoanim="fadeInLeftBig" data-nekodelay="100">#}
-{#                        <img src="/static/static_website/images/staff/staff2.jpg" width="50%"/>#}
-{#                    </div>#}
-{#                    <div class="col-md-5 pt40 mt40" data-nekoanim="fadeInRightBig" data-nekodelay="100">#}
-{#                        <h1>진 사랑</h1>#}
-{#                        <br/>#}
-{#                        <h3>약력</h3>#}
-{#                        <ul class="list-unstyled iconList">#}
-{#                            <li></li>#}
-{#                            <li></li>#}
-{#                            <li></li>#}
-{#                            <li></li>#}
-{#                            <li></li>#}
-{#                        </ul>#}
-{#                    </div>#}
-{#                </div>#}
+                <div class="row">
+                    <div class="col-md-6 mt40 text-center" data-nekoanim="fadeInLeftBig" data-nekodelay="100" style="padding-top: 5%; padding-bottom: 10%;">
+                        <img src="/resources/media/defaults/avatar.png" height="200px" style="vertical-align: middle;"/>
+                    </div>
+                    <div class="col-md-6 mt40 pb40" data-nekoanim="fadeInRightBig" data-nekodelay="100">
+                        <h2>강사 </h2>
+                        <h1>지 선경</h1>
+                        <br/>
+                        <h3>약력</h3>
+                        <ul class="list-unstyled iconList">
+                            <li>계명대 음대 동대학원 피아노 전공 석사학위 취득</li>
+                            <li>전 아론 피아노 원장</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </section>
     </section>

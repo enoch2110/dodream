@@ -15,7 +15,6 @@
                         <div class="col-sm-7">
                             <div class="personal">
                                 <h1 class="name">{{ student.name }}</h1>
-                                <p class="description">{{ student.group }}<p>
                             </div>
                         </div>
                     </div>
@@ -30,7 +29,7 @@
                         <li class="active"><a data-toggle="tab" href="#information">학생 정보</a></li>
                         <li class="inactive"><a data-toggle="tab" href="#subjects">수강 정보</a></li>
                     </ul>
-                    <div class="tab-content">
+                    <div class="tab-content" style="margin-bottom: 0;">
                         <div id="information" class="tab-pane active cont">
                             <table class="no-border no-strip information">
                                 <tbody class="no-border-x no-border-y">
@@ -76,9 +75,9 @@
                                 {% for ss in student.get_subjects %}
                                     <tr>
                                         {% if forloop.first %}
-                                        <td class="category"><strong>수강중</strong></td>
+                                            <td class="category"><strong>수강중</strong></td>
                                         {% else %}
-                                        <td></td>
+                                            <td></td>
                                         {% endif %}
                                         <td>{{ ss.subject }}</td>
                                         <td>{{ ss.fee }}</td>
@@ -88,23 +87,31 @@
                                 {% for ss in student.get_inactive_subjects %}
                                     <tr>
                                         {% if forloop.first %}
-                                        <td class="category"><strong>HISTORY</strong></td>
+                                            <td class="category"><strong>HISTORY</strong></td>
                                         {% else %}
-                                        <td></td>
+                                            <td></td>
                                         {% endif %}<td>{{ ss.subject }}</td>
                                         <td>{{ ss.fee }}</td>
                                         <td></td>
                                     </tr>
                                 {% endfor %}
+
+                                {% if not student.get_inactive_subjects %}
+                                    <tr>
+                                        <td class="category"><strong>HISTORY</strong></td>
+                                    </tr>
+                                {% endif %}
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
-
             </div>
-
         </div>
-
+        <div class="row">
+            <div class="col-sm-12" style="text-align: center;">
+                <a href="{% url "staff-list" %}" class="btn btn-default">뒤로</a>
+            </div>
+        </div>
     </div>
 {% endblock %}
