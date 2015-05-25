@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from dateutil import tz
-
+import datetime
 from django.contrib.auth.models import User, Group
 from django.db import models
 from django.db.models import Min
@@ -12,6 +12,7 @@ class Attendance(models.Model):
     profile = models.ForeignKey(Profile)
     image = models.ImageField(upload_to="attendance/attendance", blank=True)
     datetime = models.DateTimeField(auto_now=True)
+    date = models.DateField(auto_now=True, null=True, blank=True)
 
     class Meta:
         ordering = ['-datetime']
@@ -24,10 +25,10 @@ class Attendance(models.Model):
     def get_status(self):
         import datetime
         result = ""
-        first_attendance = Attendance.objects.filter(profile=self.profile).earliest('datetime')
+        first_attendance = Attendance.objects.filter(profile=self.profile, date=self.date).earliest('datetime')
+        is_first = first_attendance == self
         current_datetime = self.datetime.astimezone(tz.tzlocal())
         first_datetime = first_attendance.datetime.astimezone(tz.tzlocal())
-        is_first = first_attendance == self
 
         try:
             attend_time = self.profile.attendancemanager.get_attend_time()
