@@ -21,7 +21,7 @@ urlpatterns = patterns('website.views',
     url(r'^adult-course$', TemplateView.as_view(template_name="website/adult-course.html"), name="adult-course"),
     url(r'^entry-list$', EntryList.as_view(), name="entry-list"),
     url(r'^entry-detail/(?P<pk>\d+)', EntryDetail.as_view(), name="entry-detail"),
-    url(r'^entry-add$', EntryAdd.as_view(), name="notice-add"),
+    url(r'^entry-add$', EntryAdd.as_view(), name="entry-add"),
     url(r'^schedule', TemplateView.as_view(template_name="website/schedule.html"), name="schedule"),
     url(r'^communication', TemplateView.as_view(template_name="website/communication.html"), name="communication"),
     url(r'^QnA', TemplateView.as_view(template_name="website/QnA.html"), name="QnA"),
@@ -29,5 +29,6 @@ urlpatterns = patterns('website.views',
 
     url(r'^login/$', login, {'template_name': 'website/login.html'}, name="web-login"),
     url(r'^logout/$', logout, {'template_name': 'website/index.html'}, name="web-logout"),
+
     # url(r'^logout/$', logout, CarouselItemView.as_view(template_name="website/index.html"), name="web-logout"),
 )

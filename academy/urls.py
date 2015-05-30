@@ -61,7 +61,6 @@ urlpatterns = patterns('',
     url(r'^textbook-save$', 'academy.views.textbook_save', name="textbook-save"),
     url(r'^student-subject-inactive/(?P<ss_id>\d+)$', 'academy.views.student_subject_inactive', name="student-subject-inactive"),
     url(r'^subject-inactive/(?P<subject_id>\d+)$', 'academy.views.subject_inactive', name="subject-inactive"),
-
 )
 
 

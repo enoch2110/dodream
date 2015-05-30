@@ -23,6 +23,13 @@
             <section class="pt30 pb30">
                 <div class="container clearfix">
                     <div class="row">
+                        {% if request.user.is_staff %}
+                            <div class="write-div">
+                                <a href="{% url "entry-add" %}" type="button" class="btn btn-success">글쓰기</a>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="row">
                         {#                        <nav id="filter" class="span12 text-center">#}
                         {#                            <div class="btn-group">#}
                         {#                                <a href="" class="btn btn-default" data-filter="*">모두</a>#}

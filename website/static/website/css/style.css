@@ -6,3 +6,12 @@
     height: 40px;
   }
 }
+
+.write-div {
+    float: right;
+    padding-bottom: 20px;
+}
+
+.file-links {
+    text-align: center;
+}

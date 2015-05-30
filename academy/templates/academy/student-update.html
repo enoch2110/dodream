@@ -150,7 +150,7 @@
                                             <th>이메일</th>
                                             <th>연락처</th>
                                             <th>관계</th>
-                                            <th></th>
+                                            <th>삭제</th>
                                         </tr>
                                         </thead>
                                         <tbody id="guardian-formset">
@@ -166,7 +166,10 @@
                                                         {{ field }}
                                                     {% endif %}
                                                 {% endfor %}
-                                                <td>{% if forloop.counter > 1 %}<button type='button' class='delete-guardian-button btn btn-danger'><i class='fa fa-times-circle'></i></button>{% endif %}</td>
+                                                {#                                                    <td>#}
+                                                {#                                                        <button type='button' class='delete-guardian-button btn btn-danger'>#}
+                                                {#                                                            <i class='fa fa-times-circle'></i></button>#}
+                                                {#                                                    </td>#}
                                             </tr>
                                         {% endfor %}
                                         </tbody>
@@ -193,18 +196,28 @@
     <script>
         $(function(){
             $("#add-guardian-button").click(function(){
-                var guardian_form = $(".guardian-form:first").clone(true);
-                guardian_form.find("td:last").append("<button type='button' class='delete-guardian-button btn btn-danger'><i class='fa fa-times-circle'></i></button>");
+                var num = $(".guardian-form").size() - 1;
+                var last_name = $(".guardian-form:last").find("#id_form-"+num+"-name").val();
+
+                if (last_name == '') {
+                    alert('빈칸을 채워주세요 !');
+                    return;
+                }
+
+                var guardian_form = $(".guardian-form:last").clone(true);
                 guardian_form.appendTo("#guardian-formset");
                 setGuardianFormNum();
-                $(".delete-guardian-button").click(function(){
-                    $(this).parent().parent().remove();
-                    setGuardianFormNum();
-                });
             });
         });
-        $(".delete-guardian-button").click(function(){
-            $(this).parent().parent().remove();
+
+        $(".delete-guardian-button").click(function() {
+            if ($('#id_form-TOTAL_FORMS').val() == 1) {
+                var row = $(this).parent().parent();
+                row.find('input').val('');
+            } else {
+                $(this).parent().parent().remove();
+                setGuardianFormNum();
+            }
         });
         function setGuardianFormNum(){
             var num = $(".guardian-form").size();

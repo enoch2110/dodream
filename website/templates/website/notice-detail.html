@@ -38,6 +38,13 @@
                             </thead>
                             <tbody>
                             <tr>
+                                <td colspan="2" class="file-links">
+                                    {% for file in files %}
+                                        <a href="{{ file.get_file.url }}">{{ forloop.counter }}</a>
+                                    {% endfor %}
+                                </td>
+                            </tr>
+                            <tr>
                                 <td colspan="2" class="entry-detail" style="padding-left: 5%; padding-right: 5%;">{{ object.content|safe }}</td>
                             </tr>
                             </tbody>

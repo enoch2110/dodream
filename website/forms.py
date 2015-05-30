@@ -11,7 +11,7 @@ class EntryAddForm(forms.ModelForm):
     class Meta:
         model = Entry
         fields = '__all__'
-        exclude = ['number', 'date']
+        exclude = ['writer', 'number', 'date']
 
 
 class EntryCommentForm(forms.ModelForm):
@@ -19,7 +19,11 @@ class EntryCommentForm(forms.ModelForm):
         model = EntryComment
         fields = '__all__'
         exclude = ['writer', 'entry', 'datetime']
-    
+
+
+class EntryFileForm(forms.Form):
+    files = MultiFileField(max_num=10, min_num=0, max_file_size=1024*1024*5, required=False)
+
 
 class EntryAdminForm(forms.ModelForm):
     content = forms.CharField(widget=CKEditorWidget())

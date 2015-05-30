@@ -3,27 +3,44 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ImproperlyConfigured
 
 from django.shortcuts import render
-from django.shortcuts import render_to_response
+from django.shortcuts import redirect, render_to_response
 
 # Create your views here.
 from django.views.generic import CreateView, ListView
-from website.forms import EntryAddForm, EntryCommentForm, UserCreateForm
+from website.forms import *
 from website.models import *
 from django.core.servers.basehttp import FileWrapper
-from django.http import HttpResponse
+from django.http import HttpResponseRedirect
+from django.template import RequestContext
 from django.contrib.staticfiles.templatetags.staticfiles import static
 
 
 class EntryAdd(CreateView):
-    template_name = "website/entry-add.html"
+    template_name = "academy/entry-add.html"
     model = Entry
     form_class = EntryAddForm
+    file_class = EntryFileForm
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class()
+        files = self.file_class()
+        return render(request, self.template_name, {'form': form, 'files': files})
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        files = self.file_class(request.POST, request.FILES)
+        if form.is_valid() and files.is_valid():
+            entry = form.save(commit=False)
+            entry.writer = self.request.user
+            entry.save()
+            for item in files.cleaned_data['files']:
+                obj = EntryFile(file=item, entry=entry)
+                obj.save()
+            return redirect("entry-detail/" + str(entry.id))
+        return render_to_response(self.template_name, {'form': form, 'files': files}, context_instance=RequestContext(request))
 
     def form_valid(self, form):
         return super(EntryAdd, self).form_valid(form)
-
-    def get_success_url(self):
-        return ["website/"+self.get_object().type]+"-list.html"
 
 
 class EntryList(ListView):
@@ -46,6 +63,7 @@ class EntryDetail(CreateView):
         post_id = self.kwargs['pk']
         try:
             context['object'] = Entry.objects.get(id=post_id)
+            context['files'] = EntryFile.objects.filter(entry=post_id)
         except:
             pass
         return context
@@ -81,22 +99,3 @@ class UserCreateView(CreateView):
     model = User
     form_class = UserCreateForm
     success_url = "/website"
-
-
-def download(request):
-    # filename = POLLINI_APP_DIR + '파일이름'
-    # wrapper = FileWrapper(file(filename))
-    #
-    # response = HttpResponse(wrapper, mimetype='application/octet-stream')
-    # response['Content-Disposition'] = 'attachment; filename=' + 파일이름.encode('utf-8')
-    # response['Content-Length'] = os.path.getsize(filename)
-    #
-    # return response
-
-    # filename = "website/app/pollini_com.apk"
-    # wrapper = FileWrapper(file(filename))
-    # response = HttpResponse(wrapper, content_type='text/plain')
-    # response['Content-Disposition'] = 'attachment; filename=%s' % os.path.basename(filename)
-    # response['Content-Length'] = os.path.getsize(filename)
-    # return response
-    return render_to_response(static('website/app/pollini_com.apk'), None)
