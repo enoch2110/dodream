@@ -41,7 +41,7 @@
                             <tbody>
                             {% for reference in object_list %}
                                 <tr>
-                                    <td class="text-center">{{ forloop.counter }}</td>
+                                    <td class="text-center">{{ forloop.revcounter }}</td>
                                     <td><a href="{% url 'entry-detail' reference.id %}">{{ reference.title }}</a></td>
                                     <td class="text-center">{{ reference.entryfile_set.count }}</td>
                                     <td class="text-center">{{ reference.writer }}</td>

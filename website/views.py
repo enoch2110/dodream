@@ -48,7 +48,7 @@ class EntryList(ListView):
     paginate_by = 18
 
     def get_queryset(self):
-        return Entry.objects.filter(type=self.request.GET.get("type"))
+        return Entry.objects.filter(type=self.request.GET.get("type")).order_by('-datetime')
 
     def get_template_names(self):
         return ["website/"+self.request.GET.get("type")+"-list.html"]

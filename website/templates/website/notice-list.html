@@ -42,7 +42,7 @@
                             <tbody>
                             {% for notice in object_list %}
                                 <tr>
-                                    <td class="text-center">{{ forloop.counter }}</td>
+                                    <td class="text-center">{{ forloop.revcounter }}</td>
                                     <td><a href="{% url 'entry-detail' notice.id %}">{{ notice.title }}</a></td>
                                     <td class="text-center">{{ notice.entryfile_set.count }}</td>
                                     <td class="text-center">{{ notice.writer }}</td>
