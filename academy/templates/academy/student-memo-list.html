@@ -3,8 +3,7 @@
 
 {% block content %}
     <div class="page-head">
-        {#        <a href="{% url "student-subject-add" %}" class="adder btn btn-success btn-lg pull-right" style="margin-top:10px;">수강 추가</a>#}
-        <h2 style="width: auto !important;">수강 리스트</h2>
+        <h2 style="width: auto !important;">수강생 리스트</h2>
     </div>
     <div class="cl-mcont">
         <div class="row">
@@ -16,52 +15,18 @@
                                 <thead>
                                 <tr>
                                     <th class="col-xs-1 text-center">이름</th>
-                                    <th class="col-xs-3 text-center">수강과목</th>
-                                    <th class="col-xs-2 text-center">수강료</th>
-                                    <th class="col-xs-4 text-center">교재</th>
-                                    <th class="col-xs-2 text-center"> 추가/수정/비활성화</th>
+                                    <th class="col-xs-2 text-center">수정</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 {% for student in students %}
-                                    {% if not student.get_subjects %}
-                                        <tr class="odd gradeX">
-                                            <td>{{ student.name }}</td>
-                                            <td></td>
-                                            <td></td>
-                                            <td>
-                                                <form action="{% url "textbook-save" %}" method="get" style="display: block;">
-                                                    <input name="stu_id" type="hidden" value="{{ student.id }}"/>
-                                                    <input name="textbook_name" id="textbook" type="text" value="{% if student.textbook %} {{ student.textbook }} {% endif %}"/>
-                                                    <button class="btn btn-success btn-xs" data-original-title="저장" data-toggle="tooltip" onclick="$(this).closest('form').submit()">
-                                                        <i class="fa fa-check"></i></button>
-                                                </form>
-                                            </td>
-                                            <td>
-                                                <a class="btn btn-success btn-xs" href="{% url "student-subject-add" student.id %}" data-original-title="Add" data-toggle="tooltip"><i class="fa fa-plus"></i></a>
-                                                <div class="btn-noshow"></div>
-                                                <div class="btn-noshow"></div>
-                                            </td>
-                                        </tr>
-                                    {% endif %}
-                                {% endfor %}
-                                {% for ss in ss %}
                                     <tr class="odd gradeX">
-                                        <td>{{ ss.student.name }}</td>
-                                        <td>{{ ss.subject }}</td>
-                                        <td>{{ ss.fee }}</td>
+                                        <td>{{ student.name }}</td>
                                         <td>
-                                            <form action="{% url "textbook-save" %}" method="get" style="display: block;">
-                                                <input name="stu_id" type="hidden" value="{{ ss.student.id }}"/>
-                                                <input name="textbook_name" id="textbook" type="text" value="{% if ss.student.textbook %} {{ ss.student.textbook }} {% endif %}"/>
-                                                <button class="btn btn-success btn-xs" data-original-title="저장" data-toggle="tooltip" onclick="$(this).closest('form').submit()">
-                                                    <i class="fa fa-check"></i></button>
-                                            </form>
-                                        </td>
-                                        <td>
-                                            <a class="btn btn-success btn-xs" href="{% url "student-subject-add" ss.student.id %}" data-original-title="Add" data-toggle="tooltip"><i class="fa fa-plus"></i></a>
-                                            <a class="btn btn-primary btn-xs" href="{% url "student-subject-update" ss.id %}" data-original-title="Edit" data-toggle="tooltip"><i class="fa fa-pencil"></i></a>
-                                            <a class="btn btn-warning btn-xs" href="{% url "student-subject-inactive" ss.id %}" data-original-title="Remove" data-toggle="tooltip"><i class="fa fa-times"></i></a>
+                                            <a class="btn btn-primary btn-xs" href="{% url "student-memo-detail" student.id %}" data-original-title="편집" data-toggle="tooltip"><i class="fa fa-pencil"></i></a>
+                                            {% if student.get_memos %}
+                                                <a class="btn btn-warning btn-xs" href="" data-original-title="초기화" data-toggle="tooltip"><i class="fa fa-times"></i></a>
+                                            {% endif %}
                                         </td>
                                     </tr>
                                 {% endfor %}

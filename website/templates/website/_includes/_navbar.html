@@ -46,11 +46,14 @@
                             <a href="{% url "entry-list" %}?type=notice" class="firstLevel hasSubMenu">커뮤니티</a>
                             <ul class="subMenu">
                                 <li><a href="{% url "entry-list" %}?type=notice">공지 사항</a></li>
-{#                                <li><a href="{% url "schedule" %}">학사 일정</a></li>#}
                                 <li><a href="{% url "entry-list" %}?type=gallery">학원 소식</a></li>
                                 <li><a href="{% url "entry-list" %}?type=reference">기타 자료</a></li>
                                 <li><a href="{% url "QnA" %}">Q&A</a></li>
                             </ul>
+                        </li>
+                        <li class="sep"></li>
+                        <li class="primary">
+                            <a href="{% url "student-list" %}" class="firstLevel hasSubMenu">학습 과정</a>
                         </li>
                         <li class="sep"></li>
                         <li class="primary">

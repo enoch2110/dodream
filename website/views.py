@@ -6,9 +6,11 @@ from django.shortcuts import render
 from django.shortcuts import redirect, render_to_response
 
 # Create your views here.
-from django.views.generic import CreateView, ListView
+from django.views.generic import *
 from website.forms import *
 from website.models import *
+from academy.models import Student
+from academy.forms import StudentCommentForm
 from django.core.servers.basehttp import FileWrapper
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
@@ -99,3 +101,23 @@ class UserCreateView(CreateView):
     model = User
     form_class = UserCreateForm
     success_url = "/website"
+
+
+class WebsiteStudentList(ListView):
+    template_name = "website/student-list.html"
+    queryset = Student.objects.all().order_by('name')
+    paginate_by = 18
+
+
+class WebsiteStudentDetail(CreateView):
+    template_name = "website/student-detail.html"
+    form_class = StudentCommentForm
+
+    def get_context_data(self, **kwargs):
+        context = super(WebsiteStudentDetail, self).get_context_data(**kwargs)
+        post_id = self.kwargs['pk']
+        try:
+            context['object'] = Student.objects.get(id=post_id)
+        except:
+            pass
+        return context

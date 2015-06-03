@@ -1,0 +1,34 @@
+{% extends "website/_layouts/_base.html" %}
+{% load static from staticfiles %}
+
+{% block content %}
+    <section id="page">
+        <section id="content">
+            <section class="pt30 pb30">
+                <div class="container clearfix">
+                    <div class="col-md-12">
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th class="text-center">번호</th>
+                                <th>이름</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for obj in object_list %}
+                                <tr>
+                                    <td class="text-center">{{ forloop.counter }}</td>
+                                    <td><a href="{% url 'student-detail' obj.id %}">{{ obj.name }}</a></td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        <div class="text-center">
+                            {% include "website/_includes/entry_pagination.html" %}
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </section>
+    </section>
+{% endblock %}

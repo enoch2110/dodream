@@ -3,6 +3,8 @@
 from django.contrib.auth.models import User, Group
 from django.db import models
 import datetime
+from datetime import date
+from django.utils.timesince import timesince
 from django.db.models import Sum
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -124,6 +126,12 @@ class Student(models.Model):
     def get_inactive_subjects(self):
         return StudentSubject.objects.filter(student=self, is_active=False)
 
+    def get_memos(self):
+        return StudentMemo.objects.filter(student=self).order_by('-datetime')
+
+    def get_memo_comments(self):
+        return StudentComment.objects.filter(student=self)
+
     # def get_total_fees(self):
     #     total_fees = 0
     #     for lecture in StudentLecture.objects.filter(student=self):
@@ -237,6 +245,27 @@ class StudentSubject(models.Model):
     #
     # def is_last_subject(self):
     #     return self.subject == self.student.get_subjects()[1]
+
+
+class StudentMemo(models.Model):
+    student = models.ForeignKey("Student")
+    writer = models.ForeignKey(User)
+    datetime = models.DateTimeField(auto_now=True)
+    memo = models.TextField(max_length=300)
+
+    def __unicode__(self):
+        return self.memo
+
+
+class StudentComment(models.Model):
+    content = models.TextField()
+    writer = models.ForeignKey(User)
+    datetime = models.DateTimeField(auto_now_add=True)
+    student = models.ForeignKey("Student")
+
+    def __unicode__(self):
+        return self.memo
+
 
 ########################################################################################################################
 # class LectureDateTime(models.Model):

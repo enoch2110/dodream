@@ -135,10 +135,11 @@ class StudentList(ListView):
 
     def get_queryset(self):
         search_param = self.request.GET.get('search')
-        attend_method_param = self.request.GET.get('attend_method')
+        # attend_method_param = self.request.GET.get('attend_method')
         # subject_param = self.request.GET.get('subject')
         # is_paid_param = self.request.GET.get('is_paid')
         # course_param = self.request.GET.get('course')
+        # sms_param = self.request.GET.get('use_sms')
 
         students = Student.objects.all().filter(academy=self.request.user.profile.staff.academy)
         students = StudentModelAdmin(Student, None).get_search_results(self.request, students, search_param)[0]
@@ -322,6 +323,37 @@ class StudentSubjectDelete(DeleteView):
     template_name = "academy/student-subject-delete.html"
     model = StudentSubject
     success_url = "/student-subject-list"
+
+
+class StudentMemoList(ListView):
+    template_name = "academy/student-memo-list.html"
+    context_object_name = "students"
+
+    def get_queryset(self):
+        queryset = Student.objects.all().filter(academy=self.request.user.profile.staff.academy)
+        return queryset
+
+
+class StudentMemo(CreateView):
+    template_name = "academy/student-memo-detail.html"
+    model = StudentMemo
+    form_class = StudentMemoForm
+    success_url = "/student-memo-list"
+
+    def get_context_data(self, **kwargs):
+        context = super(StudentMemo, self).get_context_data(**kwargs)
+        context.update({"student": Student.objects.get(id=self.kwargs['pk'])})
+        return context
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            memo = form.save(commit=False)
+            memo.writer = self.request.user
+            memo.student = Student.objects.get(id=self.kwargs['pk'])
+            memo.save()
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+        return render_to_response(self.template_name, {'form': form}, context_instance=RequestContext(request))
 
 
 def subject_fee(request):

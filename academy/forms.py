@@ -52,12 +52,14 @@ class StudentCreateForm(forms.ModelForm):
 
 class StudentFilterForm(forms.Form):
     ATTEND_METHOD_CHOICES = [('', "필터안함"), (1, "도보"), (2, "통학버스")]
-    SUBJECT = [('', "필터안함")]
+    USE_SMS_CHOICES = [('', "필터안함"), (True, "사용"), (False, "미사용")]
+    # SUBJECT = [('', "필터안함")]
     # IS_PAID_CHOICES = [('', "필터안함"), (True, "지불"), (False, "미지불")]
     # COURSE_CHOICES = [('', "필터안함")]
 
     attend_method = forms.ChoiceField(label="등원수단", choices=ATTEND_METHOD_CHOICES, required=False)
-    subject = forms.ChoiceField(label="학습과정", choices=SUBJECT, required=False)
+    use_sms = forms.ChoiceField(label="출석 알림", choices=USE_SMS_CHOICES, required=False)
+    # subject = forms.ChoiceField(label="학습과정", choices=SUBJECT, required=False)
     # is_paid = forms.ChoiceField(label="지불여부", choices=IS_PAID_CHOICES, required=False)
     # course = forms.ChoiceField(label="학습과정", choices=COURSE_CHOICES, required=False)
     # search = forms.CharField(label="검색", required=False)
@@ -124,6 +126,21 @@ class StudentSubjectForm(forms.ModelForm):
         model = StudentSubject
         fields = '__all__'
         exclude = ['student']
+
+
+class StudentMemoForm(forms.ModelForm):
+    class Meta:
+        model = StudentMemo
+        fields = '__all__'
+        exclude = ['student', 'writer', 'datetime']
+
+
+class StudentCommentForm(forms.ModelForm):
+    class Meta:
+        model = StudentComment
+        fields = '__all__'
+        exclude = ['student', 'writer', 'datetime']
+
 
 
 ########################################################################################################################

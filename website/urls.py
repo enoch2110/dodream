@@ -4,7 +4,7 @@ from django.contrib.auth.views import login, logout
 from django.views.generic import TemplateView
 from academy.views import *
 from dodream.helpers import decorated_includes
-from website.views import EntryAdd, EntryList, EntryDetail, CarouselItemView, UserCreateView
+from website.views import *
 
 urlpatterns = patterns('website.views',
     url(r'^$', CarouselItemView.as_view(template_name="website/index.html"), name="website"),
@@ -23,6 +23,8 @@ urlpatterns = patterns('website.views',
     url(r'^entry-detail/(?P<pk>\d+)', EntryDetail.as_view(), name="entry-detail"),
     url(r'^entry-add$', EntryAdd.as_view(), name="entry-add"),
     url(r'^schedule', TemplateView.as_view(template_name="website/schedule.html"), name="schedule"),
+    url(r'^student-list', WebsiteStudentList.as_view(), name="student-list"),
+    url(r'^student-detail/(?P<pk>\d+)', WebsiteStudentDetail.as_view(), name="student-detail"),
     url(r'^communication', TemplateView.as_view(template_name="website/communication.html"), name="communication"),
     url(r'^QnA', TemplateView.as_view(template_name="website/QnA.html"), name="QnA"),
     url(r'^join', UserCreateView.as_view(template_name="website/join.html"), name="join"),
