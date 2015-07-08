@@ -105,8 +105,28 @@ class UserCreateView(CreateView):
 
 class WebsiteStudentList(ListView):
     template_name = "website/student-list.html"
-    queryset = Student.objects.all().order_by('name')
-    paginate_by = 18
+    # queryset = Student.objects.all().order_by('name')
+    # paginate_by = 18
+
+    def get_context_data(self, **kwargs):
+        context = super(WebsiteStudentList, self).get_context_data(**kwargs)
+        if not self.request.user.is_authenticated():
+            context['mes'] = '로그인이 필요합니다'
+        return context
+
+    def get_queryset(self):
+        user = self.request.user
+        if not user.is_authenticated():
+            return Student.objects.none()
+        if user.is_staff or user.is_superuser:
+            return Student.objects.all().order_by('name')
+        elif Guardian.objects.filter(profile__user=user).exists():
+            print('guardian exists')
+            students = set()
+            for guardian in Guardian.objects.filter(profile__user=user):
+                students.add(guardian.student.id)
+            # guardian = Guardian.objects.get(profile__user=user)
+            return Student.objects.filter(id__in=students)
 
 
 class WebsiteStudentDetail(CreateView):

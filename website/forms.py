@@ -2,7 +2,7 @@
 from ckeditor.widgets import CKEditorWidget
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from academy.models import Profile
+from academy.models import Profile, Guardian
 from multiupload.fields import MultiFileField
 from website.models import *
 
@@ -51,8 +51,14 @@ class UserCreateForm(UserCreationForm):
 
     def save(self, commit=True):
         user = super(UserCreateForm, self).save(commit=False)
-        user.email = self.cleaned_data["email"]
         user.save()
-        user_profile = Profile(user=user, contact=self.cleaned_data['contact'])
-        user_profile.save()
+        contact = self.cleaned_data['contact']
+        if Guardian.objects.filter(contact=contact).exists():
+            for guardian in Guardian.objects.filter(contact=contact):
+                guardian.email = self.cleaned_data["email"]
+                profile = guardian.profile.id
+                Profile.objects.filter(id=profile).update(user=user)
+        else:
+            user_profile = Profile(user=user)
+            user_profile.save()
         return user

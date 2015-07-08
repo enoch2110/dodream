@@ -3,93 +3,97 @@
 
 {% block content %}
     <body class="activateAppearAnimation">
-    <section id="page">
-        <header class="page-header">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <h1>{{ object.name }} 학생</h1>
-                    </div>
-                </div>
-            </div>
-        </header>
-        <section id="content">
-            <section class="pt30 pb30">
-                <div class="container clearfix">
-                    <div class="col-sm-12">
-                        <table class="table table-hover">
-                            <thead>
-                            <tr>
-                                <th class="text-center">No.</th>
-                                <th class="text-center">글쓴이</th>
-                                <th>내용</th>
-                                <th class="text-center">날짜</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for memo in object.get_memos %}
-                                <tr>
-                                    <td class="text-center">{{ forloop.revcounter }}</td>
-                                    <td class="text-center">{{ memo.writer }}</td>
-                                    <td>
-                                        <p>{{ memo.memo }}</p>
-                                    </td>
-                                    <td class="text-center">{{ memo.datetime|date:"Y-m-d" }}</td>
-                                </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="col-sm-12" style="text-align: center;">
-                        <a class="btn btn-default" href="{% url 'student-list' %}">목록</a>
-                    </div>
-                </div>
-            </section>
-            <section class="comments pb30">
+    {% if mes %}
+        <p>{{ mes }}</p>
+    {% else %}
+        <section id="page">
+            <header class="page-header">
                 <div class="container">
                     <div class="row">
-                        <div class="col-sm-10 col-sm-offset-1">
-                            {% if request.user.is_authenticated %}
-                                <h3 class="commentNumbers">Comments ({{ object.get_memo_comments.all.count }})</h3>
-                                {% for comment in object.get_memo_comments.all %}
-                                    <div class="media">
-                                        <a class="pull-left" href="#">
-                                            <div class="imgWrapper">
-                                                <img src="http://www.gravatar.com/avatar/00000000000000000000000000000000?d=mm&amp;s=50" alt="" />
-                                            </div>
-                                        </a>
-                                        <div class="media-body">
-                                            <div class="clearfix">
-                                                <h4 class="media-heading">{{ comment.writer }}</h4>
-                                                <div class="commentInfo">
-                                                    <span>{{ comment.datetime }}</span>
-                                                </div>
-                                            </div>
-                                            {{ comment.content|linebreaksbr }}
-                                        </div>
-                                    </div>
-                                    <hr>
-                                {% endfor %}
-                                <form method="post">
-                                    {% csrf_token %}
-                                    {% for field in form %}
-                                        <div class="form-group">
-                                            <label for="comment">댓글</label>
-                                            {% add_attr field class="form-control" rows="5" placeholder=field.label %}
-                                        </div>
-                                    {% endfor %}
-                                    <button class="btn btn-primary" type="submit">댓글달기</button>
-                                </form>
-                            {% else %}
-                                <div class="text-center">
-                                    <a href="{% url "web-login" %}">댓글을 다시려면 로그인하시기 바랍니다.</a>
-                                </div>
-                            {% endif %}
+                        <div class="col-md-12">
+                            <h1>{{ object.name }} 학생</h1>
                         </div>
                     </div>
                 </div>
+            </header>
+            <section id="content">
+                <section class="pt30 pb30">
+                    <div class="container clearfix">
+                        <div class="col-sm-12">
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th class="text-center">No.</th>
+                                    <th class="text-center">글쓴이</th>
+                                    <th>내용</th>
+                                    <th class="text-center">날짜</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for memo in object.get_memos %}
+                                    <tr>
+                                        <td class="text-center">{{ forloop.revcounter }}</td>
+                                        <td class="text-center">{{ memo.writer }}</td>
+                                        <td>
+                                            <p>{{ memo.memo }}</p>
+                                        </td>
+                                        <td class="text-center">{{ memo.datetime|date:"Y-m-d" }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-sm-12" style="text-align: center;">
+                            <a class="btn btn-default" href="{% url 'student-list' %}">목록</a>
+                        </div>
+                    </div>
+                </section>
+                <section class="comments pb30">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm-10 col-sm-offset-1">
+                                {% if request.user.is_authenticated %}
+                                    <h3 class="commentNumbers">Comments ({{ object.get_memo_comments.all.count }})</h3>
+                                    {% for comment in object.get_memo_comments.all %}
+                                        <div class="media">
+                                            <a class="pull-left" href="#">
+                                                <div class="imgWrapper">
+                                                    <img src="http://www.gravatar.com/avatar/00000000000000000000000000000000?d=mm&amp;s=50" alt="" />
+                                                </div>
+                                            </a>
+                                            <div class="media-body">
+                                                <div class="clearfix">
+                                                    <h4 class="media-heading">{{ comment.writer }}</h4>
+                                                    <div class="commentInfo">
+                                                        <span>{{ comment.datetime }}</span>
+                                                    </div>
+                                                </div>
+                                                {{ comment.content|linebreaksbr }}
+                                            </div>
+                                        </div>
+                                        <hr>
+                                    {% endfor %}
+                                    <form method="post">
+                                        {% csrf_token %}
+                                        {% for field in form %}
+                                            <div class="form-group">
+                                                <label for="comment">댓글</label>
+                                                {% add_attr field class="form-control" rows="5" placeholder=field.label %}
+                                            </div>
+                                        {% endfor %}
+                                        <button class="btn btn-primary" type="submit">댓글달기</button>
+                                    </form>
+                                {% else %}
+                                    <div class="text-center">
+                                        <a href="{% url "web-login" %}">댓글을 다시려면 로그인하시기 바랍니다.</a>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </section>
             </section>
         </section>
-    </section>
+    {% endif %}
     </body>
 {% endblock %}
