@@ -41,7 +41,7 @@
                             <div class="portfolio-items  isotopeWrapper clearfix imgHover">
                                 {% for gallery in object_list %}
                                     {#                                if gallery 갯수가 4개가 넘어가면 div class row를 새로 주도록#}
-                                    <article class="col-xs-3 isotopeItem women">
+                                    <article class="col-lg-3 col-md-3 col-sm-6 col-xs-6 isotopeItem women">
                                         <div class="imgBorder">
                                             <img alt="" src="{{ gallery.get_main_image.url }}" class="img-responsive imgBorder">
                                             <a href="{% url "entry-detail" gallery.id %}" title="link">
@@ -53,11 +53,19 @@
                                             <section class="boxContent text-center" style="padding:15px; width:100%">
                                                 <table style="width:100%;">
                                                     <tr>
-                                                        <td><h3 style="margin-bottom: 0px;">{{ gallery.title }}</h3></td>
+                                                        <td class="text-center ellipsis"><h3 class="dotdotdot" style="margin-bottom: 0px; height:25px;">{{ gallery.title }}</h3></td>
                                                     </tr>
                                                     <tr>
-                                                        <td class="text-center"><h3 style="margin: 0% 0%;"><small>{{ gallery.datetime|date:"Y-m-d" }}</small></h3></td>
+                                                        {% if gallery.subtitle %}
+                                                            <td class="text-center"><h3 class="dotdotdot" style="margin-bottom: 0%; height:25px;"><small style="font-size: smaller;">{{ gallery.subtitle }}</small></h3></td>
+                                                        {% else %}
+                                                            <td class="text-center"><h3 class="dotdotdot" style="margin-bottom: 0%; height:25px;"><small style="font-size: smaller;">-</small></h3></td>
+                                                        {% endif %}
                                                     </tr>
+                                                    <tr>
+                                                        <td class="text-center "><h3 style="margin: 0% 0%;"><small style="font-size: 0.7em;">{{ gallery.datetime|date:"Y-m-d" }}</small></h3></td>
+                                                    </tr>
+
                                                 </table>
                                             </section>
                                         </div>
@@ -74,4 +82,15 @@
             </section>
         </section>
     </section>
+{% endblock %}
+
+{% block script %}
+    <script>
+        $(document).ready(function(){
+            console.log("ssss");
+            $(".dotdotdot").dotdotdot({
+                watch: "window"
+            });
+        });
+    </script>
 {% endblock %}

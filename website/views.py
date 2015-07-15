@@ -21,27 +21,16 @@ class EntryAdd(CreateView):
     template_name = "academy/entry-add.html"
     model = Entry
     form_class = EntryAddForm
-    file_class = EntryFileForm
 
-    def get(self, request, *args, **kwargs):
-        form = self.form_class()
-        files = self.file_class()
-        return render(request, self.template_name, {'form': form, 'files': files})
-
-    def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST)
-        files = self.file_class(request.POST, request.FILES)
-        if form.is_valid() and files.is_valid():
-            entry = form.save(commit=False)
-            entry.writer = self.request.user
-            entry.save()
-            for item in files.cleaned_data['files']:
-                obj = EntryFile(file=item, entry=entry)
-                obj.save()
-            return redirect("entry-detail/" + str(entry.id))
-        return render_to_response(self.template_name, {'form': form, 'files': files}, context_instance=RequestContext(request))
+    def get_success_url(self):
+        return "entry-detail/" + str(self.object.pk)
 
     def form_valid(self, form):
+        instance = form.save(commit=False)
+        instance.writer = self.request.user
+        instance.save()
+        for item in form.cleaned_data['files']:
+            EntryFile.objects.create(file=item, entry=instance)
         return super(EntryAdd, self).form_valid(form)
 
 

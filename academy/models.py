@@ -115,7 +115,6 @@ class Student(models.Model):
     profile = models.OneToOneField(Profile)
     academy = models.ForeignKey(Academy)
     textbook = models.CharField(max_length=100, null=True, blank=True)
-    # textbook = models.OneToOneField(Textbook, null=True, blank=True)
 
     def __unicode__(self):
         return self.name

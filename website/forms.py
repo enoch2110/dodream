@@ -8,10 +8,21 @@ from website.models import *
 
 
 class EntryAddForm(forms.ModelForm):
+    files = MultiFileField(max_num=10, min_num=0, max_file_size=1024*1024*5, required=False)
+
     class Meta:
         model = Entry
-        fields = '__all__'
-        exclude = ['writer', 'number', 'date']
+        fields = ['type', 'title', 'subtitle', 'files', 'content']
+
+    def clean(self):
+        cleaned_data = super(EntryAddForm, self).clean()
+        type = cleaned_data.get("type")
+        files = cleaned_data.get("files")
+        if type == 'gallery' and not files:
+            self.add_error('files', "이 항목을 채워주십시오.")
+
+        return cleaned_data
+
 
 
 class EntryCommentForm(forms.ModelForm):
@@ -21,14 +32,9 @@ class EntryCommentForm(forms.ModelForm):
         exclude = ['writer', 'entry', 'datetime']
 
 
-class EntryFileForm(forms.Form):
-    files = MultiFileField(max_num=10, min_num=0, max_file_size=1024*1024*5, required=False)
-
-
 class EntryAdminForm(forms.ModelForm):
     content = forms.CharField(widget=CKEditorWidget())
     files = MultiFileField(max_num=10, min_num=0, max_file_size=1024*1024*5, required=False)
-    # 여기에 files가 없어서 생기는 문제였구만...
 
     class Meta:
         model = Entry
