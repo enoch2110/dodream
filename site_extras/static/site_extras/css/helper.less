@@ -1,0 +1,188 @@
+.no-padding{
+  padding: 0px;
+}
+.no-margin{
+  margin: 0px;
+}
+
+.fixed-rt{
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  z-index: 1;
+}
+.fixed-lt{
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  z-index: 1;
+}
+.unselectable{
+  -moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none;-o-user-select:none;
+}
+
+.full-width{
+  width: 100%;
+}
+.row-center{
+  text-align: center;
+  >div{
+    float:none;
+    display: inline-block;
+  }
+}
+
+/****************************
+COLOR
+*****************************/
+
+.bg-white{
+  background-color: white !important;
+}
+
+.op9{opacity: 0.9}
+
+/****************************
+RATIO CONTAINER
+*****************************/
+
+.ratio-wrapper{
+  position: relative;
+  height: 0;
+  padding: 56.25% 0 0 0;
+  overflow: hidden;
+  //margin: 10px 0px;
+}
+.ratio-container{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  iframe{
+    width: 100%;
+    height: 100%;
+  }
+}
+.ratio-4-3{
+  padding: 75% 0 0 0;
+}
+.ratio-21-9{
+  padding: 42.86% 0 0 0;
+}
+
+/****************************
+BACKGROUND
+*****************************/
+
+.cover{
+  background: no-repeat center center;
+  background-size: cover;
+}
+.contain{
+  background: no-repeat center center;
+  background-size: contain;
+}
+
+
+
+/****************************
+OVERLAY
+*****************************/
+
+.overlay{
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  top:0px;
+  bottom: 0px;
+  //z-index: 10000;
+//  width: 100%;
+//  height: 100%;
+}
+
+
+/****************************
+HOVER EFFECT
+*****************************/
+
+.hover-effect {
+  opacity: 0;
+  overflow:visible;
+  transition: all 0.2s ease-in-out;
+}
+
+.hover-effect a.info {
+  position:relative;
+}
+
+.hover-effect:hover {
+  opacity: 0.9;
+  background-color: black;
+}
+.hover-effect.op5:hover {
+  opacity: 0.5;
+}
+
+.hover-effect:hover a.info {
+  opacity:1;
+  //transition-delay: 0.3s;
+}
+
+
+/****************************
+MIDDLE CONTAINER
+*****************************/
+
+/* This parent can be any width and height */
+.middle-container {
+  text-align: center;
+  height:100%;
+}
+
+/* The ghost, nudged to maintain perfect centering */
+.middle-container:before {
+  content: ' ';
+  display: inline-block;
+  height: 100%;
+  width: 0px;
+  vertical-align: middle;
+  margin-right: -0.25em; /* Adjusts for spacing */
+}
+
+/* The element to be centered, can
+   also be of any width and height */
+.middle {
+  display: inline-block;
+  vertical-align: middle;
+  width: 99%;
+}
+
+/****************************
+GRID LAYOUT
+*****************************/
+
+.row.p5{
+  margin-left: -5px;
+  margin-right: -5px;
+  div[class*="col-"]{
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+}
+.row.p7-5{
+  margin-left: -7.5px;
+  margin-right: -7.5px;
+  div[class*="col-"]{
+    padding-left: 7.5px;
+    padding-right: 7.5px;
+  }
+}
+.row.p0{
+  margin-left: 0px;
+  margin-right: 0px;
+  div[class*="col-"]{
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+}

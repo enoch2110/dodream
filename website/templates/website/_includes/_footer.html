@@ -1,5 +1,4 @@
-{% load static from staticfiles %}
-{% load web_extras %}
+{% load staticfiles web_extras site_extras %}
 
 <footer id="footerWrapper" class="footer2">
     <section id="mainFooter">
@@ -23,10 +22,10 @@
                     <div class="footerWidget">
                         <h3>간략 안내</h3>
                         <ul class="list-unstyled iconList">
-                            <li><a href="#"> 매달 마지막주 토요 연주회가 열립니다.</a></li>
-                            <li><a href="#"> 입시반, 성인반 수강생에게 연습실이 개방됩니다.</a></li>
-                            <li><a href="#"> 달란트 잔치는 3개월 마다 열립니다.</a></li>
-                            <li><a href="#"> 7월 24일 달란트 잔지가 열립니다.</a></li>
+                            <li><a>{{ "간략안내_1"|setting:"content" }}</a></li>
+                            <li><a>{{ "간략안내_2"|setting:"content" }}</a></li>
+                            <li><a>{{ "간략안내_3"|setting:"content" }}</a></li>
+                            <li><a>{{ "간략안내_4"|setting:"content" }}</a></li>
                         </ul>
                     </div>
                 </div>
@@ -35,9 +34,9 @@
                         <h3>폴리니 음악학원</h3>
                         <address>
                             <p>
-                                <i class="icon-location"></i>&nbsp;포항 북구 양덕동 1703번지 토레도트빌딩 3층 (Mr. big 맞은 편, 구. 스카이 음악미술)<br>
-                                <i class="icon-phone"></i>&nbsp;054) 247 - 3004 <br>
-                                <i class="icon-mail-alt"></i>&nbsp;<a href="mailto:메일">kluba98@daum.net</a>
+                                <i class="icon-location"></i>&nbsp;{{ "주소"|setting:"content" }}<br>
+                                <i class="icon-phone"></i>&nbsp;{{ "전화번호"|setting:"content" }}<br>
+                                <i class="icon-mail-alt"></i>&nbsp;<a href="mailto:{{ "이메일"|setting:"content" }}">{{ "이메일"|setting:"content" }}</a>
                             </p>
                         </address>
                     </div>

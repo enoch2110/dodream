@@ -44,6 +44,7 @@ INSTALLED_APPS = (
     'attendance',
     'website',
     'gcm',
+    'site_extras',
     'ckeditor'
     # 'tastypie'
 )
@@ -136,8 +137,10 @@ GCM_APIKEY = 'AIzaSyC3LGruJQLdsco3ptkbDkgEJzEswwh9sQU'
 
 CKEDITOR_CONFIGS = {
     'default': {
+        'width': '100%',
+        'height': '500px',
         'toolbar': 'full',
-        'language' : 'ko',
+        'language': 'ko',
     },
 }
 

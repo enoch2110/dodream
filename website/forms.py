@@ -33,7 +33,7 @@ class EntryCommentForm(forms.ModelForm):
 
 
 class EntryAdminForm(forms.ModelForm):
-    content = forms.CharField(widget=CKEditorWidget())
+    writer = forms.ModelChoiceField(queryset=User.objects.filter(profile__staff__isnull=False))
     files = MultiFileField(max_num=10, min_num=0, max_file_size=1024*1024*5, required=False)
 
     class Meta:

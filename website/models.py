@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 import uuid
+from ckeditor.fields import RichTextField
 from django.contrib.auth.models import User
 from django.db import models
 
@@ -23,7 +24,7 @@ class Entry(models.Model):
     title = models.CharField(max_length=200)
     subtitle = models.CharField(max_length=200, null=True, blank=True)
     # file = models.FileField(upload_to=get_upload_path, blank=True, null=True)
-    content = models.TextField()
+    content = RichTextField()
     writer = models.ForeignKey(User)
     datetime = models.DateTimeField(auto_now_add=True)
 

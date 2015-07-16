@@ -6,30 +6,32 @@
         <section id="content">
             <section class="pt30 pb30">
                 <div class="container clearfix">
-                    <div class="col-md-12">
-                        {% if mes %}
-                            <p>{{ mes }}</p>
-                        {% else %}
-                            <table class="table table-hover">
-                                <thead>
-                                <tr>
-                                    <th class="text-center">번호</th>
-                                    <th>이름</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {% for obj in object_list %}
+                    <div class="row">
+                        <div class="col-xs-6 col-xs-offset-3">
+                            {% if mes %}
+                                <p>{{ mes }}</p>
+                            {% else %}
+                                <table class="table table-hover">
+                                    <thead>
                                     <tr>
-                                        <td class="text-center">{{ forloop.counter }}</td>
-                                        <td><a href="{% url 'student-detail' obj.id %}">{{ obj.name }}</a></td>
+                                        <th class="text-center">번호</th>
+                                        <th>이름</th>
                                     </tr>
-                                {% endfor %}
-                                </tbody>
-                            </table>
-                            <div class="text-center">
-                                {% include "website/_includes/entry_pagination.html" %}
-                            </div>
-                        {% endif %}
+                                    </thead>
+                                    <tbody>
+                                    {% for obj in object_list %}
+                                        <tr>
+                                            <td class="text-center">{{ forloop.counter }}</td>
+                                            <td><a href="{% url 'student-detail' obj.id %}">{{ obj.name }}</a></td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                                <div class="text-center">
+                                    {% include "website/_includes/entry_pagination.html" %}
+                                </div>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
             </section>

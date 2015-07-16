@@ -2,6 +2,8 @@
 {% load static from staticfiles %}
 {% load my_extras %}
 
+{% block sidebar %}{% endblock %}
+
 {% block content %}
     {% if not request.user.is_staff %}
         <div class="page-head">
@@ -28,10 +30,12 @@
                                 {% csrf_token %}
                                 {% for field in form %}
                                     {% if field.name == 'content' %}
-                                        {{ form.content|addcss:"ckeditor form-control" }}
-                                        {% for error in field.errors %}
-                                            <label class="label label-danger">{{ error }}</label>
-                                        {% endfor %}
+                                        <div class="text-center">
+                                            {{ form.content|addcss:"form-control" }}
+                                            {% for error in field.errors %}
+                                                <label class="label label-danger">{{ error }}</label>
+                                            {% endfor %}
+                                        </div>
                                     {% else %}
                                         <div class="form-group {% if field.errors %}has-error{% endif %}">
                                             <label class="col-sm-3 control-label">{{ field.label }}</label>
@@ -46,9 +50,9 @@
                                 {% endfor %}
 
                                 <div class="form-group">
-                                    <div class="col-sm-12">
+                                    <div class="col-sm-12 text-center">
                                         <button type="submit" class="btn btn-primary">등록</button>
-                                        <button class="btn btn-default">취소</button>
+                                        <button type="button" onclick="history.go(-1);" class="btn btn-default">취소</button>
                                     </div>
                                 </div>
                             </form>
@@ -62,7 +66,7 @@
 
 {% block script %}
     <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
-<script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
+    <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
     <script type="text/javascript">
         $(document).ready(function(){
             //initialize the javascript

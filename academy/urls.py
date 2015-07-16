@@ -56,7 +56,7 @@ urlpatterns = patterns('academy.views',
 
 urlpatterns = patterns('',
     (r'', decorated_includes(
-        user_passes_test(lambda u: u.is_authenticated() and u.profile.can_use_admin(), login_url='/login'),
+        user_passes_test(lambda u: u.is_authenticated() and u.profile and u.profile.can_use_admin(), login_url='/login'),
         include(urlpatterns))
     ),
     url(r'^subject-fee$', 'academy.views.subject_fee'),

@@ -6,3 +6,4 @@ pillow
 django-multiupload
 djangorestframework
 python-dateutil
+easy-thumbnails
