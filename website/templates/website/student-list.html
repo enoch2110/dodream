@@ -22,7 +22,7 @@
                                     {% for obj in object_list %}
                                         <tr>
                                             <td class="text-center">{{ forloop.counter }}</td>
-                                            <td><a href="{% url 'student-detail' obj.id %}">{{ obj.name }}</a></td>
+                                            <td><a href="{% url 'my-student-detail' obj.id %}">{{ obj.name }}</a></td>
                                         </tr>
                                     {% endfor %}
                                     </tbody>
