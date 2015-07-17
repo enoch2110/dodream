@@ -130,3 +130,13 @@ class WebsiteStudentDetail(CreateView):
         except:
             pass
         return context
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.writer = request.user
+            comment.student = Student.objects.get(id=self.kwargs['pk'])
+            comment.save()
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+        return render_to_response(self.template_name, {'form': form}, context_instance=RequestContext(request))
