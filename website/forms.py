@@ -63,6 +63,8 @@ class UserCreateForm(UserCreationForm):
             for guardian in Guardian.objects.filter(contact=contact):
                 guardian.email = self.cleaned_data["email"]
                 profile = guardian.profile.id
+                if Profile.objects.filter(id=profile).exists():
+                    Profile.objects.filter(id=profile).delete()
                 Profile.objects.filter(id=profile).update(user=user)
         else:
             user_profile = Profile(user=user)
