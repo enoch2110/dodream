@@ -1,5 +1,7 @@
 #jetbrains project meta directory
 .idea/
 */migrations/
-
-db.sqlite3
+*/__pycache__/
+*/__init__.py
+*.DS_Store
+*.sqlite3
