@@ -7,4 +7,5 @@ urlpatterns = [
     url(r'^send-code$', views.SMSVerify.as_view()),
     url(r'^contact$', views.InquiryCreate.as_view(), name="contact"),
     url(r'^username-check', views.UsernameDuplicateCheck.as_view(), name="username-check"),
+    url(r'^popup-disable', views.PopupDisable.as_view(), name="popup-disable"),
 ]

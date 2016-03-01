@@ -6,7 +6,7 @@ class StudentFilter(django_filters.FilterSet):
 
     class Meta:
         model = Student
-        fields = ['attend_method', 'use_sms']
+        fields = ['attend_method']
 
     #
     # def __init__(self, *args, **kwargs):

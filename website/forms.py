@@ -2,27 +2,17 @@
 from ckeditor.widgets import CKEditorWidget
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from academy.models import Profile, Guardian
+from academy.models import Profile
 from multiupload.fields import MultiFileField
 from website.models import *
 
 
 class EntryAddForm(forms.ModelForm):
-    files = MultiFileField(max_num=10, min_num=0, max_file_size=1024*1024*5, required=False)
-
     class Meta:
         model = Entry
-        fields = ['type', 'title', 'subtitle', 'files', 'content']
-
-    def clean(self):
-        cleaned_data = super(EntryAddForm, self).clean()
-        type = cleaned_data.get("type")
-        files = cleaned_data.get("files")
-        if type == 'gallery' and not files:
-            self.add_error('files', "이 항목을 채워주십시오.")
-
-        return cleaned_data
-
+        fields = '__all__'
+        exclude = ['writer', 'number', 'date']
+        ordering = ['-date']
 
 
 class EntryCommentForm(forms.ModelForm):
@@ -30,11 +20,17 @@ class EntryCommentForm(forms.ModelForm):
         model = EntryComment
         fields = '__all__'
         exclude = ['writer', 'entry', 'datetime']
+        ordering = ['-datetime']
+
+
+class EntryFileForm(forms.Form):
+    files = MultiFileField(max_num=10, min_num=0, max_file_size=1024 * 1024 * 5, required=False)
 
 
 class EntryAdminForm(forms.ModelForm):
-    writer = forms.ModelChoiceField(queryset=User.objects.filter(profile__staff__isnull=False))
-    files = MultiFileField(max_num=10, min_num=0, max_file_size=1024*1024*5, required=False)
+    content = forms.CharField(widget=CKEditorWidget())
+    files = MultiFileField(max_num=10, min_num=0, max_file_size=1024 * 1024 * 5, required=False)
+    # 여기에 files가 없어서 생기는 문제였구만...
 
     class Meta:
         model = Entry
@@ -57,16 +53,8 @@ class UserCreateForm(UserCreationForm):
 
     def save(self, commit=True):
         user = super(UserCreateForm, self).save(commit=False)
+        user.email = self.cleaned_data["email"]
         user.save()
-        contact = self.cleaned_data['contact']
-        if Guardian.objects.filter(contact=contact).exists():
-            for guardian in Guardian.objects.filter(contact=contact):
-                guardian.email = self.cleaned_data["email"]
-                profile = guardian.profile.id
-                if Profile.objects.filter(id=profile).exists():
-                    Profile.objects.filter(id=profile).delete()
-                Profile.objects.filter(id=profile).update(user=user)
-        else:
-            user_profile = Profile(user=user)
-            user_profile.save()
+        user_profile = Profile(user=user, contact=self.cleaned_data['contact'])
+        user_profile.save()
         return user

@@ -22,9 +22,9 @@ SECRET_KEY = '%t_p+ldiggk*pk+!3&flq-p9p_3v1bwe)18p%1odw9=(h$e7(f'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-TEMPLATE_DEBUG = True
+TEMPLATE_DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -44,7 +44,6 @@ INSTALLED_APPS = (
     'attendance',
     'website',
     'gcm',
-    'site_extras',
     'ckeditor'
     # 'tastypie'
 )
@@ -89,10 +88,10 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
+STATIC_ROOT = os.path.join(BASE_DIR, "resources/static")
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, "resources", "static"),
     os.path.join(BASE_DIR, "website", "static"),
     os.path.join(BASE_DIR, "academy", "static"),
 )
@@ -117,7 +116,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': (
-        # 'rest_framework.renderers.UnicodeJSONRenderer',
+        'rest_framework.renderers.JSONRenderer',
         'rest_framework.renderers.BrowsableAPIRenderer',
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -128,23 +127,21 @@ REST_FRAMEWORK = {
 
 LOGIN_REDIRECT_URL = "/"
 
-# COOLSMS_ID = "enoch2110"
-# COOLSMS_PW = "tip177"
-# COOLSMS_SENDER = "0000"
-# USE_COOLSMS = True
+COOLSMS_ID = "enoch2110"
+COOLSMS_PW = "tip177"
+COOLSMS_SENDER = "0000"
+USE_COOLSMS = True
 
 GCM_APIKEY = 'AIzaSyC3LGruJQLdsco3ptkbDkgEJzEswwh9sQU'
 
 CKEDITOR_CONFIGS = {
     'default': {
-        'width': '100%',
-        'height': '500px',
         'toolbar': 'full',
-        'language': 'ko',
+        'skin': 'bootstrapck',
+        'extraPlugins': 'youtube,quicktable,tableresize,glyphicons,fastimage',
+        'contentsCss': '/static/ckeditor/ckeditor/plugins/glyphicons/bootstrap/css/bootstrap.css',
+        'allowedContent': True
     },
 }
 
 CKEDITOR_UPLOAD_PATH = "uploads/"
-
-
-POLLINI_APP_DIR = BASE_DIR + "/website/static/website/app/pollini_com.apk"

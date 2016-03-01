@@ -40,11 +40,11 @@ class Attendance(models.Model):
         if is_first and current_datetime.time() <= attend_time:
             result = u"출석했습니다."
         elif is_first and current_datetime.time() > attend_time:
-            result = u"지각했습니다."
+            result = u"출석했습니다."
         elif not is_first and current_datetime.time() < leave_time:
-            result = u"조퇴했습니다."
+            result = u"출석했습니다."
         elif not is_first and current_datetime.time() >= leave_time:
-            result = u"퇴실했습니다."
+            result = u"출석했습니다."
 
         return result
 

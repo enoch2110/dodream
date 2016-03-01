@@ -14,8 +14,6 @@ urlpatterns = patterns('academy.views',
     url(r'^student-registration', StudentRegistration.as_view(), name="student-registration"),
     url(r'^student-update/(?P<pk>[0-9]+)$', StudentUpdate.as_view(), name="student-update"),
     url(r'^student-detail/(?P<pk>[0-9]+)$', StudentDetail.as_view(), name="student-detail"),
-    url(r'^student-memo-list$', StudentMemoList.as_view(), name="student-memo-list"),
-    url(r'^student-memo-detail/(?P<pk>\d+)$', StudentMemo.as_view(), name="student-memo-detail"),
     url(r'^staff-list$', StaffList.as_view(), name="staff-list"),
     url(r'^staff-detail/(?P<pk>\d+)$', StaffDetail.as_view(), name="staff-detail"),
     url(r'^staff-add$', StaffCreate.as_view(), name="staff-add"),
@@ -56,7 +54,7 @@ urlpatterns = patterns('academy.views',
 
 urlpatterns = patterns('',
     (r'', decorated_includes(
-        user_passes_test(lambda u: u.is_authenticated() and u.profile and u.profile.can_use_admin(), login_url='/login'),
+        user_passes_test(lambda u: u.is_authenticated() and u.profile.can_use_admin(), login_url='/login'),
         include(urlpatterns))
     ),
     url(r'^subject-fee$', 'academy.views.subject_fee'),

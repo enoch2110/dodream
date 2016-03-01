@@ -19,4 +19,3 @@ def create_profile(sender, instance, *args, **kwargs):
         profile = Profile()
         profile.save()
         instance.profile = profile
-

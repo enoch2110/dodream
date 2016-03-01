@@ -11,6 +11,7 @@ from django.core.files.base import ContentFile
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from gcm import *
+#import gcm
 from rest_framework import generics
 from rest_framework.filters import SearchFilter
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
@@ -135,6 +136,7 @@ class AttendanceCreateAPI(generics.CreateAPIView):
                         # sms_result = 'sms sent'
                         alert_result = 'alert sent'
 
+                        # GCM = gcm.GCM
                         gcm = GCM(settings.GCM_APIKEY)
                         data = {'name': profile.get_name(), 'time': now.strftime("%Y년 %m월 %d일 %H:%M:%S"), 'status': "출석 : "}
                         reg_ids = []

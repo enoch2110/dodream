@@ -54,4 +54,8 @@ class SettingAdmin(admin.ModelAdmin):
 class InquiryAdmin(admin.ModelAdmin):
     list_display = ['name', 'contact', 'email', 'title']
 
+
+class PopupAdmin(admin.ModelAdmin):
+    list_display = ['title', 'date_begin', 'date_end', 'is_active']
+
 admin.site.register(Setting, SettingAdmin)

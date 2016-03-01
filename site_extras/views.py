@@ -7,11 +7,12 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.core.context_processors import csrf
 from django.core.urlresolvers import reverse_lazy
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseNotAllowed, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import View, CreateView, RedirectView
 from site_extras.forms import InquiryForm
 from site_extras.libraries.coolsms import send_sms
+from site_extras.models.sitemodels import get_setting
 from site_extras.models.utilmodels import SMSVerification
 
 
@@ -26,24 +27,24 @@ class SMSVerify(View):
 
     def post(self, request, *args, **kwargs):
         phone_number = request.POST.get("phone_number")
-        allow_duplicates = request.POST.get("allow_duplicates")
+        no_duplicates = "no_duplicates" in request.POST
         now = datetime.datetime.now()
-
-        # TODO 인증된 번호 재인증 가능 여부 선택기능 구현
 
         if SMSVerification.active_objects.filter(phone_number=phone_number).exists():
             verification = SMSVerification.active_objects.get(phone_number=phone_number)
             result = "인증번호가 이미 전송되었습니다."
             remaining = (datetime.timedelta(minutes=3)-(now - verification.datetime)).seconds
             error_code = 1
-        elif SMSVerification.is_verified_number(phone_number) and not allow_duplicates:
+        elif SMSVerification.is_verified_number(phone_number) and no_duplicates:
             result = "해당 번호는 이미 인증되었습니다."
             remaining = 0
             error_code = 2
         else:
             verification, result = SMSVerification.create(phone_number)
             if verification:
-                send_sms(verification.code, phone_number)
+                message_format = get_setting("인증문자", defaults={"type": "문자", "content": "{code}"})
+                message = message_format.encode('utf8').format(code=verification.code)
+                send_sms(message, str(phone_number))
             remaining = 180 if verification else 0
             error_code = 0 if verification else 2
         return JsonResponse({"result": result, "remaining": remaining, "error_code": error_code})
@@ -95,3 +96,15 @@ class OAuth2Authentication(RedirectView):
             else:
                 error = 'AUTH_FAILED'
         return super(OAuth2Authentication, self).get(request, *args, **kwargs)
+
+
+class PopupDisable(View):
+
+    def post(self, request):
+        if request.is_ajax():
+            import datetime
+            today = datetime.date.today()
+            request.session['popup-%s' % today] = True
+            return HttpResponse('ok')
+        else:
+            return HttpResponseNotAllowed(['POST'])

@@ -6,11 +6,9 @@ from django.shortcuts import render
 from django.shortcuts import redirect, render_to_response
 
 # Create your views here.
-from django.views.generic import *
+from django.views.generic import CreateView, ListView
 from website.forms import *
 from website.models import *
-from academy.models import Student
-from academy.forms import StudentCommentForm
 from django.core.servers.basehttp import FileWrapper
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
@@ -21,16 +19,27 @@ class EntryAdd(CreateView):
     template_name = "academy/entry-add.html"
     model = Entry
     form_class = EntryAddForm
+    file_class = EntryFileForm
 
-    def get_success_url(self):
-        return "entry-detail/" + str(self.object.pk)
+    def get(self, request, *args, **kwargs):
+        form = self.form_class()
+        files = self.file_class()
+        return render(request, self.template_name, {'form': form, 'files': files})
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        files = self.file_class(request.POST, request.FILES)
+        if form.is_valid() and files.is_valid():
+            entry = form.save(commit=False)
+            entry.writer = self.request.user
+            entry.save()
+            for item in files.cleaned_data['files']:
+                obj = EntryFile(file=item, entry=entry)
+                obj.save()
+            return redirect("entry-detail/" + str(entry.id))
+        return render_to_response(self.template_name, {'form': form, 'files': files}, context_instance=RequestContext(request))
 
     def form_valid(self, form):
-        instance = form.save(commit=False)
-        instance.writer = self.request.user
-        instance.save()
-        for item in form.cleaned_data['files']:
-            EntryFile.objects.create(file=item, entry=instance)
         return super(EntryAdd, self).form_valid(form)
 
 
@@ -90,53 +99,3 @@ class UserCreateView(CreateView):
     model = User
     form_class = UserCreateForm
     success_url = "/website"
-
-
-class WebsiteStudentList(ListView):
-    template_name = "website/student-list.html"
-    # queryset = Student.objects.all().order_by('name')
-    # paginate_by = 18
-
-    def get_context_data(self, **kwargs):
-        context = super(WebsiteStudentList, self).get_context_data(**kwargs)
-        if not self.request.user.is_authenticated():
-            context['mes'] = '로그인이 필요합니다'
-        return context
-
-    def get_queryset(self):
-        user = self.request.user
-        if not user.is_authenticated():
-            return Student.objects.none()
-        if user.is_staff or user.is_superuser:
-            return Student.objects.all().order_by('name')
-        elif Guardian.objects.filter(profile__user=user).exists():
-            print('guardian exists')
-            students = set()
-            for guardian in Guardian.objects.filter(profile__user=user):
-                students.add(guardian.student.id)
-            # guardian = Guardian.objects.get(profile__user=user)
-            return Student.objects.filter(id__in=students)
-
-
-class WebsiteStudentDetail(CreateView):
-    template_name = "website/student-detail.html"
-    form_class = StudentCommentForm
-
-    def get_context_data(self, **kwargs):
-        context = super(WebsiteStudentDetail, self).get_context_data(**kwargs)
-        post_id = self.kwargs['pk']
-        try:
-            context['object'] = Student.objects.get(id=post_id)
-        except:
-            pass
-        return context
-
-    def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST)
-        if form.is_valid():
-            comment = form.save(commit=False)
-            comment.writer = request.user
-            comment.student = Student.objects.get(id=self.kwargs['pk'])
-            comment.save()
-            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-        return render_to_response(self.template_name, {'form': form}, context_instance=RequestContext(request))

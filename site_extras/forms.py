@@ -35,9 +35,12 @@ class SettingForm(forms.ModelForm):
 
 
 class SMSVerificationFormMixin(forms.ModelForm):
-    code = forms.CharField(label="인증번호", required=False)
-    allow_duplicates = False
+    code = forms.CharField(label="인증번호", required=False, help_text="전송된 인증번호를 입력하세요")
+    no_duplicates = False
     is_sms_verification_required = False
+
+    def __init__(self, *args, **kwargs):
+        super(SMSVerificationFormMixin, self).__init__(*args, **kwargs)
 
     def save(self, commit=True):
         user = super(SMSVerificationFormMixin, self).save(commit)
@@ -55,10 +58,10 @@ class SMSVerificationFormMixin(forms.ModelForm):
         try:
             verification = SMSVerification.active_objects.get(code=code)
             has_verified_number = SMSVerification.objects.filter(phone_number=verification.phone_number, is_verified=True).exists()
-            if has_verified_number and not self.allow_duplicates:
-                raise forms.ValidationError(_('이미 인증된 번호입니다.'), code='verified number')
+            if has_verified_number and self.no_duplicates:
+                raise forms.ValidationError(_(u'이미 인증된 번호입니다.'), code='verified number')
         except MultipleObjectsReturned:
-            raise forms.ValidationError(_('오류'), code='multiple code')
+            raise forms.ValidationError(_(u'오류'), code='multiple code')
         except ObjectDoesNotExist:
             pass
         return code
