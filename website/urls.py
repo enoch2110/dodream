@@ -4,7 +4,7 @@ from django.contrib.auth.views import login, logout
 from django.views.generic import TemplateView
 from academy.views import *
 from dodream.helpers import decorated_includes
-from website.views import *
+from website.views import EntryAdd, EntryList, EntryDetail, CarouselItemView, UserCreateView
 
 urlpatterns = patterns('website.views',
     url(r'^$', CarouselItemView.as_view(template_name="website/index.html"), name="website"),

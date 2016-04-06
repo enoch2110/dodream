@@ -162,3 +162,43 @@ GRID LAYOUT
   padding-left: 0px;
   padding-right: 0px;
 }
+/****************************
+POPUP
+*****************************/
+#modal-popup img {
+  max-width: 100% !important;
+  height: auto !important;
+}
+#modal-popup hr {
+  margin: 10px 0 5px 0;
+}
+#modal-popup .modal-body,
+#modal-popup .modal-footer {
+  padding: 10px;
+}
+#modal-popup .modal-footer {
+  position: relative;
+}
+#modal-popup .modal-dialog {
+  width: 450px;
+}
+#modal-popup .item {
+  min-height: 200px;
+}
+#modal-popup .carousel-indicators {
+  left: 18px;
+  top: 14px;
+  margin-bottom: 0;
+}
+#modal-popup .carousel-indicators li.active {
+  background-color: #000;
+}
+#modal-popup .carousel-indicators li {
+  border-color: #000;
+}
+@media (max-width: 797px) {
+  #modal-popup .modal-dialog {
+    width: auto;
+    margin: 30px;
+  }
+}

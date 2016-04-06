@@ -44,7 +44,7 @@ INSTALLED_APPS = (
     'attendance',
     'website',
     'gcm',
-    'ckeditor'
+    'ckeditor',
     # 'tastypie'
 )
 
@@ -103,16 +103,26 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "resources/media")
 #     os.path.join(BASE_DIR, "templates")
 # )
 
-TEMPLATE_CONTEXT_PROCESSORS = (
-    "django.core.context_processors.request",
-    "django.contrib.auth.context_processors.auth",
-    "django.core.context_processors.debug",
-    "django.core.context_processors.i18n",
-    "django.core.context_processors.media",
-    "django.core.context_processors.static",
-    "django.core.context_processors.tz",
-    "django.contrib.messages.context_processors.messages"
-)
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                # Insert your TEMPLATE_CONTEXT_PROCESSORS here or use this
+                # list if you haven't customized them:
+                'django.contrib.auth.context_processors.auth',
+                'django.template.context_processors.debug',
+                'django.template.context_processors.i18n',
+                'django.template.context_processors.media',
+                'django.template.context_processors.static',
+                'django.template.context_processors.tz',
+                'django.contrib.messages.context_processors.messages',
+                'django.core.context_processors.request',
+            ],
+        },
+    },
+]
 
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': (

@@ -10,19 +10,18 @@ import academy
 
 admin.autodiscover()
 
-urlpatterns = patterns(
-    '',
+urlpatterns = [
     url(r'', include('academy.urls')),
     url(r'^api/', include('api.urls')),
     url(r'^website/', include('website.urls')),
     url(r'^attendance/', include('attendance.urls')),
     url(r'^summernote/', include('django_summernote.urls')),
-    url(r'^ckeditor/', include('ckeditor.urls')),
+    url(r'^ckeditor/', include('ckeditor_uploader.urls')),
     url(r'^admin/', include(admin.site.urls)),
-
-    url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'academy/login.html', 'authentication_form': StaffAuthenticationForm}, name="login"),
+    url(r'^login/$', 'django.contrib.auth.views.login',
+        {'template_name': 'academy/login.html', 'authentication_form': StaffAuthenticationForm}, name="login"),
     url(r'^logout/$', 'django.contrib.auth.views.logout', {'template_name': 'academy/logout.html'}, name="logout"),
-)
+]
 
 if settings.DEBUG:
     urlpatterns += patterns('',

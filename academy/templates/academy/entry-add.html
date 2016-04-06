@@ -2,7 +2,10 @@
 {% load static from staticfiles %}
 {% load my_extras %}
 
-{% block sidebar %}{% endblock %}
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="{% static "academy/_core/js/bootstrap.wysihtml5/dist/bootstrap3-wysihtml5.min.css" %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static "academy/_core/js/bootstrap.summernote/dist/summernote.css" %}"/>
+{% endblock %}
 
 {% block content %}
     {% if not request.user.is_staff %}
@@ -12,47 +15,52 @@
     {% else %}
         <div class="page-head">
             <h2>새 글 추가</h2>
-            {#            <ol class="breadcrumb">#}
-            {#                <li><a href="#">Home</a></li>#}
-            {#                <li><a href="#">Form</a></li>#}
-            {#                <li class="active">Wysiwyg</li>#}
-            {#            </ol>#}
+{#            <ol class="breadcrumb">#}
+{#                <li><a href="#">Home</a></li>#}
+{#                <li><a href="#">Form</a></li>#}
+{#                <li class="active">Wysiwyg</li>#}
+{#            </ol>#}
         </div>
         <div class="cl-mcont">
             <div class="row">
                 <div class="col-md-12">
                     <div class="block-flat">
                         <div class="header">
-                            <h3>Content</h3>
+                            <h3>Basic Elements</h3>
                         </div>
                         <div class="content">
                             <form class="form-horizontal group-border-dashed" style="border-radius: 0px;" method="post" enctype="multipart/form-data">
                                 {% csrf_token %}
-                                {% for field in form %}
-                                    {% if field.name == 'content' %}
-                                        <div class="text-center">
-                                            {{ form.content|addcss:"form-control" }}
-                                            {% for error in field.errors %}
-                                                <label class="label label-danger">{{ error }}</label>
-                                            {% endfor %}
-                                        </div>
-                                    {% else %}
-                                        <div class="form-group {% if field.errors %}has-error{% endif %}">
-                                            <label class="col-sm-3 control-label">{{ field.label }}</label>
-                                            <div class="col-sm-6">
-                                                {{ field|addcss:"form-control" }}
-                                            </div>
-                                            {% for error in field.errors %}
-                                                <label class="label label-danger">{{ error }}</label>
-                                            {% endfor %}
-                                        </div>
-                                    {% endif %}
-                                {% endfor %}
 
                                 <div class="form-group">
-                                    <div class="col-sm-12 text-center">
+                                    <label class="col-sm-3 control-label">{{ form.type.label }}</label>
+                                    <div class="col-sm-6">
+                                        {{ form.type|addcss:"form-control" }}
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">{{ form.title.label }}</label>
+                                    <div class="col-sm-6">
+                                        {{ form.title|addcss:"form-control" }}
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">{{ files.files.label }}</label>
+                                    <div class="col-sm-6">
+                                        {{ files.files|addcss:"form-control" }}
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    {{ form.content|addcss:"ckeditor form-control" }}
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-sm-12">
                                         <button type="submit" class="btn btn-primary">등록</button>
-                                        <button type="button" onclick="history.go(-1);" class="btn btn-default">취소</button>
+                                        <button class="btn btn-default">취소</button>
                                     </div>
                                 </div>
                             </form>
@@ -65,13 +73,20 @@
 {% endblock %}
 
 {% block script %}
-    <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
-    <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
+{#    <script src="{% static "academy/_core/js/ckeditor/ckeditor.js" %}"></script>#}
+    <script src="//cdn.ckeditor.com/4.4.7/full/ckeditor.js"></script>
+    <script src="{% static "academy/_core/js/ckeditor/adapters/jquery.js" %}"></script>
+{#    <script type="text/javascript" src="{% static "academy/_core/js/bootstrap.summernote/dist/summernote.min.js" %}"></script>#}
+    <script type="text/javascript" src="{% static "academy/_core/js/bootstrap.wysihtml5/dist/wysihtml5-0.3.0.js" %}"></script>
+    <script type="text/javascript" src="{% static "academy/_core/js/bootstrap.wysihtml5/dist/bootstrap3-wysihtml5.all.min.js" %}"></script>
     <script type="text/javascript">
         $(document).ready(function(){
             //initialize the javascript
             App.init();
             App.textEditor();
+
+            $('#some-textarea').wysihtml5();
+            $('#summernote').summernote();
         });
     </script>
 {% endblock %}

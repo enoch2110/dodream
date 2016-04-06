@@ -116,3 +116,5 @@ class AttendancePolicy(models.Model):
 
     def __unicode__(self):
         return str(self.attend_time) + "/" + str(self.leave_time)
+
+import signals

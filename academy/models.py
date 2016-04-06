@@ -349,3 +349,5 @@ class StudentSubject(models.Model):
 #
 #     def __unicode__(self):
 #         return str(self.datetime)+" "+self.student.name +" "+str(self.amount)
+
+import signals

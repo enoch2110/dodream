@@ -189,10 +189,25 @@ $(function(){
 });
 
 $("#request-code-button").click(function(){
+    var no_duplicates = $("input[name=no_duplicates]");
+    var phone_number = $("input[name=phone_number]");
+    var data;
+    if (no_duplicates){
+        data = {
+            phone_number : phone_number.val(),
+            no_duplicates: no_duplicates.val()
+        };
+    }
+    else{
+        data = {
+            phone_number : phone_number.val()
+        };
+    }
+
     $.ajax({
         url: "/site-extras/send-code",
         type: "POST",
-        data: { phone_number : $("input[name=phone_number]").val() }
+        data: data
     }).done(function(data) {
         resetPhoneField();
         $("#phone_number-form-group .error-container").html("<label class='label label-danger'>"+data.result+"</label>");

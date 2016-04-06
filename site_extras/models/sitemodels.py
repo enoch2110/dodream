@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
+from ckeditor.fields import RichTextField
 from django.db import models
+from site_extras import managers
 from site_extras.libraries.utils import FilenameChanger
 from django.utils.translation import ugettext_lazy as _
 
@@ -19,12 +21,12 @@ class Inquiry(models.Model):
 
 
 class Popup(models.Model):
-    title = models.CharField(max_length=200)
-    content = models.TextField(blank=True)
-    datetime = models.DateTimeField(auto_now=True)
-    date_begin = models.DateField()
-    date_end = models.DateField()
-    is_active = models.BooleanField(default=True)
+    title = models.CharField(_(u"제목"), max_length=200)
+    content = RichTextField(_(u"내용"), blank=True)
+    datetime = models.DateTimeField(_(u"생성시간"), auto_now=True)
+    date_begin = models.DateField(_(u"시작날짜"))
+    date_end = models.DateField(_(u"종료날짜"))
+    is_active = models.BooleanField(_(u"활성"), default=True)
 
     class Meta:
         verbose_name = _(u"팝업")
@@ -37,13 +39,21 @@ class Setting(models.Model):
     help_text = models.TextField(blank=True, verbose_name=u"설명")
     is_richtext = models.BooleanField(default=False, verbose_name=u"리치텍스트")
     content = models.TextField(blank=True, verbose_name=u"내용")
+    objects = managers.SettingManager()
 
     class Meta:
         verbose_name = _(u"사이트 설정")
         verbose_name_plural = _(u"사이트 설정")
+
+    def natural_key(self):
+        return (self.name,)
 
 
 class SettingFile(models.Model):
     file = models.FileField(upload_to=FilenameChanger("site_extras/settings"), blank=True, verbose_name=u"파일")
     content = models.TextField(blank=True)
     setting = models.ForeignKey(Setting, related_name="files")
+
+
+def get_setting(name, defaults=None):
+    return Setting.objects.get_or_create(name=name, defaults=defaults)[0].content

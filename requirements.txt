@@ -1,9 +1,7 @@
-django-filter
-django_summernote
-python-gcm
-django-ckeditor
-pillow
-django-multiupload
 djangorestframework
+django-filter
 python-dateutil
-easy-thumbnails
+django-ckeditor
+django-summernote
+django-gcm
+django-multiupload

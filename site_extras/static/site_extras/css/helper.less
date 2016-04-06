@@ -97,8 +97,8 @@ OVERLAY
   top:0px;
   bottom: 0px;
   //z-index: 10000;
-//  width: 100%;
-//  height: 100%;
+  //  width: 100%;
+  //  height: 100%;
 }
 
 
@@ -184,5 +184,53 @@ GRID LAYOUT
   div[class*="col-"]{
     padding-left: 0px;
     padding-right: 0px;
+  }
+}
+
+/****************************
+POPUP
+*****************************/
+
+#modal-popup{
+  img{
+    max-width: 100% !important;
+    height: auto !important;
+  }
+  hr{
+    margin: 10px 0 5px 0;
+  }
+  .modal-body, .modal-footer{
+    padding: 10px;
+  }
+  .modal-footer{
+    position: relative;
+  }
+
+  .modal-dialog{
+    width: 450px;
+  }
+  .item{
+    min-height: 200px;
+  }
+  .carousel-indicators{
+    left: 18px;
+    top: 14px;
+    margin-bottom: 0;
+    li.active{
+      background-color: #000;
+    }
+    li{
+      border-color: #000;
+    }
+  }
+}
+
+
+@media (max-width: 797px){
+  #modal-popup{
+    .modal-dialog{
+      width: auto;
+      margin: 30px;
+    }
   }
 }

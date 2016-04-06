@@ -114,3 +114,22 @@ def url_replace(request, field, value):
     dict_[field] = value
 
     return dict_.urlencode()
+
+
+@register.filter('widget')
+def widget(field):
+    return field.field.widget.__class__.__name__
+
+
+@register.inclusion_tag('site_extras/form/fieldset.html')
+def fieldset(fieldset, **kwargs):
+    context = kwargs
+    context['fieldset'] = fieldset
+    return context
+
+
+@register.inclusion_tag('site_extras/form/field.html')
+def field(field, **kwargs):
+    context = kwargs
+    context['field'] = field
+    return context

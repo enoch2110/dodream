@@ -20,11 +20,11 @@
     <link href="{% static "academy/_core/js/bootstrap/dist/css/bootstrap.css" %}" rel="stylesheet" />
     <link href="{% static "academy/_core/fonts/font-awesome-4/css/font-awesome.min.css" %}" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="{% static "academy/_core/js/bootstrap.switch/bootstrap-switch.min.css" %}" />
-    <link rel="stylesheet" type="text/css" href="{% static "academy/_core/js/bootstrap.datetimepicker/css/bootstrap-datetimepicker.min.css" %}" />
+	<link rel="stylesheet" type="text/css" href="{% static "academy/_core/js/bootstrap.datetimepicker/css/bootstrap-datetimepicker.min.css" %}" />
     <link rel="stylesheet" type="text/css" href="{% static "academy/_core/js/bootstrap.datetimepicker/css/bootstrap-datetimepicker.min.css" %}" />
 
     <!-- DateRange -->
-    <link rel="stylesheet" type="text/css" href="{% static "academy/_core/js/bootstrap.daterangepicker/daterangepicker-bs3.css" %}" />
+	<link rel="stylesheet" type="text/css" href="{% static "academy/_core/js/bootstrap.daterangepicker/daterangepicker-bs3.css" %}" />
 
     <!-- Select2 -->
     <link rel="stylesheet" type="text/css" href="{% static "academy/_core/js/jquery.select2/select2.css" %}" />
@@ -86,15 +86,13 @@
 </div>
 
 <div id="cl-wrapper" class="fixed-menu">
-    {% block sidebar %}
-        {% include "academy/_includes/_sidebar.html" %}
-    {% endblock %}
+    {% include "academy/_includes/_sidebar.html" %}
     {% block content_parent %}
-        <div class="container-fluid" id="pcont">
-            {% block content %}
+    <div class="container-fluid" id="pcont">
+        {% block content %}
 
-            {% endblock %}
-        </div>
+        {% endblock %}
+    </div>
     {% endblock %}
 </div>
 
