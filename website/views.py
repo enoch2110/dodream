@@ -9,7 +9,6 @@ from django.shortcuts import redirect, render_to_response
 from django.views.generic import CreateView, ListView
 from website.forms import *
 from website.models import *
-from django.core.servers.basehttp import FileWrapper
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
 from django.contrib.staticfiles.templatetags.staticfiles import static

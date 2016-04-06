@@ -1,4 +1,4 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import url
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.views import login, logout
 from django.views.generic import TemplateView
@@ -6,7 +6,7 @@ from academy.views import *
 from dodream.helpers import decorated_includes
 from website.views import EntryAdd, EntryList, EntryDetail, CarouselItemView, UserCreateView
 
-urlpatterns = patterns('website.views',
+urlpatterns = [
     url(r'^$', CarouselItemView.as_view(template_name="website/index.html"), name="website"),
     url(r'^academy-introduction$', TemplateView.as_view(template_name="website/academy-introduction.html"), name="academy-introduction"),
     url(r'^academy-facilities$', TemplateView.as_view(template_name="website/academy-facilities.html"), name="academy-facilities"),
@@ -31,4 +31,4 @@ urlpatterns = patterns('website.views',
     url(r'^logout/$', logout, {'template_name': 'website/index.html'}, name="web-logout"),
 
     # url(r'^logout/$', logout, CarouselItemView.as_view(template_name="website/index.html"), name="web-logout"),
-)
+]

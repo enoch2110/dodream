@@ -6,7 +6,7 @@ from dodream.helpers import decorated_includes
 from django.conf.urls.static import static
 from dodream import settings
 
-urlpatterns = patterns('academy.views',
+urlpatterns = [
     # url(r'^$', TemplateView.as_view(template_name="academy/index.html")),
     url(r'^$', StudentList.as_view()),
     url(r'^setting$', AcademySetting.as_view(), name="academy-setting"),
@@ -49,7 +49,7 @@ urlpatterns = patterns('academy.views',
     # url(r'^calendar', TemplateView.as_view(template_name="academy/calendar.html")),
     # #TYPE: student:0, staff:1
     # url(r'^account-create/(?P<type>\d+)/(?P<pk>\d+)$', AccountCreate.as_view(), name="account-create"),
-)
+]
 
 
 urlpatterns = patterns('',

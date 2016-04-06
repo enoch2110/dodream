@@ -1,5 +1,7 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import include, url
 from django.contrib import admin
+from django.contrib.auth.views import login, logout
+from django.views.static import serve
 from django.contrib.auth.decorators import user_passes_test
 from academy.forms import StaffAuthenticationForm
 
@@ -18,12 +20,12 @@ urlpatterns = [
     url(r'^summernote/', include('django_summernote.urls')),
     url(r'^ckeditor/', include('ckeditor_uploader.urls')),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^login/$', 'django.contrib.auth.views.login',
+    url(r'^login/$', login,
         {'template_name': 'academy/login.html', 'authentication_form': StaffAuthenticationForm}, name="login"),
-    url(r'^logout/$', 'django.contrib.auth.views.logout', {'template_name': 'academy/logout.html'}, name="logout"),
+    url(r'^logout/$', logout, {'template_name': 'academy/logout.html'}, name="logout"),
 ]
 
 if settings.DEBUG:
-    urlpatterns += patterns('',
-        url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT,}),
-    )
+    urlpatterns += [
+        url(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT,}),
+    ]

@@ -1,6 +1,6 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 from attendance.views import AttendanceList
 
-urlpatterns = patterns('',
+urlpatterns = [
     url(r'^attendance-list', AttendanceList.as_view(), name="attendance-list"),
-)
+]
