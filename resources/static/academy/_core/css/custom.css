@@ -1,0 +1,5 @@
+#id_weekday li{
+    float: left;
+    list-style: none;
+    width: 100px;
+}
