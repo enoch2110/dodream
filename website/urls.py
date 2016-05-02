@@ -1,4 +1,5 @@
-from django.conf.urls import url
+from django.conf.urls import url, include
+from django.contrib import admin
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.views import login, logout
 from django.views.generic import TemplateView
@@ -29,6 +30,6 @@ urlpatterns = [
 
     url(r'^login/$', login, {'template_name': 'website/login.html'}, name="web-login"),
     url(r'^logout/$', logout, {'template_name': 'website/index.html'}, name="web-logout"),
-
+    url(r'^admin/', include(admin.site.urls)),
     # url(r'^logout/$', logout, CarouselItemView.as_view(template_name="website/index.html"), name="web-logout"),
 ]
